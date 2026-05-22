@@ -1,0 +1,68 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-caption2);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.badge--default {
+  background: var(--badge-bg, var(--bg-surface-3));
+  color: var(--badge-color, var(--text-secondary));
+  border-color: var(--badge-color, var(--border-subtle));
+}
+
+.badge--fundamentals {
+  background: var(--badge-fundamentals-bg);
+  color: var(--badge-fundamentals-fg);
+  border-color: var(--badge-fundamentals-border);
+}
+
+.badge--associate {
+  background: var(--badge-associate-bg);
+  color: var(--badge-associate-fg);
+  border-color: var(--badge-associate-border);
+}
+
+.badge--expert {
+  background: var(--badge-expert-bg);
+  color: var(--badge-expert-fg);
+  border-color: var(--badge-expert-border);
+}
+
+.badge--retiring {
+  background: var(--badge-retiring-bg);
+  color: var(--badge-retiring-fg);
+  border-color: var(--badge-retiring-border);
+}
+
+.badge--completed {
+  background: var(--badge-completed-bg);
+  color: var(--badge-completed-fg);
+  border-color: var(--badge-completed-border);
+}
+
+.badge--in-progress {
+  background: var(--badge-inprogress-bg);
+  color: var(--badge-inprogress-fg);
+  border-color: var(--badge-inprogress-border);
+}
+
+.badge--interchange {
+  background: var(--badge-interchange-bg);
+  color: var(--badge-interchange-fg);
+  border-color: var(--badge-interchange-border);
+  border-style: dashed;
+}
+
+.badge--small {
+  padding: 1px var(--space-1);
+  font-size: 9px;
+}

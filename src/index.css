@@ -1,0 +1,590 @@
+/* ============================================
+   MS Certification Path Tracker — Design System
+   Microsoft Fluent 2 Design Language
+   Light + Dark Theme Support
+   ============================================ */
+
+/* ---------- Fluent 2 Design Tokens ---------- */
+
+/* LIGHT THEME (default) */
+:root,
+[data-theme="light"] {
+  /* Typography — Segoe UI is Microsoft's brand typeface */
+  --font-primary: 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'Cascadia Code', 'Cascadia Mono', 'Consolas', 'Courier New', monospace;
+
+  /* Fluent 2 Type Ramp */
+  --fs-caption2: 0.625rem;   /* 10px */
+  --fs-caption1: 0.75rem;    /* 12px */
+  --fs-body1: 0.875rem;      /* 14px */
+  --fs-body2: 1rem;          /* 16px */
+  --fs-subtitle2: 1.125rem;  /* 18px */
+  --fs-subtitle1: 1.25rem;   /* 20px */
+  --fs-title3: 1.5rem;       /* 24px */
+  --fs-title2: 1.75rem;      /* 28px */
+  --fs-title1: 2rem;         /* 32px */
+  --fs-hero: 2.5rem;         /* 40px */
+  --fs-display: 3rem;        /* 48px */
+
+  /* Aliases for backward compat */
+  --fs-xs: var(--fs-caption2);
+  --fs-sm: var(--fs-caption1);
+  --fs-base: var(--fs-body1);
+  --fs-md: var(--fs-body2);
+  --fs-lg: var(--fs-subtitle2);
+  --fs-xl: var(--fs-subtitle1);
+  --fs-2xl: var(--fs-title3);
+  --fs-3xl: var(--fs-title2);
+  --fs-4xl: var(--fs-title1);
+  --fs-5xl: var(--fs-hero);
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 700;
+
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.6;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.04em;
+
+  /* ── Fluent 2 Neutral Surfaces (Light) ── */
+  --colorNeutralBackground1: #ffffff;
+  --colorNeutralBackground2: #fafafa;
+  --colorNeutralBackground3: #f5f5f5;
+  --colorNeutralBackground4: #f0f0f0;
+  --colorNeutralBackground5: #e8e8e8;
+  --colorNeutralBackgroundHover: #f5f5f5;
+  --colorNeutralBackgroundActive: #ebebeb;
+  --colorNeutralBackgroundSelected: #ebebeb;
+  --colorSubtleBackgroundHover: rgba(0, 0, 0, 0.04);
+  --colorSubtleBackgroundActive: rgba(0, 0, 0, 0.06);
+
+  /* Semantic surface aliases */
+  --bg-app: var(--colorNeutralBackground2);
+  --bg-surface-1: var(--colorNeutralBackground1);
+  --bg-surface-2: var(--colorNeutralBackground3);
+  --bg-surface-3: var(--colorNeutralBackground4);
+  --bg-surface-hover: var(--colorNeutralBackgroundHover);
+  --bg-surface-active: var(--colorNeutralBackgroundSelected);
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+  --bg-glass: rgba(255, 255, 255, 0.78);
+
+  /* ── Fluent 2 Text (Light) ── */
+  --colorNeutralForeground1: #242424;
+  --colorNeutralForeground2: #424242;
+  --colorNeutralForeground3: #616161;
+  --colorNeutralForeground4: #707070;
+  --colorNeutralForegroundDisabled: #bdbdbd;
+
+  --text-primary: var(--colorNeutralForeground1);
+  --text-secondary: var(--colorNeutralForeground2);
+  --text-tertiary: var(--colorNeutralForeground3);
+  --text-disabled: var(--colorNeutralForegroundDisabled);
+  --text-inverse: #ffffff;
+
+  /* ── Fluent 2 Borders (Light) ── */
+  --colorNeutralStroke1: #d1d1d1;
+  --colorNeutralStroke2: #e0e0e0;
+  --colorNeutralStroke3: #f0f0f0;
+  --colorNeutralStrokeAccessible: #616161;
+
+  --border-subtle: var(--colorNeutralStroke3);
+  --border-default: var(--colorNeutralStroke2);
+  --border-strong: var(--colorNeutralStroke1);
+  --border-focus: #0f6cbd;
+
+  /* ── Fluent 2 Brand Colors ── */
+  --colorBrandBackground: #0f6cbd;
+  --colorBrandBackgroundHover: #115ea3;
+  --colorBrandBackgroundActive: #0c3b5e;
+  --colorBrandForeground1: #0f6cbd;
+  --colorBrandForeground2: #115ea3;
+  --colorBrandStroke1: #0f6cbd;
+
+  /* ── Metro Line Colors ── */
+  --line-azure: #0f6cbd;
+  --line-ai: #7c3aed;
+  --line-data: #0e9b6e;
+  --line-security: #d13438;
+  --line-m365: #ca5010;
+  --line-power: #b146c2;
+  --line-dynamics: #0e8f83;
+  --line-devops: #c19c00;
+
+  /* Metro Line Glow */
+  --glow-azure: rgba(15, 108, 189, 0.12);
+  --glow-ai: rgba(124, 58, 237, 0.12);
+  --glow-data: rgba(14, 155, 110, 0.12);
+  --glow-security: rgba(209, 52, 56, 0.12);
+  --glow-m365: rgba(202, 80, 16, 0.12);
+  --glow-power: rgba(177, 70, 194, 0.12);
+  --glow-dynamics: rgba(14, 143, 131, 0.12);
+  --glow-devops: rgba(193, 156, 0, 0.12);
+
+  /* ── Status Colors ── */
+  --status-not-started: var(--colorNeutralForeground3);
+  --status-in-progress: #c19c00;
+  --status-completed: #0e7a0d;
+  --status-retiring: #ca5010;
+
+  /* Badge colors (light-safe) */
+  --badge-fundamentals-bg: rgba(15, 108, 189, 0.08);
+  --badge-fundamentals-fg: #0f6cbd;
+  --badge-fundamentals-border: rgba(15, 108, 189, 0.3);
+  --badge-associate-bg: rgba(124, 58, 237, 0.08);
+  --badge-associate-fg: #7c3aed;
+  --badge-associate-border: rgba(124, 58, 237, 0.3);
+  --badge-expert-bg: rgba(193, 156, 0, 0.08);
+  --badge-expert-fg: #986f0b;
+  --badge-expert-border: rgba(193, 156, 0, 0.3);
+  --badge-retiring-bg: rgba(202, 80, 16, 0.08);
+  --badge-retiring-fg: #ca5010;
+  --badge-retiring-border: rgba(202, 80, 16, 0.3);
+  --badge-completed-bg: rgba(14, 122, 13, 0.08);
+  --badge-completed-fg: #0e7a0d;
+  --badge-completed-border: rgba(14, 122, 13, 0.3);
+  --badge-inprogress-bg: rgba(193, 156, 0, 0.08);
+  --badge-inprogress-fg: #986f0b;
+  --badge-inprogress-border: rgba(193, 156, 0, 0.3);
+  --badge-interchange-bg: rgba(0, 0, 0, 0.04);
+  --badge-interchange-fg: var(--text-secondary);
+  --badge-interchange-border: var(--border-default);
+
+  /* ── Fluent 2 Shadows (Light) ── */
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-4: 0 2px 4px rgba(0, 0, 0, 0.14);
+  --shadow-8: 0 4px 8px rgba(0, 0, 0, 0.14);
+  --shadow-16: 0 8px 16px rgba(0, 0, 0, 0.14);
+  --shadow-28: 0 14px 28px rgba(0, 0, 0, 0.18);
+  --shadow-64: 0 32px 64px rgba(0, 0, 0, 0.22);
+
+  /* Aliases */
+  --shadow-sm: var(--shadow-2);
+  --shadow-md: var(--shadow-4);
+  --shadow-lg: var(--shadow-8);
+  --shadow-xl: var(--shadow-16);
+
+  /* ── Spacing (Fluent 2 Base-4) ── */
+  --space-1: 0.25rem;    /* 4px */
+  --space-2: 0.5rem;     /* 8px */
+  --space-3: 0.75rem;    /* 12px */
+  --space-4: 1rem;       /* 16px */
+  --space-5: 1.25rem;    /* 20px */
+  --space-6: 1.5rem;     /* 24px */
+  --space-8: 2rem;       /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+
+  /* ── Fluent 2 Corner Radii ── */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* ── Transitions (Fluent Motion) ── */
+  --duration-ultra-fast: 50ms;
+  --duration-faster: 100ms;
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-gentle: 250ms;
+  --duration-slow: 300ms;
+  --duration-slower: 400ms;
+  --curve-decelerate: cubic-bezier(0, 0, 0, 1);
+  --curve-accelerate: cubic-bezier(1, 0, 1, 1);
+  --curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+
+  --transition-fast: var(--duration-fast) var(--curve-easy-ease);
+  --transition-base: var(--duration-normal) var(--curve-decelerate);
+  --transition-slow: var(--duration-slower) var(--curve-decelerate);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Layout ── */
+  --header-height: 48px;
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 48px;
+  --content-max-width: 1400px;
+
+  /* ── Z-index ── */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sidebar: 200;
+  --z-header: 300;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+
+  /* Scrollbar */
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.35);
+}
+
+/* DARK THEME */
+[data-theme="dark"] {
+  /* Neutral surfaces */
+  --colorNeutralBackground1: #292929;
+  --colorNeutralBackground2: #1f1f1f;
+  --colorNeutralBackground3: #141414;
+  --colorNeutralBackground4: #0a0a0a;
+  --colorNeutralBackground5: #000000;
+  --colorNeutralBackgroundHover: #383838;
+  --colorNeutralBackgroundActive: #3d3d3d;
+  --colorNeutralBackgroundSelected: #383838;
+  --colorSubtleBackgroundHover: rgba(255, 255, 255, 0.06);
+  --colorSubtleBackgroundActive: rgba(255, 255, 255, 0.08);
+
+  --bg-app: var(--colorNeutralBackground3);
+  --bg-surface-1: var(--colorNeutralBackground1);
+  --bg-surface-2: var(--colorNeutralBackground2);
+  --bg-surface-3: #333333;
+  --bg-surface-hover: var(--colorNeutralBackgroundHover);
+  --bg-surface-active: var(--colorNeutralBackgroundSelected);
+  --bg-overlay: rgba(0, 0, 0, 0.6);
+  --bg-glass: rgba(31, 31, 31, 0.82);
+
+  /* Text */
+  --colorNeutralForeground1: #ffffff;
+  --colorNeutralForeground2: #d6d6d6;
+  --colorNeutralForeground3: #adadad;
+  --colorNeutralForeground4: #8a8a8a;
+  --colorNeutralForegroundDisabled: #5c5c5c;
+
+  --text-primary: var(--colorNeutralForeground1);
+  --text-secondary: var(--colorNeutralForeground2);
+  --text-tertiary: var(--colorNeutralForeground3);
+  --text-disabled: var(--colorNeutralForegroundDisabled);
+  --text-inverse: #242424;
+
+  /* Borders */
+  --colorNeutralStroke1: #5c5c5c;
+  --colorNeutralStroke2: #404040;
+  --colorNeutralStroke3: #333333;
+  --colorNeutralStrokeAccessible: #adadad;
+
+  --border-subtle: var(--colorNeutralStroke3);
+  --border-default: var(--colorNeutralStroke2);
+  --border-strong: var(--colorNeutralStroke1);
+  --border-focus: #479ef5;
+
+  /* Brand */
+  --colorBrandBackground: #479ef5;
+  --colorBrandBackgroundHover: #62abf5;
+  --colorBrandBackgroundActive: #2886de;
+  --colorBrandForeground1: #479ef5;
+  --colorBrandForeground2: #62abf5;
+  --colorBrandStroke1: #479ef5;
+
+  /* Metro Line Colors (brighter for dark bg) */
+  --line-azure: #479ef5;
+  --line-ai: #a78bfa;
+  --line-data: #34d399;
+  --line-security: #f87171;
+  --line-m365: #fb923c;
+  --line-power: #d946ef;
+  --line-dynamics: #2dd4bf;
+  --line-devops: #fbbf24;
+
+  /* Glow */
+  --glow-azure: rgba(71, 158, 245, 0.15);
+  --glow-ai: rgba(167, 139, 250, 0.15);
+  --glow-data: rgba(52, 211, 153, 0.15);
+  --glow-security: rgba(248, 113, 113, 0.15);
+  --glow-m365: rgba(251, 146, 60, 0.15);
+  --glow-power: rgba(217, 70, 239, 0.15);
+  --glow-dynamics: rgba(45, 212, 191, 0.15);
+  --glow-devops: rgba(251, 191, 36, 0.15);
+
+  /* Status */
+  --status-not-started: var(--colorNeutralForeground3);
+  --status-in-progress: #fbbf24;
+  --status-completed: #34d399;
+  --status-retiring: #fb923c;
+
+  /* Badges */
+  --badge-fundamentals-bg: rgba(71, 158, 245, 0.12);
+  --badge-fundamentals-fg: #479ef5;
+  --badge-fundamentals-border: rgba(71, 158, 245, 0.3);
+  --badge-associate-bg: rgba(167, 139, 250, 0.12);
+  --badge-associate-fg: #a78bfa;
+  --badge-associate-border: rgba(167, 139, 250, 0.3);
+  --badge-expert-bg: rgba(251, 191, 36, 0.12);
+  --badge-expert-fg: #fbbf24;
+  --badge-expert-border: rgba(251, 191, 36, 0.3);
+  --badge-retiring-bg: rgba(251, 146, 60, 0.12);
+  --badge-retiring-fg: #fb923c;
+  --badge-retiring-border: rgba(251, 146, 60, 0.3);
+  --badge-completed-bg: rgba(52, 211, 153, 0.12);
+  --badge-completed-fg: #34d399;
+  --badge-completed-border: rgba(52, 211, 153, 0.3);
+  --badge-inprogress-bg: rgba(251, 191, 36, 0.12);
+  --badge-inprogress-fg: #fbbf24;
+  --badge-inprogress-border: rgba(251, 191, 36, 0.3);
+  --badge-interchange-bg: rgba(255, 255, 255, 0.05);
+  --badge-interchange-fg: var(--text-secondary);
+  --badge-interchange-border: var(--border-default);
+
+  /* Shadows (dark) */
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, 0.36);
+  --shadow-4: 0 2px 4px rgba(0, 0, 0, 0.40);
+  --shadow-8: 0 4px 8px rgba(0, 0, 0, 0.40);
+  --shadow-16: 0 8px 16px rgba(0, 0, 0, 0.40);
+  --shadow-28: 0 14px 28px rgba(0, 0, 0, 0.48);
+  --shadow-64: 0 32px 64px rgba(0, 0, 0, 0.56);
+
+  --shadow-sm: var(--shadow-2);
+  --shadow-md: var(--shadow-4);
+  --shadow-lg: var(--shadow-8);
+  --shadow-xl: var(--shadow-16);
+
+  /* Scrollbar */
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
+}
+
+/* ---------- Global Reset ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-app);
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background-color var(--duration-slow) var(--curve-easy-ease),
+              color var(--duration-slow) var(--curve-easy-ease);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+  background-clip: content-box;
+}
+
+/* ---------- Keyframe Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes stationPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--pulse-color, rgba(251, 191, 36, 0.4));
+  }
+  50% {
+    box-shadow: 0 0 0 8px var(--pulse-color, rgba(251, 191, 36, 0));
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px var(--glow-color, rgba(0, 120, 212, 0.3)));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px var(--glow-color, rgba(0, 120, 212, 0.5)));
+  }
+}
+
+@keyframes drawTrack {
+  from { stroke-dashoffset: var(--track-length, 1000); }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes progressFill {
+  from { width: 0; }
+  to { width: var(--progress, 0%); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Utility Classes ---------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid var(--border-subtle);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Fluent Focus Visible ---------- */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+/* ---------- Theme Transition ---------- */
+.app,
+.app * {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: var(--duration-normal);
+  transition-timing-function: var(--curve-easy-ease);
+}
+
+/* Opt out of theme transition for animations/transforms */
+.station,
+.station *,
+.progress-ring *,
+.metro-line__track-line,
+.metro-overview__progress-fill,
+.dashboard__hero-line {
+  transition-property: none;
+}

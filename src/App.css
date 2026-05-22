@@ -1,0 +1,25 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__body {
+  display: flex;
+  flex: 1;
+  padding-top: var(--header-height);
+}
+
+.app__content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-height: calc(100vh - var(--header-height));
+  transition: margin-left var(--transition-base);
+}
+
+/* Mobile: no sidebar margin */
+@media (max-width: 768px) {
+  .app__content {
+    margin-left: 0;
+  }
+}
