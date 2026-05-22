@@ -1,6 +1,6 @@
 .metro-line {
   padding: var(--space-8);
-  max-width: 900px;
+  max-width: var(--content-max-width, 1400px);
   animation: fadeIn 300ms ease-out;
 }
 
@@ -119,29 +119,28 @@
   padding-left: 0;
 }
 
-.metro-line__track-svg {
+/* Metro Line Graph Overlay */
+.metro-line__svg-overlay {
   position: absolute;
-  left: 0;
   top: 0;
-  width: 32px;
+  left: 0;
+  width: 100%;
   height: 100%;
-  z-index: 1;
   pointer-events: none;
+  z-index: 1;
+  transition: opacity var(--duration-normal) var(--curve-accelerate);
 }
 
-.metro-line__svg {
-  width: 32px;
-  height: 100%;
-  overflow: visible;
-}
-
-.metro-line__track-line {
-  animation: drawTrack 1.2s ease-out 0.2s forwards;
+.metro-line__dynamic-path {
+  animation: drawTrack 1.5s ease-out forwards;
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
 }
 
 /* Stations */
 .metro-line__stations {
   position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);

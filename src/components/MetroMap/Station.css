@@ -4,6 +4,7 @@
   gap: var(--space-4);
   position: relative;
   animation: fadeInUp 400ms ease-out both;
+  transition: margin-left var(--duration-normal) var(--curve-accelerate);
 }
 
 /* Station Node */
@@ -11,6 +12,7 @@
   position: relative;
   z-index: 2;
   flex-shrink: 0;
+  width: 32px;
   background: none;
   border: none;
   padding: 0;

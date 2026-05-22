@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { certificationPaths, CERT_STATUS } from '../../data/certificationPaths';
+import { certificationPaths, CERT_STATUS, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import ProgressRing from '../common/ProgressRing';
 import Badge from '../common/Badge';
@@ -106,51 +106,71 @@ const Dashboard = () => {
           <Icons.Route size={20} />
           Certification Paths
         </h2>
-        <div className="dashboard__paths-grid">
-          {certificationPaths.map((path, idx) => {
-            const prog = getPathProgress(path.id);
-            const Icon = Icons[path.icon] || Icons.Circle;
-            return (
-              <div
-                key={path.id}
-                className="dashboard__path-card"
-                onClick={() => navigate(`/path/${path.id}`)}
-                style={{
-                  '--card-color': path.color,
-                  '--card-glow': path.glowColor,
-                  animationDelay: `${idx * 60}ms`,
-                }}
-                id={`dashboard-path-${path.id}`}
-              >
-                <div className="dashboard__path-card-top" />
-                <div className="dashboard__path-card-body">
-                  <div className="dashboard__path-card-header">
-                    <div className="dashboard__path-icon">
-                      <Icon size={20} />
+        
+        {Object.values(PILLARS).map((pillarName) => {
+          const pillarPaths = certificationPaths.filter(p => p.pillar === pillarName);
+          if (pillarPaths.length === 0) return null;
+          
+          return (
+            <div key={pillarName} className="dashboard__pillar-group" style={{ marginBottom: 'var(--space-8)' }}>
+              <h3 className="dashboard__pillar-title" style={{ 
+                fontSize: 'var(--fs-subtitle2)', 
+                fontWeight: 'var(--fw-semibold)', 
+                color: 'var(--text-secondary)',
+                marginBottom: 'var(--space-4)',
+                borderBottom: '1px solid var(--border-subtle)',
+                paddingBottom: 'var(--space-2)'
+              }}>
+                {pillarName}
+              </h3>
+              <div className="dashboard__paths-grid">
+                {pillarPaths.map((path, idx) => {
+                  const prog = getPathProgress(path.id);
+                  const Icon = Icons[path.icon] || Icons.Circle;
+                  return (
+                    <div
+                      key={path.id}
+                      className="dashboard__path-card"
+                      onClick={() => navigate(`/path/${path.id}`)}
+                      style={{
+                        '--card-color': path.color,
+                        '--card-glow': path.glowColor,
+                        animationDelay: `${idx * 60}ms`,
+                      }}
+                      id={`dashboard-path-${path.id}`}
+                    >
+                      <div className="dashboard__path-card-top" />
+                      <div className="dashboard__path-card-body">
+                        <div className="dashboard__path-card-header">
+                          <div className="dashboard__path-icon">
+                            <Icon size={20} />
+                          </div>
+                          <ProgressRing percent={prog.percent} size={48} strokeWidth={3} color={path.color} />
+                        </div>
+                        <h3 className="dashboard__path-name">{path.shortName}</h3>
+                        <p className="dashboard__path-desc">{path.description}</p>
+                        <div className="dashboard__path-stats">
+                          <span className="dashboard__path-stat">
+                            <Icons.CheckCircle2 size={12} />
+                            {prog.completed} done
+                          </span>
+                          <span className="dashboard__path-stat">
+                            <Icons.Clock size={12} />
+                            {prog.inProgress} active
+                          </span>
+                          <span className="dashboard__path-stat">
+                            <Icons.Circle size={12} />
+                            {prog.total - prog.completed - prog.inProgress} left
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <ProgressRing percent={prog.percent} size={48} strokeWidth={3} color={path.color} />
-                  </div>
-                  <h3 className="dashboard__path-name">{path.shortName}</h3>
-                  <p className="dashboard__path-desc">{path.description}</p>
-                  <div className="dashboard__path-stats">
-                    <span className="dashboard__path-stat">
-                      <Icons.CheckCircle2 size={12} />
-                      {prog.completed} done
-                    </span>
-                    <span className="dashboard__path-stat">
-                      <Icons.Clock size={12} />
-                      {prog.inProgress} active
-                    </span>
-                    <span className="dashboard__path-stat">
-                      <Icons.Circle size={12} />
-                      {prog.total - prog.completed - prog.inProgress} left
-                    </span>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* In Progress */}

@@ -78,18 +78,30 @@
 .metro-overview__station {
   position: absolute;
   z-index: 2;
-  transform: translate(-50%, -50%); /* Center perfectly on coordinate */
+  /* Use independent translate property to avoid conflict with scale animations */
+  translate: -50% -50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  animation: scaleIn 400ms ease-out both;
-  transition: transform var(--transition-fast);
+  animation: mapStationScaleIn 400ms ease-out both;
+  transition: scale var(--transition-fast);
 }
 
 .metro-overview__station:hover {
-  transform: translate(-50%, -50%) scale(1.1);
+  scale: 1.1;
   z-index: 3;
+}
+
+@keyframes mapStationScaleIn {
+  from {
+    scale: 0.85;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
 }
 
 /* Stagger animations purely visually */

@@ -9,96 +9,146 @@ const mapCoords = {
   // M365 (Orange)
   'ms-900': { x: 150, y: 120 },
   'ms-102': { x: 450, y: 120 },
+  'ms-721': { x: 450, y: 180 },
   'md-102': { x: 750, y: 60 },
   'ms-700': { x: 750, y: 180 },
 
   // Azure (Blue) & DevOps (Amber)
   'az-900': { x: 150, y: 300 },
+  'az-204': { x: 450, y: 240 },
   'az-104': { x: 450, y: 300 },
   'az-700': { x: 750, y: 220 },
   'az-800': { x: 750, y: 300 },
   'az-305': { x: 1050, y: 300 },
-  'az-400': { x: 750, y: 380 }, // DevOps specific
+  'az-400': { x: 750, y: 380 },
+  'az-120': { x: 750, y: 440 },
+  'az-140': { x: 750, y: 500 },
 
   // AI & ML (Violet)
-  'ai-901': { x: 150, y: 500 },
-  'ai-200': { x: 450, y: 460 },
-  'ai-103': { x: 450, y: 540 },
-  'ai-300': { x: 750, y: 460 },
+  'ai-901': { x: 150, y: 600 },
+  'ai-101': { x: 450, y: 540 },
+  'ai-102': { x: 450, y: 600 },
+  'ai-200': { x: 450, y: 660 },
+  'ai-103': { x: 450, y: 720 },
+  'ai-300': { x: 750, y: 660 },
 
   // Data (Emerald)
-  'dp-900': { x: 150, y: 680 },
-  'dp-203': { x: 450, y: 680 },
-  'dp-750': { x: 750, y: 620 },
-  'dp-800': { x: 750, y: 740 },
+  'dp-900': { x: 150, y: 900 },
+  'dp-300': { x: 450, y: 840 },
+  'dp-600': { x: 450, y: 900 },
+  'dp-203': { x: 450, y: 960 },
+  'dp-750': { x: 750, y: 900 },
+  'dp-800': { x: 750, y: 960 },
+  'dp-420': { x: 750, y: 1020 },
 
   // Security (Crimson)
-  'sc-900': { x: 150, y: 860 },
-  'sc-500': { x: 450, y: 860 },
-  'sc-730': { x: 450, y: 940 },
-  'sc-100': { x: 750, y: 860 },
+  'sc-900': { x: 150, y: 1200 },
+  'az-500': { x: 450, y: 1140 },
+  'sc-200': { x: 450, y: 1200 },
+  'sc-300': { x: 450, y: 1260 },
+  'sc-401': { x: 450, y: 1320 },
+  'sc-500': { x: 450, y: 1380 },
+  'sc-730': { x: 450, y: 1440 },
+  'sc-100': { x: 750, y: 1380 },
+  'sc-710': { x: 750, y: 1200 },
 
   // Power Platform (Purple)
-  'pl-900': { x: 150, y: 1060 },
-  'pl-200': { x: 450, y: 1020 },
-  'pl-300': { x: 450, y: 1100 },
-  'pl-600': { x: 750, y: 1020 },
+  'pl-900': { x: 150, y: 1620 },
+  'pl-400': { x: 450, y: 1560 },
+  'pl-500': { x: 450, y: 1620 },
+  'pl-200': { x: 450, y: 1680 },
+  'pl-300': { x: 450, y: 1740 },
+  'pl-600': { x: 750, y: 1680 },
 
   // Dynamics (Teal)
-  'ab-900': { x: 150, y: 1260 },
-  'ab-210': { x: 450, y: 1200 },
-  'ab-250': { x: 450, y: 1320 },
-  'ab-410': { x: 450, y: 1260 },
-  'ab-100': { x: 750, y: 1260 },
+  'ab-900': { x: 150, y: 2160 },
+  'mb-800': { x: 450, y: 1800 },
+  'mb-820': { x: 750, y: 1800 },
+  'mb-210': { x: 450, y: 1860 },
+  'mb-230': { x: 450, y: 1920 },
+  'mb-240': { x: 450, y: 1980 },
+  'mb-260': { x: 450, y: 2040 },
+  'ab-210': { x: 450, y: 2100 },
+  'ab-700': { x: 450, y: 2160 },
+  'mb-300': { x: 450, y: 2220 },
+  'mb-500': { x: 750, y: 2160 },
+  'mb-310': { x: 750, y: 2220 },
+  'mb-700': { x: 1050, y: 2220 },
+  'mb-330': { x: 750, y: 2280 },
+  'mb-335': { x: 1050, y: 2280 },
+  'ab-410': { x: 450, y: 2340 },
+  'ab-701': { x: 450, y: 2400 },
+  'ab-250': { x: 450, y: 2460 },
+  'ab-100': { x: 750, y: 2340 },
+
+  // GitHub (Dark)
+  'gh-foundations': { x: 150, y: 2700 },
+  'gh-actions': { x: 450, y: 2580 },
+  'gh-security': { x: 450, y: 2640 },
+  'gh-admin': { x: 450, y: 2700 },
+  'gh-copilot': { x: 450, y: 2760 },
+  'gh-600': { x: 450, y: 2820 },
 };
 
 const mapLines = [
   {
     id: 'microsoft-365',
     color: 'var(--line-m365)',
-    segments: [['ms-900', 'ms-102'], ['ms-102', 'md-102'], ['ms-102', 'ms-700']],
+    segments: [['ms-900', 'ms-102'], ['ms-900', 'ms-721'], ['ms-102', 'md-102'], ['ms-102', 'ms-700']],
     offsetY: 0,
   },
   {
     id: 'azure-infrastructure',
     color: 'var(--line-azure)',
-    segments: [['az-900', 'az-104'], ['az-104', 'az-700'], ['az-104', 'az-800'], ['az-104', 'az-305']],
+    segments: [['az-900', 'az-204'], ['az-900', 'az-104'], ['az-104', 'az-700'], ['az-104', 'az-800'], ['az-104', 'az-305'], ['az-104', 'az-120'], ['az-104', 'az-140']],
     offsetY: 0,
   },
   {
     id: 'devops',
     color: 'var(--line-devops)',
     segments: [['az-900', 'az-104'], ['az-104', 'az-400']],
-    offsetY: 8, // shift this line down so it runs parallel to Azure
+    offsetY: 8,
   },
   {
     id: 'ai-machine-learning',
     color: 'var(--line-ai)',
-    segments: [['ai-901', 'ai-200'], ['ai-901', 'ai-103'], ['ai-200', 'ai-300']],
+    segments: [['ai-901', 'ai-101'], ['ai-901', 'ai-102'], ['ai-901', 'ai-200'], ['ai-901', 'ai-103'], ['ai-200', 'ai-300']],
     offsetY: 0,
   },
   {
     id: 'data-engineering',
     color: 'var(--line-data)',
-    segments: [['dp-900', 'dp-203'], ['dp-203', 'dp-750'], ['dp-203', 'dp-800']],
+    segments: [['dp-900', 'dp-300'], ['dp-900', 'dp-600'], ['dp-900', 'dp-203'], ['dp-203', 'dp-750'], ['dp-203', 'dp-800'], ['dp-203', 'dp-420']],
     offsetY: 0,
   },
   {
     id: 'security',
     color: 'var(--line-security)',
-    segments: [['sc-900', 'sc-500'], ['sc-900', 'sc-730'], ['sc-500', 'sc-100']],
+    segments: [['sc-900', 'az-500'], ['sc-900', 'sc-200'], ['sc-900', 'sc-300'], ['sc-900', 'sc-401'], ['sc-900', 'sc-500'], ['sc-900', 'sc-730'], ['sc-900', 'sc-710'], ['sc-500', 'sc-100'], ['az-500', 'sc-100']],
     offsetY: 0,
   },
   {
     id: 'power-platform',
     color: 'var(--line-power)',
-    segments: [['pl-900', 'pl-200'], ['pl-900', 'pl-300'], ['pl-200', 'pl-600']],
+    segments: [['pl-900', 'pl-400'], ['pl-900', 'pl-500'], ['pl-900', 'pl-200'], ['pl-900', 'pl-300'], ['pl-200', 'pl-600']],
+    offsetY: 0,
+  },
+  {
+    id: 'agentic-ai',
+    color: 'var(--line-dynamics)',
+    segments: [['ab-900', 'ab-210'], ['ab-900', 'ab-700'], ['ab-900', 'ab-410'], ['ab-900', 'ab-701'], ['ab-900', 'ab-250'], ['ab-410', 'ab-100']],
     offsetY: 0,
   },
   {
     id: 'dynamics-365',
     color: 'var(--line-dynamics)',
-    segments: [['ab-900', 'ab-210'], ['ab-900', 'ab-250'], ['ab-900', 'ab-410'], ['ab-410', 'ab-100']],
+    segments: [['mb-800', 'mb-820'], ['mb-300', 'mb-500'], ['mb-300', 'mb-310'], ['mb-310', 'mb-700'], ['mb-300', 'mb-330'], ['mb-330', 'mb-335']],
+    offsetY: 0,
+  },
+  {
+    id: 'github',
+    color: 'var(--line-github)',
+    segments: [['gh-foundations', 'gh-actions'], ['gh-foundations', 'gh-security'], ['gh-foundations', 'gh-admin'], ['gh-foundations', 'gh-copilot'], ['gh-foundations', 'gh-600']],
     offsetY: 0,
   },
 ];
@@ -155,7 +205,7 @@ const MetroOverview = () => {
       <div className="metro-overview__canvas-wrapper">
         <div className="metro-overview__canvas">
           {/* SVG Tracks */}
-          <svg className="metro-overview__svg-layer" width="1200" height="1400">
+          <svg className="metro-overview__svg-layer" width="1200" height="3100">
             <defs>
               <filter id="track-glow" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur stdDeviation="4" result="blur" />

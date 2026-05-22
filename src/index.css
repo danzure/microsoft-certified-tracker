@@ -114,6 +114,7 @@
   --line-power: #b146c2;
   --line-dynamics: #0e8f83;
   --line-devops: #c19c00;
+  --line-github: #24292F;
 
   /* Metro Line Glow */
   --glow-azure: rgba(15, 108, 189, 0.12);
@@ -291,6 +292,7 @@
   --line-power: #d946ef;
   --line-dynamics: #2dd4bf;
   --line-devops: #fbbf24;
+  --line-github: #ffffff;
 
   /* Glow */
   --glow-azure: rgba(71, 158, 245, 0.15);

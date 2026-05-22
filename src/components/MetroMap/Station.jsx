@@ -1,11 +1,11 @@
-import { CERT_STATUS } from '../../data/certificationPaths';
+import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import { isRetiring, formatDate } from '../../utils/helpers';
 import Badge from '../common/Badge';
-import { AlertTriangle, Check, ExternalLink, ArrowRightLeft } from 'lucide-react';
+import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link } from 'lucide-react';
 import './Station.css';
 
-const Station = ({ cert, pathColor, onSelect, index }) => {
+const Station = ({ cert, pathColor, onSelect, index, trackIndex }) => {
   const { getStatus, cycleStatus } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
@@ -40,12 +40,14 @@ const Station = ({ cert, pathColor, onSelect, index }) => {
       style={{
         '--station-color': pathColor,
         '--station-index': index,
+        marginLeft: `${(trackIndex || 0) * 160}px`,
         animationDelay: `${index * 100 + 200}ms`,
       }}
       id={`station-${cert.id}`}
     >
       {/* Station Node (Circle) */}
       <button
+        id={`station-node-${cert.id}`}
         className="station__node"
         onClick={handleClick}
         onContextMenu={handleDetail}
@@ -68,6 +70,21 @@ const Station = ({ cert, pathColor, onSelect, index }) => {
           <span className="station__exam-code">{cert.examCode}</span>
           <div className="station__badges">
             <Badge variant={levelVariant} small>{cert.level}</Badge>
+            
+            {/* Prerequisite Tags for Expert Certifications */}
+            {cert.level === CERT_LEVELS.EXPERT && cert.prerequisites?.length > 0 && (
+              cert.prerequisites.map((prereqId) => {
+                const prereqCert = getCertById(prereqId)?.cert;
+                if (!prereqCert) return null;
+                return (
+                  <Badge key={`prereq-${prereqId}`} variant="expert" small>
+                    <Link size={9} />
+                    Requires {prereqCert.examCode}
+                  </Badge>
+                );
+              })
+            )}
+
             {retiring && (
               <Badge variant="retiring" small>
                 <AlertTriangle size={9} />
