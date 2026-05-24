@@ -40,7 +40,6 @@ const Station = ({ cert, pathColor, onSelect, index, trackIndex }) => {
       style={{
         '--station-color': pathColor,
         '--station-index': index,
-        marginLeft: `${(trackIndex || 0) * 160}px`,
         animationDelay: `${index * 100 + 200}ms`,
       }}
       id={`station-${cert.id}`}
@@ -70,6 +69,10 @@ const Station = ({ cert, pathColor, onSelect, index, trackIndex }) => {
           <span className="station__exam-code">{cert.examCode}</span>
           <div className="station__badges">
             <Badge variant={levelVariant} small>{cert.level}</Badge>
+            
+            {cert.level === CERT_LEVELS.FUNDAMENTALS && (
+              <Badge variant="default" small>Optional</Badge>
+            )}
             
             {/* Prerequisite Tags for Expert Certifications */}
             {cert.level === CERT_LEVELS.EXPERT && cert.prerequisites?.length > 0 && (

@@ -1,39 +1,24 @@
 .metro-line {
-  padding: var(--space-8);
-  max-width: var(--content-max-width, 1400px);
-  animation: fadeIn 300ms ease-out;
-}
-
-.metro-line__not-found {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  padding: var(--space-20);
-  color: var(--text-tertiary);
-  text-align: center;
+  gap: var(--space-6);
+  animation: fadeIn 400ms ease-out;
+  padding-bottom: var(--space-8);
+  height: 100%;
 }
 
-.metro-line__not-found h2 {
-  font-size: var(--fs-title3);
-  color: var(--text-primary);
-}
-
-/* Header */
 .metro-line__header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-6);
-  margin-bottom: var(--space-8);
-  padding: var(--space-5);
+  align-items: center;
   background: var(--bg-surface-1);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  animation: fadeInUp 400ms ease-out;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .metro-line__header::before {
@@ -41,127 +26,129 @@
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  height: 3px;
+  width: 4px;
+  height: 100%;
   background: var(--path-color);
+  box-shadow: 0 0 12px var(--path-glow);
 }
 
 .metro-line__header-left {
   display: flex;
+  align-items: center;
   gap: var(--space-4);
-  align-items: flex-start;
-  flex: 1;
 }
 
 .metro-line__icon-wrapper {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--path-color) 15%, transparent);
+  color: var(--path-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--path-glow);
-  color: var(--path-color);
-  flex-shrink: 0;
 }
 
 .metro-line__title {
-  font-size: var(--fs-title3);
+  font-size: var(--fs-title2);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
-  line-height: var(--lh-tight);
-  letter-spacing: var(--letter-spacing-tight);
   margin-bottom: var(--space-1);
 }
 
 .metro-line__description {
   font-size: var(--fs-body1);
   color: var(--text-secondary);
-  line-height: var(--lh-relaxed);
+  max-width: 600px;
 }
 
 .metro-line__header-right {
   display: flex;
   align-items: center;
   gap: var(--space-6);
-  flex-shrink: 0;
 }
 
 .metro-line__stats {
   display: flex;
-  gap: var(--space-5);
+  gap: var(--space-4);
+  text-align: right;
 }
 
 .metro-line__stat {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2px;
 }
 
 .metro-line__stat-value {
-  font-size: var(--fs-subtitle1);
+  font-size: var(--fs-title3);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
-  font-family: var(--font-mono);
+  line-height: 1;
 }
 
 .metro-line__stat-label {
-  font-size: var(--fs-caption2);
+  font-size: var(--fs-caption1);
   color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-wide);
+  margin-top: 2px;
 }
 
-/* Track */
-.metro-line__track-container {
+
+/* ─── Tree Layout (CSS Only) ─── */
+.metro-line__tree-container {
   position: relative;
-  padding-left: 0;
+  flex: 1;
+  background: var(--bg-surface-1);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  min-height: 400px;
 }
 
-/* Metro Line Graph Overlay */
-.metro-line__svg-overlay {
+/* The thick vertical main rail */
+.metro-line__main-rail {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+  top: 0; /* Let it start from the top of the container padding */
+  bottom: 0;
+  left: calc(var(--space-6) + 14px); /* Aligns with center of 28px node */
+  width: 4px;
+  background: var(--path-color);
+  opacity: 0.15;
+  border-radius: 2px;
+  transform: translateX(-50%);
   z-index: 1;
-  transition: opacity var(--duration-normal) var(--curve-accelerate);
 }
 
-.metro-line__dynamic-path {
-  animation: drawTrack 1.5s ease-out forwards;
-  stroke-dasharray: 2000;
-  stroke-dashoffset: 2000;
-}
-
-/* Stations */
-.metro-line__stations {
-  position: relative;
+/* The solid active rail overlay */
+.metro-line__main-rail--active {
+  bottom: auto; /* Height is set via JS */
+  opacity: 1;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--path-color) 50%, transparent);
+  transition: height 0.6s var(--curve-decelerate);
   z-index: 2;
+}
+
+.metro-line__stations {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-8);
+  position: relative;
+  z-index: 3; /* Above the rails */
 }
 
+/* Level Grouping */
 .metro-line__level-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
 .metro-line__level-marker {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-2) 0;
-  padding-left: 40px;
-}
-
-.metro-line__level-badge {
-  flex-shrink: 0;
+  margin-left: 42px; /* Indent past the rail */
+  position: relative;
+  z-index: 4; /* Keep badges above lines */
 }
 
 .metro-line__level-line {
@@ -170,31 +157,60 @@
   background: var(--border-subtle);
 }
 
-.metro-line__level-stations {
+.metro-line__level-nodes {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding-left: 0;
-  padding-bottom: var(--space-5);
+  gap: var(--space-3);
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .metro-line {
-    padding: var(--space-4);
-  }
+/* Node Wrapper */
+.metro-line__node-wrapper {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
 
+.metro-line__node-wrapper--branch {
+  margin-left: 42px; /* Indent branches (28px spacing from the 14px rail) */
+}
+
+/* 
+  Branch Connector
+  A simple horizontal line from the main rail to the branch node.
+  Rail is at left: 14px (relative to wrapper origin). 
+  Branch wrapper has margin-left: 42px.
+  So distance from rail to branch node's left edge is 42px - 14px = 28px.
+*/
+.metro-line__branch-connector {
+  position: absolute;
+  left: -28px;
+  top: 12px; /* Center of the 28px node minus half the border width (14px - 2px) */
+  width: 28px;
+  height: 0;
+  border-bottom: 4px solid var(--path-color);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.4s, filter 0.4s;
+}
+
+/* Active solid state when certification is complete */
+.metro-line__branch-connector--active {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--path-color) 40%, transparent));
+}
+
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
   .metro-line__header {
     flex-direction: column;
-    padding: var(--space-4);
+    align-items: flex-start;
+    gap: var(--space-4);
   }
-
+  
   .metro-line__header-right {
     width: 100%;
     justify-content: space-between;
-  }
-
-  .metro-line__title {
-    font-size: var(--fs-subtitle1);
   }
 }

@@ -1,5 +1,5 @@
 .metro-overview {
-  padding: var(--space-4) var(--space-8);
+  padding: var(--space-4) var(--space-6);
   height: calc(100vh - var(--header-height));
   display: flex;
   flex-direction: column;
@@ -27,34 +27,84 @@
   color: var(--text-secondary);
 }
 
-/* Canvas Wrapper (Scrollable area) */
-.metro-overview__canvas-wrapper {
+/* ─── Lanes wrapper (scrollable) ─── */
+.metro-overview__lanes-wrapper {
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-8);
+}
+
+/* ─── Individual lane ─── */
+.metro-overview__lane {
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  overflow: auto;
-  position: relative;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
-  cursor: grab;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  animation: fadeInUp 400ms ease-out both;
+  transition: box-shadow var(--transition-fast);
 }
 
-.metro-overview__canvas-wrapper:active {
-  cursor: grabbing;
+.metro-overview__lane:hover {
+  box-shadow: var(--shadow-sm);
 }
 
-/* Internal Canvas */
-.metro-overview__canvas {
+/* Stagger lane entry animation */
+.metro-overview__lane:nth-child(1) { animation-delay: 0ms; }
+.metro-overview__lane:nth-child(2) { animation-delay: 50ms; }
+.metro-overview__lane:nth-child(3) { animation-delay: 100ms; }
+.metro-overview__lane:nth-child(4) { animation-delay: 150ms; }
+.metro-overview__lane:nth-child(5) { animation-delay: 200ms; }
+.metro-overview__lane:nth-child(6) { animation-delay: 250ms; }
+.metro-overview__lane:nth-child(7) { animation-delay: 300ms; }
+.metro-overview__lane:nth-child(8) { animation-delay: 350ms; }
+.metro-overview__lane:nth-child(9) { animation-delay: 400ms; }
+
+/* Lane header */
+.metro-overview__lane-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface-2);
+}
+
+.metro-overview__lane-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lane-color);
+  color: white;
+  flex-shrink: 0;
+}
+
+.metro-overview__lane-name {
+  font-size: var(--fs-caption1, 12px);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.05em);
+}
+
+.metro-overview__lane-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+/* Lane canvas */
+.metro-overview__lane-canvas {
   position: relative;
-  width: 1200px;
-  height: 1400px;
-  /* Optional: Background grid pattern for a map feel */
-  background-size: 50px 50px;
-  background-image: 
-    linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
-  background-position: center center;
-  margin: 0 auto;
+  min-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 /* SVG Tracks */
@@ -69,66 +119,71 @@
 }
 
 .metro-overview__track-line {
-  animation: drawTrack 1.5s ease-out 0.2s forwards;
-  stroke-dasharray: 2000;
-  stroke-dashoffset: 2000;
+  animation: drawTrack 1.2s ease-out 0.3s forwards;
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
 }
 
-/* Station Nodes */
+/* ─── Station nodes ─── */
 .metro-overview__station {
   position: absolute;
   z-index: 2;
-  /* Use independent translate property to avoid conflict with scale animations */
-  translate: -50% -50%;
+  transform: translate(-10px, -10px);
   display: flex;
-  flex-direction: column;
   align-items: center;
   cursor: pointer;
-  animation: mapStationScaleIn 400ms ease-out both;
-  transition: scale var(--transition-fast);
+  animation: mapStationScaleIn 350ms ease-out both;
+  transition: transform var(--transition-fast);
 }
 
 .metro-overview__station:hover {
-  scale: 1.1;
+  transform: translate(-10px, -10px) scale(1.1);
   z-index: 3;
 }
 
 @keyframes mapStationScaleIn {
   from {
-    scale: 0.85;
+    transform: translate(-10px, -10px) scale(0.8);
     opacity: 0;
   }
   to {
-    scale: 1;
+    transform: translate(-10px, -10px) scale(1);
     opacity: 1;
   }
 }
 
-/* Stagger animations purely visually */
-.metro-overview__station:nth-child(even) { animation-delay: 100ms; }
-.metro-overview__station:nth-child(3n) { animation-delay: 200ms; }
+.metro-overview__station:nth-child(even) { animation-delay: 80ms; }
+.metro-overview__station:nth-child(3n) { animation-delay: 150ms; }
 
-/* Station Node Rendering (matches Station.css roughly) */
+/* Node rendering */
 .metro-overview__node-outer {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--station-color);
+  border: 2.5px solid var(--station-color);
   background: var(--bg-surface-1);
   position: relative;
   transition: box-shadow var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.metro-overview__station--trunk .metro-overview__node-outer {
+  width: 20px;
+  height: 20px;
+  border-width: 3px;
 }
 
 .metro-overview__station:hover .metro-overview__node-outer {
-  box-shadow: var(--shadow-md), 0 0 12px var(--station-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--station-color) 20%, transparent),
+              0 0 8px var(--station-color);
 }
 
 .metro-overview__node-inner {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
@@ -137,13 +192,13 @@
   transition: background var(--transition-fast);
 }
 
-/* Station States */
+/* States */
 .metro-overview__station--not_started .metro-overview__node-inner {
   background: transparent;
 }
 .metro-overview__station--not_started .metro-overview__node-outer {
   border-style: dashed;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 .metro-overview__station--not_started:hover .metro-overview__node-outer {
   opacity: 1;
@@ -162,7 +217,7 @@
   right: 0;
   height: 50%;
   background: var(--station-color);
-  border-radius: 0 0 6px 6px;
+  border-radius: 0 0 5px 5px;
 }
 .metro-overview__station--in_progress .metro-overview__node-outer {
   border-color: var(--status-in-progress);
@@ -176,68 +231,68 @@
   border-color: var(--station-color);
 }
 
-/* Interchange styling */
+/* Interchange */
 .metro-overview__station--interchange .metro-overview__node-outer {
-  border-radius: var(--radius-md);
-  width: 28px;
-  height: 28px;
+  border-radius: var(--radius-sm);
   background: var(--bg-surface-2);
 }
 .metro-overview__station--interchange .metro-overview__node-inner {
-  border-radius: var(--radius-sm);
+  border-radius: 2px;
 }
 
-/* Pulse for in-progress */
+/* Pulse */
 .metro-overview__pulse {
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+  translate: -50% -50%;
   border-radius: var(--radius-full);
   border: 2px solid var(--status-in-progress);
   animation: stationPulse 2s ease-in-out infinite;
   pointer-events: none;
 }
-.metro-overview__station--interchange .metro-overview__pulse {
-  border-radius: var(--radius-md);
-  width: 28px;
-  height: 28px;
-}
 
-/* Label text */
+/* ─── Labels ─── */
 .metro-overview__label {
-  position: absolute;
-  top: calc(100% + var(--space-1));
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 140px;
+  margin-left: 6px;
+  white-space: nowrap;
   pointer-events: none;
 }
 
 .metro-overview__label-code {
   font-family: var(--font-mono);
-  font-size: var(--fs-caption2);
+  font-size: 10px;
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
-  background: var(--bg-glass);
-  padding: 0 4px;
-  border-radius: 2px;
+  color: var(--station-color);
+  line-height: 1.2;
 }
 
 .metro-overview__label-name {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-secondary);
-  line-height: var(--lh-tight);
-  text-shadow: 0 1px 2px var(--bg-surface-1), 0 -1px 2px var(--bg-surface-1);
+  line-height: 1.2;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Mobile adjustments */
+/* Branch labels are slightly dimmer */
+.metro-overview__station--branch .metro-overview__label-code {
+  opacity: 0.85;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .metro-overview {
     padding: var(--space-3);
+  }
+
+  .metro-overview__lane-canvas {
+    overflow-x: scroll;
   }
 }

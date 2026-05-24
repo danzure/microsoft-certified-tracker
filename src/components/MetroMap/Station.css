@@ -1,10 +1,9 @@
 .station {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-4);
+  gap: var(--space-3);
   position: relative;
   animation: fadeInUp 400ms ease-out both;
-  transition: margin-left var(--duration-normal) var(--curve-accelerate);
 }
 
 /* Station Node */
@@ -12,7 +11,7 @@
   position: relative;
   z-index: 2;
   flex-shrink: 0;
-  width: 32px;
+  width: 28px;
   background: none;
   border: none;
   padding: 0;
@@ -23,8 +22,8 @@
 }
 
 .station__node-outer {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
@@ -42,8 +41,8 @@
 }
 
 .station__node-inner {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
@@ -81,7 +80,7 @@
   right: 0;
   height: 50%;
   background: var(--station-color);
-  border-radius: 0 0 9px 9px;
+  border-radius: 0 0 8px 8px;
 }
 
 .station--in-progress .station__node-outer {
@@ -91,8 +90,8 @@
 /* Pulse */
 .station__pulse {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-full);
   border: 2px solid var(--status-in-progress);
   animation: stationPulse 2s ease-in-out infinite;
@@ -119,10 +118,10 @@
   color: var(--text-tertiary);
 }
 
-/* Station Info Card */
+/* Station Info Card — compact */
 .station__info {
   flex: 1;
-  padding: var(--space-4);
+  padding: var(--space-2) var(--space-3);
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -145,7 +144,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-2);
+  margin-bottom: 2px;
   flex-wrap: wrap;
 }
 
@@ -163,19 +162,19 @@
 }
 
 .station__name {
-  font-size: var(--fs-body1);
+  font-size: var(--fs-body2, 13px);
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 0;
   line-height: var(--lh-tight);
 }
 
 .station__description {
-  font-size: var(--fs-caption1);
+  font-size: var(--fs-caption2, 11px);
   color: var(--text-secondary);
   line-height: var(--lh-relaxed);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -183,7 +182,7 @@
 .station__actions {
   display: flex;
   gap: var(--space-3);
-  margin-top: var(--space-3);
+  margin-top: var(--space-1);
 }
 
 .station__learn-link {
@@ -204,25 +203,25 @@
 /* Mobile */
 @media (max-width: 768px) {
   .station {
-    gap: var(--space-3);
+    gap: var(--space-2);
   }
 
   .station__node-outer {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
   .station__node-inner {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
   }
 
   .station__pulse {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
   .station__info {
-    padding: var(--space-3);
+    padding: var(--space-2);
   }
 }
