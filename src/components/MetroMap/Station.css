@@ -66,6 +66,16 @@
   opacity: 0.8;
 }
 
+/* Unlocked — prereq completed, cert available to start */
+.station--unlocked.station--not-started .station__node-outer {
+  border-style: solid;
+  opacity: 0.75;
+}
+
+.station--unlocked.station--not-started:hover .station__node-outer {
+  opacity: 1;
+}
+
 /* In Progress */
 .station--in-progress .station__node-inner {
   background: transparent;

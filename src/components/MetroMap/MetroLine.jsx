@@ -29,11 +29,26 @@ const MetroLine = () => {
     const getChain = (certId) => {
       const chain = [certId];
       let current = certsMap.get(certId);
-      while (current && current.prerequisites && current.prerequisites.length > 0) {
-        const validPrereq = current.prerequisites.find(id => certsMap.has(id));
-        if (validPrereq) {
-          chain.push(validPrereq);
-          current = certsMap.get(validPrereq);
+      
+      while (current) {
+        // Find a valid next step (mandatory or recommended)
+        let nextId = null;
+        
+        // Check mandatory prereqs first
+        if (current.prerequisites && current.prerequisites.length > 0) {
+          // Handle SC-100 array of arrays
+          const flatPrereqs = current.prerequisites.flat();
+          nextId = flatPrereqs.find(id => certsMap.has(id));
+        }
+        
+        // Fallback to recommended prereqs
+        if (!nextId && current.recommendedPrereqs && current.recommendedPrereqs.length > 0) {
+          nextId = current.recommendedPrereqs.find(id => certsMap.has(id));
+        }
+
+        if (nextId) {
+          chain.push(nextId);
+          current = certsMap.get(nextId);
         } else {
           break;
         }
@@ -52,7 +67,38 @@ const MetroLine = () => {
     return set;
   }, [path]);
 
-  // Measure segments to draw the solid progress rail between completed certs
+  // Compute prerequisite depth for each cert (how many hops from a root)
+  const depthMap = useMemo(() => {
+    if (!path) return new Map();
+    const certsMap = new Map(path.certifications.map(c => [c.id, c]));
+    const depths = new Map();
+
+    const getDepth = (certId, visited = new Set()) => {
+      if (depths.has(certId)) return depths.get(certId);
+      if (visited.has(certId)) return 0;
+      visited.add(certId);
+
+      const cert = certsMap.get(certId);
+      if (!cert || !cert.prerequisites || cert.prerequisites.length === 0) {
+        depths.set(certId, 0);
+        return 0;
+      }
+
+      const prereqDepths = cert.prerequisites
+        .filter(id => certsMap.has(id))
+        .map(id => getDepth(id, new Set(visited)));
+
+      const depth = (prereqDepths.length > 0 ? Math.max(...prereqDepths) : 0) + 1;
+      depths.set(certId, depth);
+      return depth;
+    };
+
+    path.certifications.forEach(cert => getDepth(cert.id));
+    return depths;
+  }, [path]);
+
+  // Measure segments to draw the progress rail between connected certs
+  // Each segment is classified as 'active' (cert in progress/completed) or 'unlocked' (prereq done, cert not started)
   useEffect(() => {
     if (!path || !containerRef.current) return;
 
@@ -61,17 +107,43 @@ const MetroLine = () => {
       const segments = [];
 
       path.certifications.forEach(cert => {
-        // Only draw a segment if this cert is completed
-        if (getStatus(cert.id) !== CERT_STATUS.COMPLETED) return;
+        const mandatory = cert.prerequisites ? cert.prerequisites.flat() : [];
+        const recommended = cert.recommendedPrereqs || [];
+        const allPrereqs = [...mandatory, ...recommended];
+        
+        if (allPrereqs.length === 0) return;
 
-        const prereqs = cert.prerequisites || [];
-        if (prereqs.length === 0) return;
+        const certStatus = getStatus(cert.id);
+        const isCertActive = certStatus === CERT_STATUS.COMPLETED || certStatus === CERT_STATUS.IN_PROGRESS;
+        
+        // Find the completed prerequisite that we will visually connect to
+        let targetPrereqId = allPrereqs.find(id => getStatus(id) === CERT_STATUS.COMPLETED);
+        
+        // If no completed prereq, connect to the first one available
+        if (!targetPrereqId) targetPrereqId = allPrereqs[0];
 
-        // Connect to the FIRST completed prereq. If none, connect to the first prereq.
-        let targetPrereq = prereqs.find(id => getStatus(id) === CERT_STATUS.COMPLETED);
-        if (!targetPrereq) targetPrereq = prereqs[0];
+        const isMandatory = mandatory.includes(targetPrereqId);
+        const hasCompletedTarget = getStatus(targetPrereqId) === CERT_STATUS.COMPLETED;
 
-        const prereqEl = document.getElementById(`station-${targetPrereq}`);
+        // Determine segment state
+        let segmentState = 'recommended'; // Default for recommended connection
+        if (isMandatory) {
+          if (isCertActive) {
+            segmentState = 'active';
+          } else if (hasCompletedTarget) {
+            segmentState = 'unlocked';
+          } else {
+             // Not unlocked and not active means we shouldn't draw a rail yet, unless we want to show the full map
+             // Let's hide unachieved mandatory lines if they aren't unlocked
+             return;
+          }
+        } else {
+            // For recommended lines, we just draw them dotted (recommended).
+            // But if the certification itself is active, we make it "active-recommended"
+            segmentState = isCertActive ? 'active-recommended' : 'recommended';
+        }
+
+        const prereqEl = document.getElementById(`station-${targetPrereqId}`);
         const certEl = document.getElementById(`station-${cert.id}`);
 
         if (prereqEl && certEl) {
@@ -83,15 +155,16 @@ const MetroLine = () => {
           const y2 = (certRect.top - containerRect.top) + 14;
 
           // If the prerequisite is a Fundamentals certification (the root), start the line from the very top
-          const prereqCert = path.certifications.find(c => c.id === targetPrereq);
+          const prereqCert = path.certifications.find(c => c.id === targetPrereqId);
           if (prereqCert && prereqCert.level === CERT_LEVELS.FUNDAMENTALS) {
             y1 = 0;
           }
 
           segments.push({
-            id: `${targetPrereq}-${cert.id}`,
+            id: `${targetPrereqId}-${cert.id}`,
             top: Math.min(y1, y2),
-            height: Math.abs(y2 - y1)
+            height: Math.abs(y2 - y1),
+            state: segmentState,
           });
         }
       });
@@ -177,11 +250,11 @@ const MetroLine = () => {
         {/* The dim background rail */}
         <div className="metro-line__main-rail" />
         
-        {/* The solid active rail segments */}
+        {/* Progress rail segments (unlocked = dashed, active = solid) */}
         {activeSegments.map(seg => (
           <div 
             key={seg.id}
-            className="metro-line__main-rail metro-line__main-rail--active" 
+            className={`metro-line__main-rail metro-line__main-rail--${seg.state}`} 
             style={{ top: seg.top, height: seg.height }} 
           />
         ))}
@@ -200,7 +273,30 @@ const MetroLine = () => {
               <div className="metro-line__level-nodes">
                 {group.certs.map((cert, idx) => {
                   const isTrunk = trunkSet.has(cert.id);
-                  const isCompleted = getStatus(cert.id) === CERT_STATUS.COMPLETED;
+                  const certStatus = getStatus(cert.id);
+                  const isCompleted = certStatus === CERT_STATUS.COMPLETED;
+                  const isInProgress = certStatus === CERT_STATUS.IN_PROGRESS;
+                  const flatPrereqs = cert.prerequisites ? cert.prerequisites.flat() : [];
+                  const recommendedPrereqs = cert.recommendedPrereqs || [];
+                  const isPrereqCompleted = flatPrereqs.some(id => getStatus(id) === CERT_STATUS.COMPLETED);
+                  
+                  // Three states for the branch connector
+                  let connectorState = '';
+                  if (isCompleted || isInProgress) {
+                    if (flatPrereqs.length > 0) {
+                      connectorState = 'metro-line__branch-connector--active';
+                    } else if (recommendedPrereqs.length > 0) {
+                      connectorState = 'metro-line__branch-connector--active-recommended';
+                    }
+                  } else if (isPrereqCompleted) {
+                    connectorState = 'metro-line__branch-connector--unlocked';
+                  } else if (recommendedPrereqs.length > 0) {
+                    connectorState = 'metro-line__branch-connector--recommended';
+                  }
+
+                  // Station is "unlocked" when its prereq is done but the cert itself hasn't been started
+                  // If it has no mandatory prereqs, it's always unlocked
+                  const isUnlocked = (flatPrereqs.length === 0 || isPrereqCompleted) && certStatus === CERT_STATUS.NOT_STARTED;
                   
                   return (
                     <div 
@@ -210,7 +306,7 @@ const MetroLine = () => {
                       {/* Connector for branches */}
                       {!isTrunk && (
                         <div 
-                          className={`metro-line__branch-connector ${isCompleted ? 'metro-line__branch-connector--active' : ''}`} 
+                          className={`metro-line__branch-connector ${connectorState}`} 
                         />
                       )}
                       
@@ -220,6 +316,7 @@ const MetroLine = () => {
                         onSelect={setSelectedCert}
                         index={idx}
                         isTrunk={isTrunk}
+                        isUnlocked={isUnlocked}
                       />
                     </div>
                   );

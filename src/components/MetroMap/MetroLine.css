@@ -127,6 +127,52 @@
   z-index: 2;
 }
 
+/* Unlocked rail — prereq done but cert not started */
+.metro-line__main-rail--unlocked {
+  bottom: auto; /* Height is set via JS */
+  opacity: 0.4;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--path-color) 0px,
+    var(--path-color) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  transition: height 0.6s var(--curve-decelerate), opacity 0.4s;
+  z-index: 2;
+}
+
+/* Recommended rail - dotted */
+.metro-line__main-rail--recommended {
+  bottom: auto;
+  opacity: 0.3;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--path-color) 0px,
+    var(--path-color) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  transition: height 0.6s var(--curve-decelerate);
+  z-index: 2;
+}
+
+/* Recommended rail when active (cert in progress/complete) */
+.metro-line__main-rail--active-recommended {
+  bottom: auto;
+  opacity: 0.8;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--path-color) 0px,
+    var(--path-color) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  box-shadow: 0 0 6px color-mix(in srgb, var(--path-color) 30%, transparent);
+  transition: height 0.6s var(--curve-decelerate);
+  z-index: 2;
+}
+
 .metro-line__stations {
   display: flex;
   flex-direction: column;
@@ -149,6 +195,12 @@
   margin-left: 42px; /* Indent past the rail */
   position: relative;
   z-index: 4; /* Keep badges above lines */
+}
+
+.metro-line__level-badge {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
 }
 
 .metro-line__level-line {
@@ -198,6 +250,29 @@
 .metro-line__branch-connector--active {
   opacity: 1;
   filter: drop-shadow(0 0 6px color-mix(in srgb, var(--path-color) 40%, transparent));
+}
+
+/* Unlocked state — prereq done but cert not started */
+.metro-line__branch-connector--unlocked {
+  opacity: 0.4;
+  border-bottom-style: dashed;
+}
+
+/* Recommended connector — dotted */
+.metro-line__branch-connector--recommended {
+  opacity: 0.3;
+  border-bottom-style: dotted;
+  border-bottom-width: 3px;
+  top: 13px; /* Adjust for slightly thinner border */
+}
+
+/* Recommended connector when active */
+.metro-line__branch-connector--active-recommended {
+  opacity: 0.8;
+  border-bottom-style: dotted;
+  border-bottom-width: 3px;
+  top: 13px;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--path-color) 30%, transparent));
 }
 
 
