@@ -74,6 +74,15 @@ const Sidebar = ({ isOpen, onClose }) => {
           })}
         </nav>
         <div className="sidebar__footer">
+          <a
+            href="https://arch-center.azureedge.net/Credentials/Certification-Poster_en-us.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sidebar__poster-link"
+          >
+            <Icons.ExternalLink size={14} />
+            Official Certification Poster
+          </a>
           <div className="sidebar__legend">
             <div className="sidebar__legend-item">
               <span className="sidebar__legend-dot sidebar__legend-dot--completed" />
