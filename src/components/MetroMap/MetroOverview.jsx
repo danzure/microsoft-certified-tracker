@@ -26,6 +26,7 @@ const LANE_PAD_Y = 46; // top padding inside each lane (below header)
 const buildPathLayout = (path) => {
   const certs = path.certifications;
   const certsById = new Map(certs.map(c => [c.id, c]));
+  const branches = path.branches || [];
 
   // Group certs by level
   const tiers = {
@@ -46,86 +47,44 @@ const buildPathLayout = (path) => {
     [CERT_LEVELS.SPECIALTY]: LANE_PAD_X + NODE_W * 2.8,
   };
 
-  // For each tier, identify trunk certs (on the main progression) vs branch certs
-  // Trunk: a cert whose prerequisite is in the tier to its left
-  // Branch: additional certs at the same tier level
-
   // Build the positioned nodes
   const nodes = [];
   const nodePositions = {};
 
-  // Find the "main trunk" cert for each tier - the one most other certs depend on
-  const findTrunkCert = (tierCerts, prevTierCerts) => {
-    if (tierCerts.length === 0) return null;
-    if (tierCerts.length === 1) return tierCerts[0];
-
-    // The trunk cert is the one that has the most dependants (other certs list it as prerequisite)
-    const dependantCount = {};
-    certs.forEach(c => {
-      (c.prerequisites || []).forEach(pid => {
-        dependantCount[pid] = (dependantCount[pid] || 0) + 1;
-      });
-    });
-
-    // Sort: most dependants first, then prefer non-branch certs
-    const sorted = [...tierCerts].sort((a, b) => {
-      const da = dependantCount[a.id] || 0;
-      const db = dependantCount[b.id] || 0;
-      if (db !== da) return db - da;
-      // Prefer certs that have prerequisites from the previous tier
-      const aHasPrev = (a.prerequisites || []).some(pid => prevTierCerts.some(pc => pc.id === pid));
-      const bHasPrev = (b.prerequisites || []).some(pid => prevTierCerts.some(pc => pc.id === pid));
-      if (aHasPrev && !bHasPrev) return -1;
-      if (bHasPrev && !aHasPrev) return 1;
-      return 0;
-    });
-
-    return sorted[0];
-  };
-
-  // Place tiers
+  // Place tiers — trunk certs first (no branch), then grouped by branch order
   const tierOrder = [CERT_LEVELS.FUNDAMENTALS, CERT_LEVELS.ASSOCIATE, CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY];
-  let prevTier = [];
 
   tierOrder.forEach(level => {
     const tierCerts = tiers[level];
     if (!tierCerts || tierCerts.length === 0) return;
 
     const x = tierX[level];
-    const trunkCert = findTrunkCert(tierCerts, prevTier);
 
-    // Place trunk cert on row 0 (the main line)
-    // Place branch certs below
-    let row = 0;
-    tierCerts.forEach(cert => {
-      const isTrunk = cert.id === trunkCert?.id;
+    // Separate trunk certs (no branch) from branch certs
+    const trunkCerts = tierCerts.filter(c => !c.branch);
+    
+    // Order branch certs by branch definition order
+    const orderedBranchCerts = [];
+    branches.forEach(branchDef => {
+      tierCerts
+        .filter(c => c.branch === branchDef.id)
+        .forEach(c => orderedBranchCerts.push(c));
+    });
+    
+    // Fallback: any branch certs whose branch isn't in the definition
+    tierCerts
+      .filter(c => c.branch && !branches.some(b => b.id === c.branch))
+      .forEach(c => orderedBranchCerts.push(c));
+
+    // Place trunk certs first, then branch certs
+    const sortedCerts = [...trunkCerts, ...orderedBranchCerts];
+    
+    sortedCerts.forEach((cert, row) => {
+      const isTrunk = !cert.branch;
       const y = LANE_PAD_Y + row * NODE_H;
       nodes.push({ cert, x, y, isTrunk });
       nodePositions[cert.id] = { x, y };
-      row++;
     });
-
-    // Re-sort so trunk cert is at row 0
-    if (trunkCert) {
-      const trunkIdx = nodes.findIndex(n => n.cert.id === trunkCert.id && n.x === x);
-      const branchNodes = nodes.filter((n, i) => n.x === x && n.cert.level === level && n.cert.id !== trunkCert.id);
-      const trunkNode = nodes.find(n => n.cert.id === trunkCert.id && n.x === x);
-
-      if (trunkNode) {
-        // Reassign y positions: trunk at row 0, others below
-        trunkNode.y = LANE_PAD_Y;
-        trunkNode.isTrunk = true;
-        nodePositions[trunkCert.id] = { x, y: LANE_PAD_Y };
-
-        branchNodes.forEach((bn, i) => {
-          bn.y = LANE_PAD_Y + (i + 1) * NODE_H;
-          bn.isTrunk = false;
-          nodePositions[bn.cert.id] = { x, y: bn.y };
-        });
-      }
-    }
-
-    prevTier = tierCerts;
   });
 
   // Build connections based on actual prerequisites

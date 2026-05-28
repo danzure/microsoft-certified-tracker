@@ -92,121 +92,148 @@
   margin-top: 2px;
 }
 
+/* ─── Map Viewport ─── */
+.metro-line__map-viewport {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+  padding-bottom: var(--space-4);
+}
+.metro-line__map-viewport::-webkit-scrollbar {
+  height: 6px;
+}
+.metro-line__map-viewport::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
 
-/* ─── Tree Layout (CSS Only) ─── */
+/* ─── Tree Container ─── */
 .metro-line__tree-container {
   position: relative;
-  flex: 1;
-  background: var(--bg-surface-1);
+  background: var(--surface-default);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-subtle);
-  padding: var(--space-6) var(--space-6) var(--space-8);
+  padding: var(--space-6);
   min-height: 400px;
-}
-
-/* The thick vertical main rail */
-.metro-line__main-rail {
-  position: absolute;
-  top: 0; /* Let it start from the top of the container padding */
-  bottom: 0;
-  left: calc(var(--space-6) + 14px); /* Aligns with center of 28px node */
-  width: 4px;
-  background: var(--path-color);
-  opacity: 0.15;
-  border-radius: 2px;
-  transform: translateX(-50%);
-  z-index: 1;
-}
-
-/* The solid active rail overlay */
-.metro-line__main-rail--active {
-  bottom: auto; /* Height is set via JS */
-  opacity: 1;
-  box-shadow: 0 0 10px color-mix(in srgb, var(--path-color) 50%, transparent);
-  transition: height 0.6s var(--curve-decelerate);
-  z-index: 2;
-}
-
-/* Unlocked rail — prereq done but cert not started */
-.metro-line__main-rail--unlocked {
-  bottom: auto; /* Height is set via JS */
-  opacity: 0.4;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--path-color) 0px,
-    var(--path-color) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-  transition: height 0.6s var(--curve-decelerate), opacity 0.4s;
-  z-index: 2;
-}
-
-/* Recommended rail - dotted */
-.metro-line__main-rail--recommended {
-  bottom: auto;
-  opacity: 0.3;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--path-color) 0px,
-    var(--path-color) 2px,
-    transparent 2px,
-    transparent 6px
-  );
-  transition: height 0.6s var(--curve-decelerate);
-  z-index: 2;
-}
-
-/* Recommended rail when active (cert in progress/complete) */
-.metro-line__main-rail--active-recommended {
-  bottom: auto;
-  opacity: 0.8;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--path-color) 0px,
-    var(--path-color) 2px,
-    transparent 2px,
-    transparent 6px
-  );
-  box-shadow: 0 0 6px color-mix(in srgb, var(--path-color) 30%, transparent);
-  transition: height 0.6s var(--curve-decelerate);
-  z-index: 2;
-}
-
-.metro-line__stations {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
-  position: relative;
-  z-index: 3; /* Above the rails */
+  min-width: min-content;
 }
 
-/* Level Grouping */
-.metro-line__level-group {
+/* ─── SVG Track Overlay ─── */
+.metro-line__track-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+
+
+/* ─── Trunk Sections (Top & Bottom) ─── */
+.metro-line__trunk-top,
+.metro-line__trunk-bottom {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+
+.metro-line__trunk-bottom {
+  padding-top: var(--space-4);
+}
+
+.metro-line__trunk-stations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.metro-line__trunk-station-wrap {
+  position: relative;
+}
+
+/* ─── Fork & Merge Spacers ─── */
+.metro-line__fork-spacer,
+.metro-line__merge-spacer {
+  height: 56px;
+  position: relative;
+  z-index: 0;
+}
+
+/* ─── Branches Grid ─── */
+.metro-line__branches-scroll {
+  width: 100%;
+  padding-bottom: var(--space-4);
+}
+
+.metro-line__branches-grid {
+  display: grid;
+  gap: var(--space-6);
+  margin-left: 32px; /* Offset branches from trunk so fork/merge curves are visible */
+  /* grid-template-columns injected via JS */
+}
+
+.metro-line__branch-column {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-.metro-line__level-marker {
-  display: flex;
+.metro-line__branch-column-header {
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-left: 42px; /* Indent past the rail */
-  position: relative;
-  z-index: 4; /* Keep badges above lines */
+  gap: 6px;
+  padding: 4px 12px;
+  margin-left: 42px;
+  font-size: var(--fs-caption1, 12px);
+  font-weight: var(--fw-semibold);
+  color: var(--path-color);
+  background: color-mix(in srgb, var(--path-color) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--path-color) 20%, transparent);
+  border-radius: var(--radius-full);
+  width: fit-content;
+  letter-spacing: var(--letter-spacing-wide, 0.02em);
+  text-transform: uppercase;
+  z-index: 2;
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--path-color) 10%, transparent);
 }
 
-.metro-line__level-badge {
+.metro-line__branch-level-group {
   display: flex;
-  gap: var(--space-2);
-  flex-shrink: 0;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
 }
 
-.metro-line__level-line {
-  flex: 1;
-  height: 1px;
-  background: var(--border-subtle);
+.metro-line__branch-level-label {
+  margin-left: 42px;
+  margin-top: var(--space-2);
+}
+
+.metro-line__branch-station {
+  position: relative;
+}
+
+/* ─── Linear Layout (e.g. DevOps) ─── */
+.metro-line__stations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  position: relative;
+  z-index: 3;
+}
+
+.metro-line__level-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .metro-line__level-nodes {
@@ -215,68 +242,14 @@
   gap: var(--space-3);
 }
 
-/* Node Wrapper */
 .metro-line__node-wrapper {
   position: relative;
   display: flex;
   align-items: stretch;
 }
 
-.metro-line__node-wrapper--branch {
-  margin-left: 42px; /* Indent branches (28px spacing from the 14px rail) */
-}
 
-/* 
-  Branch Connector
-  A simple horizontal line from the main rail to the branch node.
-  Rail is at left: 14px (relative to wrapper origin). 
-  Branch wrapper has margin-left: 42px.
-  So distance from rail to branch node's left edge is 42px - 14px = 28px.
-*/
-.metro-line__branch-connector {
-  position: absolute;
-  left: -28px;
-  top: 12px; /* Center of the 28px node minus half the border width (14px - 2px) */
-  width: 28px;
-  height: 0;
-  border-bottom: 4px solid var(--path-color);
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 1;
-  transition: opacity 0.4s, filter 0.4s;
-}
-
-/* Active solid state when certification is complete */
-.metro-line__branch-connector--active {
-  opacity: 1;
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--path-color) 40%, transparent));
-}
-
-/* Unlocked state — prereq done but cert not started */
-.metro-line__branch-connector--unlocked {
-  opacity: 0.4;
-  border-bottom-style: dashed;
-}
-
-/* Recommended connector — dotted */
-.metro-line__branch-connector--recommended {
-  opacity: 0.3;
-  border-bottom-style: dotted;
-  border-bottom-width: 3px;
-  top: 13px; /* Adjust for slightly thinner border */
-}
-
-/* Recommended connector when active */
-.metro-line__branch-connector--active-recommended {
-  opacity: 0.8;
-  border-bottom-style: dotted;
-  border-bottom-width: 3px;
-  top: 13px;
-  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--path-color) 30%, transparent));
-}
-
-
-/* Mobile adjustments */
+/* Mobile Adjustments */
 @media (max-width: 768px) {
   .metro-line__header {
     flex-direction: column;
@@ -287,5 +260,9 @@
   .metro-line__header-right {
     width: 100%;
     justify-content: space-between;
+  }
+  
+  .metro-line__branches-grid {
+    grid-template-columns: 1fr !important; /* Stack vertically on small screens */
   }
 }

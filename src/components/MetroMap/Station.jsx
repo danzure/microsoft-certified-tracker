@@ -40,7 +40,7 @@ const Station = ({ cert, pathColor, onSelect, index, trackIndex, isUnlocked }) =
       style={{
         '--station-color': pathColor,
         '--station-index': index,
-        animationDelay: `${index * 100 + 200}ms`,
+        '--station-delay': `${index * 100 + 200}ms`,
       }}
       id={`station-${cert.id}`}
     >

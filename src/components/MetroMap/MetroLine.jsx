@@ -6,180 +6,245 @@ import ProgressRing from '../common/ProgressRing';
 import Badge from '../common/Badge';
 import CertDetail from '../CertDetail/CertDetail';
 import * as Icons from 'lucide-react';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import './MetroLine.css';
+
+const LEVELS = [CERT_LEVELS.FUNDAMENTALS, CERT_LEVELS.ASSOCIATE, CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY];
+const RAIL_WIDTH = 6;
+const CURVE_RADIUS = 24;
 
 const MetroLine = () => {
   const { pathId } = useParams();
   const path = getPathById(pathId);
   const { getPathProgress, getStatus } = useProgressContext();
   const [selectedCert, setSelectedCert] = useState(null);
-  
-  const containerRef = useRef(null);
-  const [activeSegments, setActiveSegments] = useState([]);
 
-  // Determine Trunk vs Branch certifications
-  const trunkSet = useMemo(() => {
-    if (!path) return new Set();
-    const set = new Set();
-    const certsMap = new Map(path.certifications.map((c) => [c.id, c]));
+  const treeContainerRef = useRef(null);
+  const gridRef = useRef(null);
+  const [trackPaths, setTrackPaths] = useState([]);
 
-    let maxChain = [];
-    
-    const getChain = (certId) => {
-      const chain = [certId];
-      let current = certsMap.get(certId);
-      
-      while (current) {
-        // Find a valid next step (mandatory or recommended)
-        let nextId = null;
-        
-        // Check mandatory prereqs first
-        if (current.prerequisites && current.prerequisites.length > 0) {
-          // Handle SC-100 array of arrays
-          const flatPrereqs = current.prerequisites.flat();
-          nextId = flatPrereqs.find(id => certsMap.has(id));
-        }
-        
-        // Fallback to recommended prereqs
-        if (!nextId && current.recommendedPrereqs && current.recommendedPrereqs.length > 0) {
-          nextId = current.recommendedPrereqs.find(id => certsMap.has(id));
-        }
+  const branches = path?.branches || [];
+  const hasBranches = branches.length > 0 && path?.certifications.some(c => c.branch);
 
-        if (nextId) {
-          chain.push(nextId);
-          current = certsMap.get(nextId);
-        } else {
-          break;
-        }
-      }
-      return chain;
-    };
+  // ─── Computed data for tree layout ───
+  const { trunkFundamentals, trunkBottom, branchColumns } = useMemo(() => {
+    if (!path || !hasBranches) return { trunkFundamentals: [], trunkBottom: [], branchColumns: [] };
 
-    path.certifications.forEach(cert => {
-      const chain = getChain(cert.id);
-      if (chain.length > maxChain.length) {
-        maxChain = chain;
-      }
-    });
+    const trunkCerts = path.certifications.filter(c => !c.branch);
+    const trunkFundamentals = trunkCerts.filter(c => c.level === CERT_LEVELS.FUNDAMENTALS);
+    const trunkBottom = trunkCerts.filter(c => c.level !== CERT_LEVELS.FUNDAMENTALS);
 
-    maxChain.forEach(id => set.add(id));
-    return set;
-  }, [path]);
+    const branchColumns = branches.map(branchDef => {
+      const certs = path.certifications.filter(c => c.branch === branchDef.id);
+      const grouped = LEVELS
+        .map(level => ({ level, certs: certs.filter(c => c.level === level) }))
+        .filter(g => g.certs.length > 0);
+      return { ...branchDef, groups: grouped, allCerts: certs };
+    }).filter(b => b.allCerts.length > 0);
 
-  // Compute prerequisite depth for each cert (how many hops from a root)
-  const depthMap = useMemo(() => {
-    if (!path) return new Map();
-    const certsMap = new Map(path.certifications.map(c => [c.id, c]));
-    const depths = new Map();
+    return { trunkFundamentals, trunkBottom, branchColumns };
+  }, [path, hasBranches, branches]);
 
-    const getDepth = (certId, visited = new Set()) => {
-      if (depths.has(certId)) return depths.get(certId);
-      if (visited.has(certId)) return 0;
-      visited.add(certId);
+  // ─── Computed data for linear layout ───
+  const linearGroups = useMemo(() => {
+    if (!path || hasBranches) return [];
+    return LEVELS
+      .map(level => ({ level, certs: path.certifications.filter(c => c.level === level) }))
+      .filter(g => g.certs.length > 0);
+  }, [path, hasBranches]);
 
-      const cert = certsMap.get(certId);
-      if (!cert || !cert.prerequisites || cert.prerequisites.length === 0) {
-        depths.set(certId, 0);
-        return 0;
+  // ─── Build the visual connection list (edges between stations) ───
+  const connectionList = useMemo(() => {
+    if (!path) return [];
+    const connections = [];
+    const certsList = path.certifications;
+
+    if (hasBranches) {
+      // 1. Trunk fundamentals: chain them vertically
+      for (let i = 1; i < trunkFundamentals.length; i++) {
+        connections.push({
+          from: trunkFundamentals[i - 1].id,
+          to: trunkFundamentals[i].id,
+          type: 'trunk',
+        });
       }
 
-      const prereqDepths = cert.prerequisites
-        .filter(id => certsMap.has(id))
-        .map(id => getDepth(id, new Set(visited)));
-
-      const depth = (prereqDepths.length > 0 ? Math.max(...prereqDepths) : 0) + 1;
-      depths.set(certId, depth);
-      return depth;
-    };
-
-    path.certifications.forEach(cert => getDepth(cert.id));
-    return depths;
-  }, [path]);
-
-  // Measure segments to draw the progress rail between connected certs
-  // Each segment is classified as 'active' (cert in progress/completed) or 'unlocked' (prereq done, cert not started)
-  useEffect(() => {
-    if (!path || !containerRef.current) return;
-
-    const measureSegments = () => {
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const segments = [];
-
-      path.certifications.forEach(cert => {
-        const mandatory = cert.prerequisites ? cert.prerequisites.flat() : [];
-        const recommended = cert.recommendedPrereqs || [];
-        const allPrereqs = [...mandatory, ...recommended];
-        
-        if (allPrereqs.length === 0) return;
-
-        const certStatus = getStatus(cert.id);
-        const isCertActive = certStatus === CERT_STATUS.COMPLETED || certStatus === CERT_STATUS.IN_PROGRESS;
-        
-        // Find the completed prerequisite that we will visually connect to
-        let targetPrereqId = allPrereqs.find(id => getStatus(id) === CERT_STATUS.COMPLETED);
-        
-        // If no completed prereq, connect to the first one available
-        if (!targetPrereqId) targetPrereqId = allPrereqs[0];
-
-        const isMandatory = mandatory.includes(targetPrereqId);
-        const hasCompletedTarget = getStatus(targetPrereqId) === CERT_STATUS.COMPLETED;
-
-        // Determine segment state
-        let segmentState = 'recommended'; // Default for recommended connection
-        if (isMandatory) {
-          if (isCertActive) {
-            segmentState = 'active';
-          } else if (hasCompletedTarget) {
-            segmentState = 'unlocked';
-          } else {
-             // Not unlocked and not active means we shouldn't draw a rail yet, unless we want to show the full map
-             // Let's hide unachieved mandatory lines if they aren't unlocked
-             return;
+      // 2. Fork: trunk fundamentals -> first cert in each branch
+      const lastTrunkFund = trunkFundamentals[trunkFundamentals.length - 1];
+      if (lastTrunkFund) {
+        branchColumns.forEach(branch => {
+          const firstBranchCert = branch.allCerts[0];
+          if (firstBranchCert) {
+            connections.push({
+              from: lastTrunkFund.id,
+              to: firstBranchCert.id,
+              type: 'fork',
+              branchId: branch.id,
+            });
           }
-        } else {
-            // For recommended lines, we just draw them dotted (recommended).
-            // But if the certification itself is active, we make it "active-recommended"
-            segmentState = isCertActive ? 'active-recommended' : 'recommended';
-        }
+        });
+      }
 
-        const prereqEl = document.getElementById(`station-${targetPrereqId}`);
-        const certEl = document.getElementById(`station-${cert.id}`);
-
-        if (prereqEl && certEl) {
-          const prereqRect = prereqEl.getBoundingClientRect();
-          const certRect = certEl.getBoundingClientRect();
-
-          // The circular node is 28px tall, its center is ~14px from the top of the station wrapper
-          let y1 = (prereqRect.top - containerRect.top) + 14;
-          const y2 = (certRect.top - containerRect.top) + 14;
-
-          // If the prerequisite is a Fundamentals certification (the root), start the line from the very top
-          const prereqCert = path.certifications.find(c => c.id === targetPrereqId);
-          if (prereqCert && prereqCert.level === CERT_LEVELS.FUNDAMENTALS) {
-            y1 = 0;
-          }
-
-          segments.push({
-            id: `${targetPrereqId}-${cert.id}`,
-            top: Math.min(y1, y2),
-            height: Math.abs(y2 - y1),
-            state: segmentState,
+      // 3. Within each branch: chain certs vertically
+      branchColumns.forEach(branch => {
+        for (let i = 1; i < branch.allCerts.length; i++) {
+          connections.push({
+            from: branch.allCerts[i - 1].id,
+            to: branch.allCerts[i].id,
+            type: 'branch',
+            branchId: branch.id,
           });
         }
       });
 
-      setActiveSegments(segments);
+      // 4. Merge: last cert of each branch that has Expert/Specialty trunk-bottom -> first trunk-bottom cert
+      if (trunkBottom.length > 0) {
+        const firstBottom = trunkBottom[0];
+        branchColumns.forEach(branch => {
+          const lastBranchCert = branch.allCerts[branch.allCerts.length - 1];
+          if (lastBranchCert) {
+            connections.push({
+              from: lastBranchCert.id,
+              to: firstBottom.id,
+              type: 'merge',
+              branchId: branch.id,
+            });
+          }
+        });
+      }
+
+      // 5. Trunk bottom: chain the expert/specialty certs
+      for (let i = 1; i < trunkBottom.length; i++) {
+        connections.push({
+          from: trunkBottom[i - 1].id,
+          to: trunkBottom[i].id,
+          type: 'trunk',
+        });
+      }
+    } else {
+      // Linear layout: chain all certs in order of level groups
+      const orderedCerts = linearGroups.flatMap(g => g.certs);
+      for (let i = 1; i < orderedCerts.length; i++) {
+        connections.push({
+          from: orderedCerts[i - 1].id,
+          to: orderedCerts[i].id,
+          type: 'linear',
+        });
+      }
+    }
+
+    return connections;
+  }, [path, hasBranches, trunkFundamentals, trunkBottom, branchColumns, linearGroups]);
+
+  // ─── Measure all station node positions and draw SVG paths ───
+  const measureAndDrawTracks = useCallback(() => {
+    const container = treeContainerRef.current;
+    if (!container || !path) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const computedStyle = getComputedStyle(container);
+    const borderTop = parseFloat(computedStyle.borderTopWidth) || 0;
+    const borderLeft = parseFloat(computedStyle.borderLeftWidth) || 0;
+    const offsetTop = containerRect.top + borderTop;
+    const offsetLeft = containerRect.left + borderLeft;
+
+    // Measure the center of every station node
+    const getNodeCenter = (certId) => {
+      const nodeEl = container.querySelector(`#station-${certId} .station__node-outer`);
+      if (!nodeEl) return null;
+      const r = nodeEl.getBoundingClientRect();
+      return {
+        x: r.left + r.width / 2 - offsetLeft,
+        y: r.top + r.height / 2 - offsetTop,
+      };
     };
 
-    measureSegments();
+    const paths = [];
 
-    const observer = new ResizeObserver(measureSegments);
-    observer.observe(containerRef.current);
-    
-    return () => observer.disconnect();
-  }, [path, getStatus]);
+    connectionList.forEach(conn => {
+      const fromPt = getNodeCenter(conn.from);
+      const toPt = getNodeCenter(conn.to);
+      if (!fromPt || !toPt) return;
 
+      let d;
+      const dx = Math.abs(toPt.x - fromPt.x);
+      const dy = Math.abs(toPt.y - fromPt.y);
+
+      if (dx < 2) {
+        // Straight vertical line
+        d = `M ${fromPt.x} ${fromPt.y} L ${toPt.x} ${toPt.y}`;
+      } else {
+        // Curved connection (fork or merge)
+        const r = Math.min(CURVE_RADIUS, dx / 2, dy / 2);
+        const dirX = toPt.x > fromPt.x ? 1 : -1;
+        const dirY = toPt.y > fromPt.y ? 1 : -1;
+
+        // midY = halfway between them vertically
+        const midY = fromPt.y + (toPt.y - fromPt.y) / 2;
+
+        // Path: go vertical from start to midY, then curve horizontal, then curve vertical down to end
+        const t1Y = midY - dirY * r;
+        const sweep1 = (dirX === 1 && dirY === 1) ? 0 :
+                        (dirX === -1 && dirY === 1) ? 1 :
+                        (dirX === 1 && dirY === -1) ? 1 : 0;
+        const corner1X = fromPt.x + dirX * r;
+
+        const t2X = toPt.x - dirX * r;
+        const sweep2 = (dirX === 1 && dirY === 1) ? 1 :
+                        (dirX === -1 && dirY === 1) ? 0 :
+                        (dirX === 1 && dirY === -1) ? 0 : 1;
+        const corner2Y = midY + dirY * r;
+
+        d = [
+          `M ${fromPt.x} ${fromPt.y}`,
+          `L ${fromPt.x} ${t1Y}`,
+          `A ${r} ${r} 0 0 ${sweep1} ${corner1X} ${midY}`,
+          `L ${t2X} ${midY}`,
+          `A ${r} ${r} 0 0 ${sweep2} ${toPt.x} ${corner2Y}`,
+          `L ${toPt.x} ${toPt.y}`,
+        ].join(' ');
+      }
+
+      // Determine visual state based on progress
+      const fromStatus = getStatus(conn.from);
+      const toStatus = getStatus(conn.to);
+      const fromCompleted = fromStatus === CERT_STATUS.COMPLETED;
+      const toActive = toStatus === CERT_STATUS.COMPLETED || toStatus === CERT_STATUS.IN_PROGRESS;
+
+      let state = 'default'; // faint background track
+      if (fromCompleted && toActive) {
+        state = 'active';
+      } else if (fromCompleted) {
+        state = 'unlocked';
+      }
+
+      paths.push({ id: `${conn.from}-${conn.to}`, d, state, type: conn.type });
+    });
+
+    setTrackPaths(paths);
+  }, [connectionList, path, getStatus]);
+
+  useEffect(() => {
+    const container = treeContainerRef.current;
+    if (!container) return;
+
+    // Delay initial measurement to let station animations (400ms) settle
+    const timer = setTimeout(() => {
+      measureAndDrawTracks();
+    }, 500);
+
+    const observer = new ResizeObserver(() => {
+      requestAnimationFrame(measureAndDrawTracks);
+    });
+    observer.observe(container);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [measureAndDrawTracks]);
+
+  // ─── Error state ───
   if (!path) {
     return (
       <div className="metro-line__not-found">
@@ -190,36 +255,94 @@ const MetroLine = () => {
     );
   }
 
+  // ─── Helpers ───
   const prog = getPathProgress(path.id);
-  const Icon = Icons[path.icon] || Icons.Circle;
+  const PathIcon = Icons[path.icon] || Icons.Circle;
 
-  const levels = [CERT_LEVELS.FUNDAMENTALS, CERT_LEVELS.ASSOCIATE, CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY];
-  const groupedCerts = levels
-    .map((level) => {
-      const certsInLevel = path.certifications
-        .filter((c) => c.level === level)
-        .sort((a, b) => {
-          const aIsTrunk = trunkSet.has(a.id);
-          const bIsTrunk = trunkSet.has(b.id);
-          if (aIsTrunk && !bIsTrunk) return -1;
-          if (!aIsTrunk && bIsTrunk) return 1;
-          return 0;
-        });
-      
-      return {
-        level,
-        certs: certsInLevel,
-      };
-    })
-    .filter((g) => g.certs.length > 0);
+  const renderStation = (cert, idx) => {
+    const certStatus = getStatus(cert.id);
+    const flatPrereqs = cert.prerequisites ? cert.prerequisites.flat() : [];
+    const isPrereqCompleted = flatPrereqs.some(id => getStatus(id) === CERT_STATUS.COMPLETED);
+    const isUnlocked = (flatPrereqs.length === 0 || isPrereqCompleted) && certStatus === CERT_STATUS.NOT_STARTED;
+    return (
+      <Station
+        key={cert.id}
+        cert={cert}
+        pathColor={path.color}
+        onSelect={setSelectedCert}
+        index={idx}
+        isTrunk={!cert.branch}
+        isUnlocked={isUnlocked}
+      />
+    );
+  };
+
+  const trunkBottomGroups = [CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY]
+    .map(level => ({ level, certs: trunkBottom.filter(c => c.level === level) }))
+    .filter(g => g.certs.length > 0);
+
+  // ─── Track SVG Overlay ───
+  const renderTrackSVG = () => {
+    if (trackPaths.length === 0) return null;
+
+    return (
+      <svg
+        className="metro-line__track-svg"
+        width="100%"
+        height="100%"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          pointerEvents: 'none',
+          overflow: 'visible',
+          zIndex: 5,
+        }}
+      >
+        {/* Background (default) tracks first */}
+        {trackPaths.map(tp => (
+          <path
+            key={`bg-${tp.id}`}
+            d={tp.d}
+            fill="none"
+            stroke={path.color}
+            strokeWidth={RAIL_WIDTH}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity={0.12}
+          />
+        ))}
+        {/* Active/unlocked overlay tracks on top */}
+        {trackPaths
+          .filter(tp => tp.state !== 'default')
+          .map(tp => (
+            <path
+              key={`fg-${tp.id}`}
+              d={tp.d}
+              fill="none"
+              stroke={path.color}
+              strokeWidth={RAIL_WIDTH}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity={tp.state === 'active' ? 1 : 0.4}
+              style={
+                tp.state === 'active'
+                  ? { filter: `drop-shadow(0 0 6px ${path.glowColor})` }
+                  : undefined
+              }
+            />
+          ))}
+      </svg>
+    );
+  };
 
   return (
     <div className="metro-line" style={{ '--path-color': path.color, '--path-glow': path.glowColor }}>
-      {/* Path Header */}
+      {/* ─── Path Header ─── */}
       <div className="metro-line__header" id={`path-header-${path.id}`}>
         <div className="metro-line__header-left">
           <div className="metro-line__icon-wrapper">
-            <Icon size={28} />
+            <PathIcon size={28} />
           </div>
           <div>
             <h1 className="metro-line__title">{path.name}</h1>
@@ -245,95 +368,102 @@ const MetroLine = () => {
         </div>
       </div>
 
-      {/* Metro CSS Tree Container */}
-      <div className="metro-line__tree-container" ref={containerRef}>
-        {/* The dim background rail */}
-        <div className="metro-line__main-rail" />
-        
-        {/* Progress rail segments (unlocked = dashed, active = solid) */}
-        {activeSegments.map(seg => (
-          <div 
-            key={seg.id}
-            className={`metro-line__main-rail metro-line__main-rail--${seg.state}`} 
-            style={{ top: seg.top, height: seg.height }} 
-          />
-        ))}
+      {/* ─── Map Viewport ─── */}
+      <div className="metro-line__map-viewport">
+        {/* ─── Tree Container ─── */}
+        <div className="metro-line__tree-container" ref={treeContainerRef}>
+          {/* Single SVG overlay for ALL track lines */}
+          {renderTrackSVG()}
 
-        <div className="metro-line__stations">
-          {groupedCerts.map((group) => (
-            <div key={group.level} className="metro-line__level-group">
-              
-              <div className="metro-line__level-marker">
-                <div className="metro-line__level-badge">
-                  <Badge variant={group.level.toLowerCase()}>{group.level}</Badge>
+          {hasBranches ? (
+            <>
+              {/* ── Trunk Top: Fundamentals ── */}
+              {trunkFundamentals.length > 0 && (
+                <div className="metro-line__trunk-top">
+                  <div className="metro-line__trunk-stations">
+                    {trunkFundamentals.map((cert, idx) => (
+                      <div key={cert.id} className="metro-line__trunk-station-wrap">
+                        {renderStation(cert, idx)}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="metro-line__level-line" />
+              )}
+
+              {/* ── Spacer for fork zone ── */}
+              {trunkFundamentals.length > 0 && (
+                <div className="metro-line__fork-spacer" />
+              )}
+
+              {/* ── Branch Columns ── */}
+              <div className="metro-line__branches-scroll">
+                <div
+                  className="metro-line__branches-grid"
+                  ref={gridRef}
+                  style={{ gridTemplateColumns: `repeat(${branchColumns.length}, minmax(160px, 1fr))` }}
+                >
+                  {branchColumns.map(branch => {
+                    return (
+                      <div key={branch.id} className="metro-line__branch-column" id={`branch-col-${branch.id}`}>
+                        <div className="metro-line__branch-column-header">
+                          <Icons.GitBranch size={11} />
+                          <span>{branch.name}</span>
+                        </div>
+                        {branch.allCerts.map((cert, idx) => (
+                          <div key={cert.id} className="metro-line__branch-station">
+                            {renderStation(cert, idx)}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
-              <div className="metro-line__level-nodes">
-                {group.certs.map((cert, idx) => {
-                  const isTrunk = trunkSet.has(cert.id);
-                  const certStatus = getStatus(cert.id);
-                  const isCompleted = certStatus === CERT_STATUS.COMPLETED;
-                  const isInProgress = certStatus === CERT_STATUS.IN_PROGRESS;
-                  const flatPrereqs = cert.prerequisites ? cert.prerequisites.flat() : [];
-                  const recommendedPrereqs = cert.recommendedPrereqs || [];
-                  const isPrereqCompleted = flatPrereqs.some(id => getStatus(id) === CERT_STATUS.COMPLETED);
-                  
-                  // Three states for the branch connector
-                  let connectorState = '';
-                  if (isCompleted || isInProgress) {
-                    if (flatPrereqs.length > 0) {
-                      connectorState = 'metro-line__branch-connector--active';
-                    } else if (recommendedPrereqs.length > 0) {
-                      connectorState = 'metro-line__branch-connector--active-recommended';
-                    }
-                  } else if (isPrereqCompleted) {
-                    connectorState = 'metro-line__branch-connector--unlocked';
-                  } else if (recommendedPrereqs.length > 0) {
-                    connectorState = 'metro-line__branch-connector--recommended';
-                  }
+              {/* ── Spacer for merge zone ── */}
+              {trunkBottom.length > 0 && (
+                <div className="metro-line__merge-spacer" />
+              )}
 
-                  // Station is "unlocked" when its prereq is done but the cert itself hasn't been started
-                  // If it has no mandatory prereqs, it's always unlocked
-                  const isUnlocked = (flatPrereqs.length === 0 || isPrereqCompleted) && certStatus === CERT_STATUS.NOT_STARTED;
-                  
-                  return (
-                    <div 
-                      key={cert.id} 
-                      className={`metro-line__node-wrapper ${isTrunk ? 'metro-line__node-wrapper--trunk' : 'metro-line__node-wrapper--branch'}`}
-                    >
-                      {/* Connector for branches */}
-                      {!isTrunk && (
-                        <div 
-                          className={`metro-line__branch-connector ${connectorState}`} 
-                        />
-                      )}
-                      
-                      <Station
-                        cert={cert}
-                        pathColor={path.color}
-                        onSelect={setSelectedCert}
-                        index={idx}
-                        isTrunk={isTrunk}
-                        isUnlocked={isUnlocked}
-                      />
+              {/* ── Trunk Bottom (Expert/Specialty) ── */}
+              {trunkBottom.length > 0 && (
+                <div className="metro-line__trunk-bottom">
+                  {trunkBottomGroups.map(group => (
+                    <div key={group.level} className="metro-line__trunk-level-group">
+                      <div className="metro-line__trunk-stations">
+                        {group.certs.map((cert, idx) => (
+                          <div key={cert.id} className="metro-line__trunk-station-wrap">
+                            {renderStation(cert, idx)}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            /* ─── Linear Layout (no branches, e.g. DevOps) ─── */
+            <div className="metro-line__stations">
+              {linearGroups.map(group => (
+                <div key={group.level} className="metro-line__level-group">
+                  <div className="metro-line__level-nodes">
+                    {group.certs.map((cert, idx) => (
+                      <div key={cert.id} className="metro-line__node-wrapper metro-line__node-wrapper--trunk">
+                        {renderStation(cert, idx)}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       </div>
 
-      {/* Detail Panel */}
+      {/* ─── Detail Panel ─── */}
       {selectedCert && (
-        <CertDetail
-          cert={selectedCert}
-          path={path}
-          onClose={() => setSelectedCert(null)}
-        />
+        <CertDetail cert={selectedCert} path={path} onClose={() => setSelectedCert(null)} />
       )}
     </div>
   );

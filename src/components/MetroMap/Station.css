@@ -3,13 +3,12 @@
   align-items: flex-start;
   gap: var(--space-3);
   position: relative;
-  animation: fadeInUp 400ms ease-out both;
 }
 
 /* Station Node */
 .station__node {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   flex-shrink: 0;
   width: 28px;
   background: none;
@@ -28,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2.5px solid var(--station-color);
+  border: 3px solid var(--station-color);
   background: var(--bg-surface-1);
   transition: transform var(--duration-fast) var(--curve-decelerate),
               box-shadow var(--duration-fast) var(--curve-decelerate);
@@ -141,6 +140,8 @@
               box-shadow var(--transition-fast),
               transform var(--transition-fast);
   min-width: 0;
+  position: relative;
+  z-index: 6;
 }
 
 .station__info:hover {
