@@ -345,7 +345,6 @@ export const certificationPaths = [
       { id: 'identity', name: 'Identity Track' },
       { id: 'info-sec', name: 'Info Security Track' },
       { id: 'business', name: 'Business Track' },
-      { id: 'architect', name: 'Architecture Track' },
     ],
     certifications: [
       {
@@ -387,7 +386,6 @@ export const certificationPaths = [
         examCode: 'SC-100',
         name: 'Cybersecurity Architect Expert',
         level: CERT_LEVELS.EXPERT,
-        branch: 'architect',
         description: 'Design and evolve the cybersecurity strategy for an organization.',
         prerequisites: [['sc-200', 'sc-300', 'sc-500', 'az-500']], // Requires ONE OF these
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/cybersecurity-architect-expert/',
