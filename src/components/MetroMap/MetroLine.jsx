@@ -3,7 +3,7 @@ import { getPathById, CERT_LEVELS, CERT_STATUS } from '../../data/certificationP
 import { useProgressContext } from '../../context/ProgressContext';
 import Station from './Station';
 import ProgressRing from '../common/ProgressRing';
-import Badge from '../common/Badge';
+
 import CertDetail from '../CertDetail/CertDetail';
 import * as Icons from 'lucide-react';
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
@@ -23,7 +23,7 @@ const MetroLine = () => {
   const gridRef = useRef(null);
   const [trackPaths, setTrackPaths] = useState([]);
 
-  const branches = path?.branches || [];
+  const branches = useMemo(() => path?.branches || [], [path?.branches]);
   const hasBranches = branches.length > 0 && path?.certifications.some(c => c.branch);
 
   // ─── Computed data for tree layout ───
@@ -57,7 +57,6 @@ const MetroLine = () => {
   const connectionList = useMemo(() => {
     if (!path) return [];
     const connections = [];
-    const certsList = path.certifications;
 
     if (hasBranches) {
       // 1. Trunk fundamentals: chain them vertically
@@ -252,7 +251,7 @@ const MetroLine = () => {
     });
 
     setTrackPaths(paths);
-  }, [connectionList, path, getStatus]);
+  }, [connectionList, path, getStatus, setTrackPaths]);
 
   useEffect(() => {
     const container = treeContainerRef.current;

@@ -5,7 +5,7 @@ import Badge from '../common/Badge';
 import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link } from 'lucide-react';
 import './Station.css';
 
-const Station = ({ cert, pathColor, onSelect, index, trackIndex, isUnlocked }) => {
+const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
   const { getStatus, cycleStatus } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);

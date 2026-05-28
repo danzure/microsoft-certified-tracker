@@ -439,18 +439,7 @@ export const certificationPaths = [
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/sc-401/',
         retirementDate: null,
       },
-      {
-        id: 'sc-710',
-        examCode: 'SC-710',
-        name: 'Cybersecurity Business Professional Certification (Beta)',
-        level: CERT_LEVELS.SPECIALTY,
-        branch: 'business',
-        description: 'Understand the business implications of cybersecurity strategy.',
-        prerequisites: [],
-        recommendedPrereqs: ['sc-900'],
-        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
-        retirementDate: null,
-      },
+
     ],
   },
   {

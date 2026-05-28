@@ -9,7 +9,9 @@ export const ThemeProvider = ({ children }) => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === 'light' || stored === 'dark') return stored;
-    } catch {}
+    } catch {
+      // Ignore error
+    }
     // Default to system preference
     if (window.matchMedia?.('(prefers-color-scheme: light)').matches) return 'light';
     return 'dark';
@@ -33,6 +35,7 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {

@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Map, LayoutDashboard, Menu, X, Sun, Moon } from 'lucide-react';
-import { useState } from 'react';
 import SearchBar from '../common/SearchBar';
 import ProgressRing from '../common/ProgressRing';
 import { useProgressContext } from '../../context/ProgressContext';
@@ -10,7 +9,7 @@ import './Header.css';
 const Header = ({ onToggleSidebar, sidebarOpen }) => {
   const location = useLocation();
   const { getOverallProgress } = useProgressContext();
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
   const overall = getOverallProgress();
 
   return (

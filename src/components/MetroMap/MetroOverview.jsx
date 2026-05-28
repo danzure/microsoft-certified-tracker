@@ -25,7 +25,6 @@ const LANE_PAD_Y = 46; // top padding inside each lane (below header)
  */
 const buildPathLayout = (path) => {
   const certs = path.certifications;
-  const certsById = new Map(certs.map(c => [c.id, c]));
   const branches = path.branches || [];
 
   // Group certs by level

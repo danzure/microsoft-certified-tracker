@@ -12,6 +12,7 @@ export const ProgressProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useProgressContext = () => {
   const context = useContext(ProgressContext);
   if (!context) {

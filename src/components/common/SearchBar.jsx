@@ -1,35 +1,27 @@
 import { Search, X } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { getAllCertifications } from '../../data/certificationPaths';
 import { useNavigate } from 'react-router-dom';
 import './SearchBar.css';
 
 const SearchBar = ({ onClose }) => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
   const allCerts = getAllCertifications();
 
-  useEffect(() => {
-    if (query.trim().length > 0) {
-      const q = query.toLowerCase();
-      const filtered = allCerts.filter(
+  const q = query.toLowerCase().trim();
+  const results = q.length > 0 
+    ? allCerts.filter(
         (c) =>
           c.name.toLowerCase().includes(q) ||
           c.examCode.toLowerCase().includes(q) ||
           c.pathName.toLowerCase().includes(q) ||
           c.description.toLowerCase().includes(q)
-      );
-      setResults(filtered.slice(0, 8));
-      setIsOpen(true);
-    } else {
-      setResults([]);
-      setIsOpen(false);
-    }
-  }, [query]);
+      ).slice(0, 8)
+    : [];
 
   const handleSelect = (cert) => {
     navigate(`/path/${cert.pathId}`);
@@ -48,7 +40,10 @@ const SearchBar = ({ onClose }) => {
           className="search-bar__input"
           placeholder="Search certifications..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setIsOpen(e.target.value.trim().length > 0);
+          }}
           onFocus={() => query && setIsOpen(true)}
           id="search-certifications"
         />

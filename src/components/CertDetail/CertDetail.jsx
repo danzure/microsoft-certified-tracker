@@ -1,7 +1,7 @@
-import { X, ExternalLink, AlertTriangle, Check, Clock, ArrowRightLeft } from 'lucide-react';
+import { X, ExternalLink, AlertTriangle, ArrowRightLeft } from 'lucide-react';
 import { useProgressContext } from '../../context/ProgressContext';
 import { CERT_STATUS } from '../../data/certificationPaths';
-import { isRetiring, formatDate, getStatusLabel } from '../../utils/helpers';
+import { isRetiring, formatDate } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import './CertDetail.css';
 
