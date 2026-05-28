@@ -49,6 +49,11 @@ const CertDetail = ({ cert, path, onClose }) => {
                   Interchange
                 </Badge>
               )}
+              {cert.isComingSoon && (
+                <Badge variant="default">
+                  Coming soon
+                </Badge>
+              )}
             </div>
           </div>
         </div>
