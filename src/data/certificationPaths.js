@@ -533,8 +533,8 @@ export const certificationPaths = [
   },
   {
     id: 'power-platform',
-    name: 'PowerApps',
-    shortName: 'PowerApps',
+    name: 'Power Platform',
+    shortName: 'Power Platform',
     code: 'PL',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: '#D946EF',
