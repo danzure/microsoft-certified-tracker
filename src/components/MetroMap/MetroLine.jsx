@@ -99,6 +99,8 @@ const MetroLine = () => {
       // 4. Merge: last cert of each branch that has Expert/Specialty trunk-bottom -> first trunk-bottom cert
       if (trunkBottom.length > 0) {
         const firstBottom = trunkBottom[0];
+        
+        // Flatten prerequisites to handle nested arrays representing "OR" groups (e.g., [['sc-200', 'sc-300']])
         const prereqs = firstBottom.prerequisites ? firstBottom.prerequisites.flat() : [];
 
         branchColumns.forEach(branch => {

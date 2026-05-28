@@ -86,7 +86,10 @@ const buildPathLayout = (path) => {
     });
   });
 
-  // Build connections based on actual prerequisites
+  // Build connections based on prerequisites
+  // Note: We use .flat() because prerequisites can contain nested arrays 
+  // representing 'OR' logic (e.g. [['sc-200', 'sc-300']] means requires ONE of them).
+  // The layout engine draws connection lines from ALL potential prerequisites.
   const connections = [];
   certs.forEach(cert => {
     (cert.prerequisites || []).flat().forEach(prereqId => {
