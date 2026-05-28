@@ -100,6 +100,11 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
                 Interchange
               </Badge>
             )}
+            {cert.isComingSoon && (
+              <Badge variant="default" small>
+                Coming soon
+              </Badge>
+            )}
           </div>
         </div>
         <h3 className="station__name">{cert.name}</h3>

@@ -661,6 +661,7 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
         retirementDate: null,
+        isComingSoon: true,
       },
       {
         id: 'ab-410',
@@ -673,6 +674,7 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
         retirementDate: null,
+        isComingSoon: true,
       },
       {
         id: 'ab-700',
