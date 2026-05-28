@@ -168,6 +168,13 @@ const MetroLine = () => {
       };
     };
 
+    // Find the absolute bottom of the grid so merge lines always draw BELOW all branch nodes
+    let gridBottomY = null;
+    if (gridRef.current) {
+      const gridRect = gridRef.current.getBoundingClientRect();
+      gridBottomY = gridRect.bottom - offsetTop;
+    }
+
     const paths = [];
 
     // Pre-calculate consistent midY for merges so they form a single horizontal bus
@@ -207,8 +214,14 @@ const MetroLine = () => {
         // midY = halfway between them vertically, but use consistent midY for merges
         let midY = fromPt.y + (toPt.y - fromPt.y) / 2;
         if (conn.type === 'merge' && mergeMidYs[conn.to]) {
-          const { maxFromY, toY } = mergeMidYs[conn.to];
-          midY = maxFromY + (toY - maxFromY) / 2;
+          if (gridBottomY !== null && toPt.y > gridBottomY) {
+            // Draw horizontal line exactly halfway between the bottom of the grid and the target trunk node
+            // This guarantees it will safely pass underneath all branch cards, regardless of varying column heights
+            midY = gridBottomY + (toPt.y - gridBottomY) / 2;
+          } else {
+            const { maxFromY, toY } = mergeMidYs[conn.to];
+            midY = maxFromY + (toY - maxFromY) / 2;
+          }
         }
 
         // Path: go vertical from start to midY, then curve horizontal, then curve vertical down to end
@@ -329,38 +342,52 @@ const MetroLine = () => {
         }}
       >
         {/* Background (default) tracks first */}
-        {trackPaths.map(tp => (
-          <path
-            key={`bg-${tp.id}`}
-            d={tp.d}
-            fill="none"
-            stroke={path.color}
-            strokeWidth={RAIL_WIDTH}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity={0.12}
-          />
-        ))}
-        {/* Active/unlocked overlay tracks on top */}
-        {trackPaths
-          .filter(tp => tp.state !== 'default')
-          .map(tp => (
+        <g opacity={0.12}>
+          {trackPaths.map(tp => (
             <path
-              key={`fg-${tp.id}`}
+              key={`bg-${tp.id}`}
               d={tp.d}
               fill="none"
               stroke={path.color}
               strokeWidth={RAIL_WIDTH}
               strokeLinecap="round"
               strokeLinejoin="round"
-              opacity={tp.state === 'active' ? 1 : 0.4}
-              style={
-                tp.state === 'active'
-                  ? { filter: `drop-shadow(0 0 6px ${path.glowColor})` }
-                  : undefined
-              }
             />
           ))}
+        </g>
+        {/* Unlocked overlay tracks */}
+        <g opacity={0.4}>
+          {trackPaths
+            .filter(tp => tp.state === 'unlocked')
+            .map(tp => (
+              <path
+                key={`fg-${tp.id}-unlocked`}
+                d={tp.d}
+                fill="none"
+                stroke={path.color}
+                strokeWidth={RAIL_WIDTH}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ))}
+        </g>
+        {/* Active overlay tracks */}
+        <g opacity={1}>
+          {trackPaths
+            .filter(tp => tp.state === 'active')
+            .map(tp => (
+              <path
+                key={`fg-${tp.id}-active`}
+                d={tp.d}
+                fill="none"
+                stroke={path.color}
+                strokeWidth={RAIL_WIDTH}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ filter: `drop-shadow(0 0 6px ${path.glowColor})` }}
+              />
+            ))}
+        </g>
       </svg>
     );
   };

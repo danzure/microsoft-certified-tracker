@@ -115,6 +115,7 @@
   --line-dynamics: #0e8f83;
   --line-devops: #c19c00;
   --line-github: #24292F;
+  --line-agentic: #14b8a6;
 
   /* Metro Line Glow */
   --glow-azure: rgba(15, 108, 189, 0.12);
@@ -125,6 +126,8 @@
   --glow-power: rgba(177, 70, 194, 0.12);
   --glow-dynamics: rgba(14, 143, 131, 0.12);
   --glow-devops: rgba(193, 156, 0, 0.12);
+  --glow-github: rgba(36, 41, 47, 0.12);
+  --glow-agentic: rgba(20, 184, 166, 0.12);
 
   /* ── Status Colors ── */
   --status-not-started: var(--colorNeutralForeground3);
@@ -293,6 +296,7 @@
   --line-dynamics: #2dd4bf;
   --line-devops: #fbbf24;
   --line-github: #ffffff;
+  --line-agentic: #2dd4bf;
 
   /* Glow */
   --glow-azure: rgba(71, 158, 245, 0.15);
@@ -303,6 +307,8 @@
   --glow-power: rgba(217, 70, 239, 0.15);
   --glow-dynamics: rgba(45, 212, 191, 0.15);
   --glow-devops: rgba(251, 191, 36, 0.15);
+  --glow-github: rgba(255, 255, 255, 0.15);
+  --glow-agentic: rgba(45, 212, 191, 0.15);
 
   /* Status */
   --status-not-started: var(--colorNeutralForeground3);

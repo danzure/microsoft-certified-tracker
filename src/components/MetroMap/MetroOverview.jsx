@@ -14,7 +14,7 @@ import './MetroOverview.css';
 //   - Branches split off vertically from their prerequisite node
 
 const NODE_W = 240;    // horizontal spacing between tiers
-const NODE_H = 64;     // vertical spacing between rows in a tier
+const NODE_H = 96;     // vertical spacing between rows in a tier
 const LANE_PAD_X = 60; // left padding inside each lane
 const LANE_PAD_Y = 46; // top padding inside each lane (below header)
 
@@ -89,7 +89,7 @@ const buildPathLayout = (path) => {
   // Build connections based on actual prerequisites
   const connections = [];
   certs.forEach(cert => {
-    (cert.prerequisites || []).forEach(prereqId => {
+    (cert.prerequisites || []).flat().forEach(prereqId => {
       // Only connect if both are in this path's positioned nodes
       if (nodePositions[prereqId] && nodePositions[cert.id]) {
         connections.push({
@@ -111,7 +111,8 @@ const buildPathLayout = (path) => {
 
 /**
  * Generate an SVG path for a connection.
- * Uses clean right-angle lines with rounded corners.
+ * Uses a smooth cubic bezier curve (S-curve) for better aesthetics
+ * and consistent metro-line feel.
  */
 const connectionPath = (from, to) => {
   const x1 = from.x;
@@ -204,29 +205,62 @@ const MetroOverview = () => {
                   width={canvasWidth}
                   height={laneHeight}
                 >
-                  {/* Glow */}
-                  {connections.map(conn => (
-                    <path
-                      key={`${conn.fromId}-${conn.toId}-glow`}
-                      d={connectionPath(conn.from, conn.to)}
-                      fill="none"
-                      stroke={path.color}
-                      strokeWidth="6"
-                      strokeOpacity="0.1"
-                    />
-                  ))}
-                  {/* Solid lines */}
-                  {connections.map(conn => (
-                    <path
-                      key={`${conn.fromId}-${conn.toId}`}
-                      d={connectionPath(conn.from, conn.to)}
-                      fill="none"
-                      stroke={path.color}
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      className="metro-overview__track-line"
-                    />
-                  ))}
+                  {/* Background tracks (default) */}
+                  <g opacity={0.12}>
+                    {connections.map(conn => (
+                      <path
+                        key={`${conn.fromId}-${conn.toId}-bg`}
+                        d={connectionPath(conn.from, conn.to)}
+                        fill="none"
+                        stroke={path.color}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                      />
+                    ))}
+                  </g>
+
+                  {/* Foreground tracks (progress-based) - Unlocked */}
+                  <g opacity={0.4}>
+                    {connections.filter(conn => {
+                      const fromStatus = getStatus(conn.fromId);
+                      const toStatus = getStatus(conn.toId);
+                      const fromCompleted = fromStatus === CERT_STATUS.COMPLETED;
+                      const toActive = toStatus === CERT_STATUS.COMPLETED || toStatus === CERT_STATUS.IN_PROGRESS;
+                      return fromCompleted && !toActive; // strictly 'unlocked'
+                    }).map(conn => (
+                      <path
+                        key={`${conn.fromId}-${conn.toId}-unlocked`}
+                        d={connectionPath(conn.from, conn.to)}
+                        fill="none"
+                        stroke={path.color}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        className="metro-overview__track-line"
+                      />
+                    ))}
+                  </g>
+
+                  {/* Foreground tracks (progress-based) - Active */}
+                  <g opacity={1}>
+                    {connections.filter(conn => {
+                      const fromStatus = getStatus(conn.fromId);
+                      const toStatus = getStatus(conn.toId);
+                      const fromCompleted = fromStatus === CERT_STATUS.COMPLETED;
+                      const toActive = toStatus === CERT_STATUS.COMPLETED || toStatus === CERT_STATUS.IN_PROGRESS;
+                      return fromCompleted && toActive; // strictly 'active'
+                    }).map(conn => (
+                      <path
+                        key={`${conn.fromId}-${conn.toId}-active`}
+                        d={connectionPath(conn.from, conn.to)}
+                        fill="none"
+                        stroke={path.color}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        className="metro-overview__track-line"
+                        style={{ filter: `drop-shadow(0 0 4px ${path.color}40)` }}
+                      />
+                    ))}
+                  </g>
                   {/* Main trunk line (horizontal at y = LANE_PAD_Y) */}
                   <line
                     x1={LANE_PAD_X - 20}

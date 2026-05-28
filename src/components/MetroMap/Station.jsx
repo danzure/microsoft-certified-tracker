@@ -74,13 +74,21 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
               <Badge variant="default" small>Optional</Badge>
             )}
             
-            {/* Prerequisite Tags for Expert Certifications */}
-            {cert.level === CERT_LEVELS.EXPERT && cert.prerequisites?.length > 0 && (
-              cert.prerequisites.map((prereqId) => {
-                const prereqCert = getCertById(prereqId)?.cert;
+            {/* Prerequisite Tags */}
+            {cert.prerequisites?.length > 0 && (
+              cert.prerequisites.map((prereqItem, index) => {
+                if (Array.isArray(prereqItem)) {
+                  return (
+                    <Badge key={`prereq-group-${index}`} variant="default" small>
+                      <Link size={9} />
+                      Requires 1 of {prereqItem.length}
+                    </Badge>
+                  );
+                }
+                const prereqCert = getCertById(prereqItem)?.cert;
                 if (!prereqCert) return null;
                 return (
-                  <Badge key={`prereq-${prereqId}`} variant="expert" small>
+                  <Badge key={`prereq-${prereqItem}`} variant={prereqCert.level.toLowerCase()} small>
                     <Link size={9} />
                     Requires {prereqCert.examCode}
                   </Badge>

@@ -78,12 +78,50 @@ const CertDetail = ({ cert, path, onClose }) => {
             <div className="cert-detail__section">
               <h3 className="cert-detail__section-title">Prerequisites</h3>
               <div className="cert-detail__prereqs">
-                {cert.prerequisites.map((preId) => {
+                {cert.prerequisites.map((preItem, i) => {
+                  if (Array.isArray(preItem)) {
+                    return (
+                      <div key={`group-${i}`} className="cert-detail__prereq-group">
+                        <div className="cert-detail__prereq-group-label">
+                          Requires ONE of the following:
+                        </div>
+                        {preItem.map(subId => {
+                          const preCert = path.certifications.find((c) => c.id === subId);
+                          if (!preCert) return null;
+                          return (
+                            <div key={subId} className="cert-detail__prereq">
+                              <span className="cert-detail__prereq-code" style={{ color: path.color }}>{preCert.examCode}</span>
+                              <span className="cert-detail__prereq-name">{preCert.name}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  }
+
+                  const preCert = path.certifications.find((c) => c.id === preItem);
+                  if (!preCert) return null;
+                  return (
+                    <div key={preItem} className="cert-detail__prereq">
+                      <span className="cert-detail__prereq-code" style={{ color: path.color }}>{preCert.examCode}</span>
+                      <span className="cert-detail__prereq-name">{preCert.name}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {cert.recommendedPrereqs && cert.recommendedPrereqs.length > 0 && (
+            <div className="cert-detail__section">
+              <h3 className="cert-detail__section-title">Recommended Before Taking</h3>
+              <div className="cert-detail__prereqs cert-detail__prereqs--recommended">
+                {cert.recommendedPrereqs.map((preId) => {
                   const preCert = path.certifications.find((c) => c.id === preId);
                   if (!preCert) return null;
                   return (
                     <div key={preId} className="cert-detail__prereq">
-                      <span className="cert-detail__prereq-code">{preCert.examCode}</span>
+                      <span className="cert-detail__prereq-code" style={{ color: path.color }}>{preCert.examCode}</span>
                       <span className="cert-detail__prereq-name">{preCert.name}</span>
                     </div>
                   );
