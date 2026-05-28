@@ -156,6 +156,13 @@
 
 .metro-line__trunk-station-wrap {
   position: relative;
+  /* Match width of trunk boxes to the first branch column + left offset.
+     Grid offset = 32px
+     Branch column width = (100% - 32px - gaps) / branch-count
+  */
+  width: calc(32px + (100% - 32px - ((var(--branch-count) - 1) * var(--space-6))) / var(--branch-count));
+  /* Constrain the minimum width to the grid's minmax(160px) + offset */
+  min-width: calc(32px + 160px);
 }
 
 /* ─── Fork & Merge Spacers ─── */
@@ -264,5 +271,9 @@
   
   .metro-line__branches-grid {
     grid-template-columns: 1fr !important; /* Stack vertically on small screens */
+  }
+
+  .metro-line__trunk-station-wrap {
+    width: 100%; /* Reset to full width since branches are stacked */
   }
 }

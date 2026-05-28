@@ -100,15 +100,25 @@ const MetroLine = () => {
       // 4. Merge: last cert of each branch that has Expert/Specialty trunk-bottom -> first trunk-bottom cert
       if (trunkBottom.length > 0) {
         const firstBottom = trunkBottom[0];
+        const prereqs = firstBottom.prerequisites ? firstBottom.prerequisites.flat() : [];
+
         branchColumns.forEach(branch => {
           const lastBranchCert = branch.allCerts[branch.allCerts.length - 1];
           if (lastBranchCert) {
-            connections.push({
-              from: lastBranchCert.id,
-              to: firstBottom.id,
-              type: 'merge',
-              branchId: branch.id,
-            });
+            // Only connect if the trunk bottom has no specific prereqs, or if this branch contains a prereq
+            let shouldConnect = true;
+            if (prereqs.length > 0) {
+              shouldConnect = branch.allCerts.some(c => prereqs.includes(c.id));
+            }
+
+            if (shouldConnect) {
+              connections.push({
+                from: lastBranchCert.id,
+                to: firstBottom.id,
+                type: 'merge',
+                branchId: branch.id,
+              });
+            }
           }
         });
       }
@@ -161,6 +171,22 @@ const MetroLine = () => {
 
     const paths = [];
 
+    // Pre-calculate consistent midY for merges so they form a single horizontal bus
+    const mergeMidYs = {};
+    connectionList.forEach(conn => {
+      if (conn.type === 'merge') {
+        const fromPt = getNodeCenter(conn.from);
+        const toPt = getNodeCenter(conn.to);
+        if (!fromPt || !toPt) return;
+
+        if (!mergeMidYs[conn.to]) {
+          mergeMidYs[conn.to] = { maxFromY: fromPt.y, toY: toPt.y };
+        } else if (fromPt.y > mergeMidYs[conn.to].maxFromY) {
+          mergeMidYs[conn.to].maxFromY = fromPt.y;
+        }
+      }
+    });
+
     connectionList.forEach(conn => {
       const fromPt = getNodeCenter(conn.from);
       const toPt = getNodeCenter(conn.to);
@@ -179,8 +205,12 @@ const MetroLine = () => {
         const dirX = toPt.x > fromPt.x ? 1 : -1;
         const dirY = toPt.y > fromPt.y ? 1 : -1;
 
-        // midY = halfway between them vertically
-        const midY = fromPt.y + (toPt.y - fromPt.y) / 2;
+        // midY = halfway between them vertically, but use consistent midY for merges
+        let midY = fromPt.y + (toPt.y - fromPt.y) / 2;
+        if (conn.type === 'merge' && mergeMidYs[conn.to]) {
+          const { maxFromY, toY } = mergeMidYs[conn.to];
+          midY = maxFromY + (toY - maxFromY) / 2;
+        }
 
         // Path: go vertical from start to midY, then curve horizontal, then curve vertical down to end
         const t1Y = midY - dirY * r;
@@ -371,7 +401,11 @@ const MetroLine = () => {
       {/* ─── Map Viewport ─── */}
       <div className="metro-line__map-viewport">
         {/* ─── Tree Container ─── */}
-        <div className="metro-line__tree-container" ref={treeContainerRef}>
+        <div 
+          className="metro-line__tree-container" 
+          ref={treeContainerRef}
+          style={hasBranches ? { '--branch-count': branchColumns.length || 1 } : undefined}
+        >
           {/* Single SVG overlay for ALL track lines */}
           {renderTrackSVG()}
 
