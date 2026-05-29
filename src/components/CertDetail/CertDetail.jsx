@@ -1,4 +1,4 @@
-import { X, ExternalLink, AlertTriangle, ArrowRightLeft } from 'lucide-react';
+import { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award } from 'lucide-react';
 import { useProgressContext } from '../../context/ProgressContext';
 import { CERT_STATUS, getCertById } from '../../data/certificationPaths';
 import { isRetiring, formatDate } from '../../utils/helpers';
@@ -35,10 +35,10 @@ const CertDetail = ({ cert, path, onClose }) => {
             <span className="cert-detail__exam-code">{cert.examCode}</span>
             <h2 className="cert-detail__name">{cert.name}</h2>
             <div className="cert-detail__badges">
-              <Badge variant={levelVariant}>{cert.level}</Badge>
-              <Badge color={path.color}>{path.shortName}</Badge>
+              <Badge variant={levelVariant} outline>{cert.level}</Badge>
+              <Badge color={path.color} outline>{path.shortName}</Badge>
               {retiring && (
-                <Badge variant="retiring">
+                <Badge variant="retiring" outline>
                   <AlertTriangle size={10} />
                   Retiring
                 </Badge>
@@ -62,6 +62,23 @@ const CertDetail = ({ cert, path, onClose }) => {
           <div className="cert-detail__section">
             <h3 className="cert-detail__section-title">Description</h3>
             <p className="cert-detail__description">{cert.description}</p>
+          </div>
+
+          <div className="cert-detail__section">
+            <h3 className="cert-detail__section-title">Validity & Renewal</h3>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-3)' }}>
+              {cert.level === 'Fundamentals' ? (
+                <>
+                  <Award size={20} style={{ color: path.color, flexShrink: 0 }} />
+                  <span className="cert-detail__description">This certification does not expire.</span>
+                </>
+              ) : (
+                <>
+                  <Calendar size={20} style={{ color: path.color, flexShrink: 0 }} />
+                  <span className="cert-detail__description">Valid for 1 year. Requires a free online renewal assessment every 12 months to maintain active status.</span>
+                </>
+              )}
+            </div>
           </div>
 
           {retiring && (

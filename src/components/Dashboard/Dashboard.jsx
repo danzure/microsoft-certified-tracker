@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { certificationPaths, CERT_STATUS, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
-import ProgressRing from '../common/ProgressRing';
 import Badge from '../common/Badge';
 import * as Icons from 'lucide-react';
 import './Dashboard.css';
@@ -95,10 +94,6 @@ const Dashboard = () => {
 
       {/* Path Cards */}
       <div className="dashboard__section">
-        <h2 className="dashboard__section-title">
-          <Icons.Route size={20} />
-          Certification Paths
-        </h2>
         
         {Object.values(PILLARS).map((pillarName) => {
           const pillarPaths = certificationPaths.filter(p => p.pillar === pillarName);
@@ -107,7 +102,7 @@ const Dashboard = () => {
           return (
             <div key={pillarName} className="dashboard__pillar-group" style={{ marginBottom: 'var(--space-4)' }}>
               <h3 className="dashboard__pillar-title" style={{ 
-                fontSize: 'var(--fs-body2)', 
+                fontSize: 'var(--fs-subtitle1)', 
                 fontWeight: 'var(--fw-semibold)', 
                 color: 'var(--text-secondary)',
                 marginBottom: 'var(--space-2)',

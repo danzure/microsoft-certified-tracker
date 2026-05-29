@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { getPathById, CERT_LEVELS, CERT_STATUS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import Station from './Station';
-import ProgressRing from '../common/ProgressRing';
 
 import CertDetail from '../CertDetail/CertDetail';
 import * as Icons from 'lucide-react';
@@ -16,11 +15,12 @@ const CURVE_RADIUS = 24;
 const MetroLine = () => {
   const { pathId } = useParams();
   const path = getPathById(pathId);
-  const { getPathProgress, getStatus } = useProgressContext();
+  const { getStatus } = useProgressContext();
   const [selectedCert, setSelectedCert] = useState(null);
 
   const treeContainerRef = useRef(null);
   const gridRef = useRef(null);
+  const forkSpacerRef = useRef(null);
   const [trackPaths, setTrackPaths] = useState([]);
 
   const branches = useMemo(() => path?.branches || [], [path?.branches]);
@@ -177,6 +177,13 @@ const MetroLine = () => {
       gridBottomY = gridRect.bottom - offsetTop;
     }
 
+    // Find the middle of the fork spacer so fork lines draw cleanly inside the gap
+    let forkMidY = null;
+    if (forkSpacerRef.current) {
+      const forkRect = forkSpacerRef.current.getBoundingClientRect();
+      forkMidY = forkRect.top - offsetTop + forkRect.height / 2;
+    }
+
     const paths = [];
 
     // Pre-calculate consistent midY for merges so they form a single horizontal bus
@@ -224,6 +231,8 @@ const MetroLine = () => {
             const { maxFromY, toY } = mergeMidYs[conn.to];
             midY = maxFromY + (toY - maxFromY) / 2;
           }
+        } else if (conn.type === 'fork' && forkMidY !== null) {
+          midY = forkMidY;
         }
 
         // Path: go vertical from start to midY, then curve horizontal, then curve vertical down to end
@@ -300,8 +309,7 @@ const MetroLine = () => {
   }
 
   // ─── Helpers ───
-  const prog = getPathProgress(path.id);
-  const PathIcon = Icons[path.icon] || Icons.Circle;
+    const PathIcon = Icons[path.icon] || Icons.Circle;
 
   const renderStation = (cert, idx) => {
     const certStatus = getStatus(cert.id);
@@ -425,7 +433,7 @@ const MetroLine = () => {
 
               {/* ── Spacer for fork zone ── */}
               {trunkFundamentals.length > 0 && (
-                <div className="metro-line__fork-spacer" />
+                <div className="metro-line__fork-spacer" ref={forkSpacerRef} />
               )}
 
               {/* ── Branch Columns ── */}
