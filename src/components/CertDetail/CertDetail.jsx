@@ -1,6 +1,6 @@
 import { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award } from 'lucide-react';
 import { useProgressContext } from '../../context/ProgressContext';
-import { CERT_STATUS, getCertById } from '../../data/certificationPaths';
+import { CERT_STATUS, getCertById, getCertificationsRequiring } from '../../data/certificationPaths';
 import { isRetiring, formatDate } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import './CertDetail.css';
@@ -21,6 +21,8 @@ const CertDetail = ({ cert, path, onClose }) => {
     Associate: 'associate',
     Expert: 'expert',
   }[cert.level] || 'default';
+
+  const prerequisiteFor = getCertificationsRequiring(cert.id);
 
   return (
     <>
@@ -145,6 +147,22 @@ const CertDetail = ({ cert, path, onClose }) => {
                   return (
                     <div key={preId} className="cert-detail__prereq">
                       <span className="cert-detail__prereq-code" style={{ color: prePath?.color || path.color }}>{preCert.examCode}</span>
+                      <span className="cert-detail__prereq-name">{preCert.name}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {prerequisiteFor && prerequisiteFor.length > 0 && (
+            <div className="cert-detail__section">
+              <h3 className="cert-detail__section-title">Prerequisite For</h3>
+              <div className="cert-detail__prereqs">
+                {prerequisiteFor.map((preCert) => {
+                  return (
+                    <div key={preCert.id} className="cert-detail__prereq">
+                      <span className="cert-detail__prereq-code" style={{ color: preCert.pathColor || path.color }}>{preCert.examCode}</span>
                       <span className="cert-detail__prereq-name">{preCert.name}</span>
                     </div>
                   );

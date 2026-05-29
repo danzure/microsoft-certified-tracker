@@ -955,6 +955,19 @@ export const getAllCertifications = () =>
     path.certifications.map((cert) => ({ ...cert, pathId: path.id, pathName: path.name, pathColor: path.color }))
   );
 
+// Helper to get certifications that require a specific certification
+export const getCertificationsRequiring = (certId) => {
+  return getAllCertifications().filter((c) => {
+    if (!c.prerequisites) return false;
+    return c.prerequisites.some((prereq) => {
+      if (Array.isArray(prereq)) {
+        return prereq.includes(certId);
+      }
+      return prereq === certId;
+    });
+  });
+};
+
 // Helper to get branch info for a certification
 export const getBranchForCert = (path, cert) => {
   if (!cert.branch || !path.branches) return null;

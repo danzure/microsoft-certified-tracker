@@ -39,7 +39,7 @@ const Header = ({ onToggleSidebar, sidebarOpen }) => {
             </svg>
           </div>
           <div className="header__title">
-            <span className="header__title-main">Certification Tracker</span>
+            <span className="header__title-main">atozazure | Certification Tracker</span>
           </div>
         </Link>
       </div>

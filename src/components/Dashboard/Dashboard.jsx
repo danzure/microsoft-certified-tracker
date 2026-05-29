@@ -36,58 +36,58 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard" id="dashboard">
-      {/* Hero */}
-      {/* Hero */}
-      <div className="dashboard__hero">
-        <div className="dashboard__hero-icon-container">
-          <Icons.LayoutDashboard size={40} className="dashboard__hero-icon" />
+      {/* Header Panel */}
+      <div className="dashboard__header-panel">
+        <div className="dashboard__hero">
+          <div className="dashboard__hero-icon-container">
+            <Icons.LayoutDashboard size={28} className="dashboard__hero-icon" />
+          </div>
+          <div className="dashboard__hero-content">
+            <h1 className="dashboard__hero-title">
+              atozazure | Certification Tracker
+            </h1>
+            <p className="dashboard__hero-subtitle">
+              Manage and track your progress across {certificationPaths.length} Microsoft certification paths
+            </p>
+          </div>
         </div>
-        <div className="dashboard__hero-content">
-          <h1 className="dashboard__hero-title">
-            Certification Tracker
-          </h1>
-          <p className="dashboard__hero-subtitle">
-            Manage and track your progress across {certificationPaths.length} Microsoft certification paths
-          </p>
-        </div>
-      </div>
 
-      {/* Stats */}
-      <div className="dashboard__stats">
-        <div className="dashboard__stat-card dashboard__stat-card--total">
-          <div className="dashboard__stat-icon">
-            <Icons.Award size={24} />
+        <div className="dashboard__stats">
+          <div className="dashboard__stat-card dashboard__stat-card--total">
+            <div className="dashboard__stat-icon">
+              <Icons.Award size={20} />
+            </div>
+            <div className="dashboard__stat-info">
+              <span className="dashboard__stat-value">{overall.total}</span>
+              <span className="dashboard__stat-label">Total Certifications</span>
+            </div>
           </div>
-          <div className="dashboard__stat-info">
-            <span className="dashboard__stat-value">{overall.total}</span>
-            <span className="dashboard__stat-label">Total Certifications</span>
+          <div className="dashboard__stat-card dashboard__stat-card--completed">
+            <div className="dashboard__stat-icon">
+              <Icons.CheckCircle2 size={20} />
+            </div>
+            <div className="dashboard__stat-info">
+              <span className="dashboard__stat-value">{overall.completed}</span>
+              <span className="dashboard__stat-label">Completed</span>
+            </div>
           </div>
-        </div>
-        <div className="dashboard__stat-card dashboard__stat-card--completed">
-          <div className="dashboard__stat-icon">
-            <Icons.CheckCircle2 size={24} />
+          <div className="dashboard__stat-card dashboard__stat-card--progress">
+            <div className="dashboard__stat-icon">
+              <Icons.Clock size={20} />
+            </div>
+            <div className="dashboard__stat-info">
+              <span className="dashboard__stat-value">{overall.inProgress}</span>
+              <span className="dashboard__stat-label">In Progress</span>
+            </div>
           </div>
-          <div className="dashboard__stat-info">
-            <span className="dashboard__stat-value">{overall.completed}</span>
-            <span className="dashboard__stat-label">Completed</span>
-          </div>
-        </div>
-        <div className="dashboard__stat-card dashboard__stat-card--progress">
-          <div className="dashboard__stat-icon">
-            <Icons.Clock size={24} />
-          </div>
-          <div className="dashboard__stat-info">
-            <span className="dashboard__stat-value">{overall.inProgress}</span>
-            <span className="dashboard__stat-label">In Progress</span>
-          </div>
-        </div>
-        <div className="dashboard__stat-card dashboard__stat-card--percent">
-          <div className="dashboard__stat-icon">
-            <Icons.TrendingUp size={24} />
-          </div>
-          <div className="dashboard__stat-info">
-            <span className="dashboard__stat-value">{overall.percent}%</span>
-            <span className="dashboard__stat-label">Overall Progress</span>
+          <div className="dashboard__stat-card dashboard__stat-card--percent">
+            <div className="dashboard__stat-icon">
+              <Icons.TrendingUp size={20} />
+            </div>
+            <div className="dashboard__stat-info">
+              <span className="dashboard__stat-value">{overall.percent}%</span>
+              <span className="dashboard__stat-label">Overall Progress</span>
+            </div>
           </div>
         </div>
       </div>
