@@ -17,9 +17,17 @@
   transition: margin-left var(--transition-base);
 }
 
+.app__body--collapsed .app__content {
+  margin-left: var(--sidebar-collapsed);
+}
+
 /* Mobile: no sidebar margin */
 @media (max-width: 768px) {
   .app__content {
+    margin-left: 0;
+  }
+  
+  .app__body--collapsed .app__content {
     margin-left: 0;
   }
 }

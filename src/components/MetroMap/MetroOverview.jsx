@@ -260,7 +260,6 @@ const MetroOverview = () => {
                         strokeWidth="3"
                         strokeLinecap="round"
                         className="metro-overview__track-line"
-                        style={{ filter: `drop-shadow(0 0 4px ${path.color}40)` }}
                       />
                     ))}
                   </g>
@@ -302,8 +301,6 @@ const MetroOverview = () => {
                         </div>
                         {status === CERT_STATUS.IN_PROGRESS && <div className="metro-overview__node-half" />}
                       </div>
-
-                      {status === CERT_STATUS.IN_PROGRESS && <div className="metro-overview__pulse" />}
 
                       <div className="metro-overview__label">
                         <span className="metro-overview__label-code">{cert.examCode}</span>

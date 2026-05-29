@@ -28,7 +28,7 @@ const ProgressRing = ({ percent = 0, size = 64, strokeWidth = 4, color = '#0078d
         />
       </svg>
       <div className="progress-ring__content">
-        {showPercent && <span className="progress-ring__value">{percent}%</span>}
+        {showPercent && <span className="progress-ring__value" style={{ fontSize: Math.max(12, size * 0.25) }}>{percent}%</span>}
         {label && <span className="progress-ring__label">{label}</span>}
       </div>
     </div>

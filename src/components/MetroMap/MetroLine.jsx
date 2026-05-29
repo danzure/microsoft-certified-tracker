@@ -386,7 +386,6 @@ const MetroLine = () => {
                 strokeWidth={RAIL_WIDTH}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                style={{ filter: `drop-shadow(0 0 6px ${path.glowColor})` }}
               />
             ))}
         </g>
@@ -396,35 +395,7 @@ const MetroLine = () => {
 
   return (
     <div className="metro-line" style={{ '--path-color': path.color, '--path-glow': path.glowColor }}>
-      {/* ─── Path Header ─── */}
-      <div className="metro-line__header" id={`path-header-${path.id}`}>
-        <div className="metro-line__header-left">
-          <div className="metro-line__icon-wrapper">
-            <PathIcon size={28} />
-          </div>
-          <div>
-            <h1 className="metro-line__title">{path.name}</h1>
-            <p className="metro-line__description">{path.description}</p>
-          </div>
-        </div>
-        <div className="metro-line__header-right">
-          <div className="metro-line__stats">
-            <div className="metro-line__stat">
-              <span className="metro-line__stat-value">{prog.completed}</span>
-              <span className="metro-line__stat-label">Completed</span>
-            </div>
-            <div className="metro-line__stat">
-              <span className="metro-line__stat-value">{prog.inProgress}</span>
-              <span className="metro-line__stat-label">In Progress</span>
-            </div>
-            <div className="metro-line__stat">
-              <span className="metro-line__stat-value">{prog.total}</span>
-              <span className="metro-line__stat-label">Total</span>
-            </div>
-          </div>
-          <ProgressRing percent={prog.percent} size={72} strokeWidth={5} color={path.color} />
-        </div>
-      </div>
+
 
       {/* ─── Map Viewport ─── */}
       <div className="metro-line__map-viewport">

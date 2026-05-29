@@ -10,7 +10,7 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
   const closeSidebar = () => setSidebarOpen(false);
@@ -21,7 +21,7 @@ function App() {
         <ProgressProvider>
           <div className="app">
             <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
-            <div className="app__body">
+            <div className={`app__body ${sidebarOpen ? '' : 'app__body--collapsed'}`}>
               <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
               <main className="app__content" id="main-content">
                 <Routes>

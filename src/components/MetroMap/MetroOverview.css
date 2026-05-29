@@ -42,6 +42,7 @@
 .metro-overview__lane {
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--lane-color);
   border-radius: var(--radius-lg);
   overflow: hidden;
   animation: fadeInUp 400ms ease-out both;
@@ -68,30 +69,28 @@
 .metro-overview__lane-header {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--border-subtle);
-  background: var(--bg-surface-2);
+  background: transparent;
 }
 
 .metro-overview__lane-icon {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--lane-color);
-  color: white;
+  background: color-mix(in srgb, var(--lane-color) 15%, transparent);
+  color: var(--lane-color);
   flex-shrink: 0;
 }
 
 .metro-overview__lane-name {
-  font-size: var(--fs-caption1, 12px);
-  font-weight: var(--fw-bold);
+  font-size: var(--fs-body1, 14px);
+  font-weight: var(--fw-semibold);
   color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-wide, 0.05em);
 }
 
 .metro-overview__lane-divider {
@@ -138,7 +137,7 @@
 }
 
 .metro-overview__station:hover {
-  transform: translate(-10px, -10px) scale(1.1);
+  transform: translate(-10px, -10px);
   z-index: 3;
 }
 
@@ -178,8 +177,7 @@
 }
 
 .metro-overview__station:hover .metro-overview__node-outer {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--station-color) 20%, transparent),
-              0 0 8px var(--station-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--station-color) 20%, transparent);
 }
 
 .metro-overview__node-inner {
@@ -241,19 +239,6 @@
   border-radius: 2px;
 }
 
-/* Pulse */
-.metro-overview__pulse {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 18px;
-  height: 18px;
-  translate: -50% -50%;
-  border-radius: var(--radius-full);
-  border: 2px solid var(--status-in-progress);
-  animation: stationPulse 2s ease-in-out infinite;
-  pointer-events: none;
-}
 
 /* ─── Labels ─── */
 .metro-overview__label {

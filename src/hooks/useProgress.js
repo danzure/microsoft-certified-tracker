@@ -2,30 +2,36 @@ import { useState, useCallback, useEffect } from 'react';
 import { CERT_STATUS, certificationPaths } from '../data/certificationPaths';
 
 const STORAGE_KEY = 'ms-cert-tracker-progress';
+const IGNORED_STORAGE_KEY = 'ms-cert-tracker-ignored';
 
-const loadProgress = () => {
+const loadData = (key, defaultValue) => {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : {};
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : defaultValue;
   } catch {
-    return {};
+    return defaultValue;
   }
 };
 
-const saveProgress = (progress) => {
+const saveData = (key, data) => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    localStorage.setItem(key, JSON.stringify(data));
   } catch (e) {
-    console.error('Failed to save progress:', e);
+    console.error(`Failed to save ${key}:`, e);
   }
 };
 
 export const useProgress = () => {
-  const [progress, setProgress] = useState(loadProgress);
+  const [progress, setProgress] = useState(() => loadData(STORAGE_KEY, {}));
+  const [ignoredPaths, setIgnoredPaths] = useState(() => loadData(IGNORED_STORAGE_KEY, []));
 
   useEffect(() => {
-    saveProgress(progress);
+    saveData(STORAGE_KEY, progress);
   }, [progress]);
+
+  useEffect(() => {
+    saveData(IGNORED_STORAGE_KEY, ignoredPaths);
+  }, [ignoredPaths]);
 
   const getStatus = useCallback(
     (certId) => progress[certId] || CERT_STATUS.NOT_STARTED,
@@ -57,6 +63,16 @@ export const useProgress = () => {
     [progress, setStatus]
   );
 
+  const togglePathIgnored = useCallback((pathId) => {
+    setIgnoredPaths((prev) => 
+      prev.includes(pathId) ? prev.filter(id => id !== pathId) : [...prev, pathId]
+    );
+  }, []);
+
+  const isPathIgnored = useCallback((pathId) => {
+    return ignoredPaths.includes(pathId);
+  }, [ignoredPaths]);
+
   const getPathProgress = useCallback(
     (pathId) => {
       const path = certificationPaths.find((p) => p.id === pathId);
@@ -86,6 +102,8 @@ export const useProgress = () => {
     let inProgress = 0;
 
     certificationPaths.forEach((path) => {
+      if (ignoredPaths.includes(path.id)) return; // Skip ignored paths
+
       path.certifications.forEach((cert) => {
         // Skip interchange duplicates
         if (!cert.isInterchange) {
@@ -102,7 +120,7 @@ export const useProgress = () => {
       inProgress,
       percent: total > 0 ? Math.round((completed / total) * 100) : 0,
     };
-  }, [progress]);
+  }, [progress, ignoredPaths]);
 
   const resetAll = useCallback(() => {
     setProgress({});
@@ -110,11 +128,14 @@ export const useProgress = () => {
 
   return {
     progress,
+    ignoredPaths,
     getStatus,
     setStatus,
     cycleStatus,
     getPathProgress,
     getOverallProgress,
+    togglePathIgnored,
+    isPathIgnored,
     resetAll,
   };
 };

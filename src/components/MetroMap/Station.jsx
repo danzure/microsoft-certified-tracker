@@ -60,7 +60,6 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
             {cert.isInterchange && status === CERT_STATUS.NOT_STARTED && <ArrowRightLeft size={10} />}
           </div>
         </div>
-        {status === CERT_STATUS.IN_PROGRESS && <div className="station__pulse" />}
       </button>
 
       {/* Station Info Card */}
