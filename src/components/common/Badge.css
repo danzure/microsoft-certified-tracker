@@ -2,13 +2,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  padding: 2px var(--space-2);
+  padding: 2px var(--space-3);
   border-radius: var(--radius-full);
-  font-size: var(--fs-caption2);
+  font-size: var(--fs-caption1);
   font-weight: var(--fw-semibold);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  line-height: 1;
+  line-height: 1.2;
   white-space: nowrap;
   border: 1px solid transparent;
 }
@@ -63,6 +61,10 @@
 }
 
 .badge--small {
-  padding: 1px var(--space-1);
-  font-size: 9px;
+  padding: 1px var(--space-2);
+  font-size: var(--fs-caption2);
+}
+
+.badge--outline {
+  background: transparent !important;
 }

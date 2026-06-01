@@ -1,6 +1,6 @@
-import { X, ExternalLink, AlertTriangle, ArrowRightLeft } from 'lucide-react';
+import { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award } from 'lucide-react';
 import { useProgressContext } from '../../context/ProgressContext';
-import { CERT_STATUS } from '../../data/certificationPaths';
+import { CERT_STATUS, getCertById, getCertificationsRequiring } from '../../data/certificationPaths';
 import { isRetiring, formatDate } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import './CertDetail.css';
@@ -22,6 +22,8 @@ const CertDetail = ({ cert, path, onClose }) => {
     Expert: 'expert',
   }[cert.level] || 'default';
 
+  const prerequisiteFor = getCertificationsRequiring(cert.id);
+
   return (
     <>
       <div className="cert-detail__overlay" onClick={onClose} />
@@ -35,10 +37,10 @@ const CertDetail = ({ cert, path, onClose }) => {
             <span className="cert-detail__exam-code">{cert.examCode}</span>
             <h2 className="cert-detail__name">{cert.name}</h2>
             <div className="cert-detail__badges">
-              <Badge variant={levelVariant}>{cert.level}</Badge>
-              <Badge color={path.color}>{path.shortName}</Badge>
+              <Badge variant={levelVariant} outline>{cert.level}</Badge>
+              <Badge color={path.color} outline>{path.shortName}</Badge>
               {retiring && (
-                <Badge variant="retiring">
+                <Badge variant="retiring" outline>
                   <AlertTriangle size={10} />
                   Retiring
                 </Badge>
@@ -64,6 +66,23 @@ const CertDetail = ({ cert, path, onClose }) => {
             <p className="cert-detail__description">{cert.description}</p>
           </div>
 
+          <div className="cert-detail__section">
+            <h3 className="cert-detail__section-title">Validity & Renewal</h3>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-3)' }}>
+              {cert.level === 'Fundamentals' ? (
+                <>
+                  <Award size={20} style={{ color: path.color, flexShrink: 0 }} />
+                  <span className="cert-detail__description">This certification does not expire.</span>
+                </>
+              ) : (
+                <>
+                  <Calendar size={20} style={{ color: path.color, flexShrink: 0 }} />
+                  <span className="cert-detail__description">Valid for 1 year. Requires a free online renewal assessment every 12 months to maintain active status.</span>
+                </>
+              )}
+            </div>
+          </div>
+
           {retiring && (
             <div className="cert-detail__alert cert-detail__alert--warning">
               <AlertTriangle size={16} />
@@ -86,11 +105,13 @@ const CertDetail = ({ cert, path, onClose }) => {
                           Requires ONE of the following:
                         </div>
                         {preItem.map(subId => {
-                          const preCert = path.certifications.find((c) => c.id === subId);
+                          const preCertData = getCertById(subId);
+                          const preCert = preCertData?.cert;
+                          const prePath = preCertData?.path;
                           if (!preCert) return null;
                           return (
                             <div key={subId} className="cert-detail__prereq">
-                              <span className="cert-detail__prereq-code" style={{ color: path.color }}>{preCert.examCode}</span>
+                              <span className="cert-detail__prereq-code" style={{ color: prePath?.color || path.color }}>{preCert.examCode}</span>
                               <span className="cert-detail__prereq-name">{preCert.name}</span>
                             </div>
                           );
@@ -99,11 +120,13 @@ const CertDetail = ({ cert, path, onClose }) => {
                     );
                   }
 
-                  const preCert = path.certifications.find((c) => c.id === preItem);
+                  const preCertData = getCertById(preItem);
+                  const preCert = preCertData?.cert;
+                  const prePath = preCertData?.path;
                   if (!preCert) return null;
                   return (
                     <div key={preItem} className="cert-detail__prereq">
-                      <span className="cert-detail__prereq-code" style={{ color: path.color }}>{preCert.examCode}</span>
+                      <span className="cert-detail__prereq-code" style={{ color: prePath?.color || path.color }}>{preCert.examCode}</span>
                       <span className="cert-detail__prereq-name">{preCert.name}</span>
                     </div>
                   );
@@ -117,11 +140,29 @@ const CertDetail = ({ cert, path, onClose }) => {
               <h3 className="cert-detail__section-title">Recommended Before Taking</h3>
               <div className="cert-detail__prereqs cert-detail__prereqs--recommended">
                 {cert.recommendedPrereqs.map((preId) => {
-                  const preCert = path.certifications.find((c) => c.id === preId);
+                  const preCertData = getCertById(preId);
+                  const preCert = preCertData?.cert;
+                  const prePath = preCertData?.path;
                   if (!preCert) return null;
                   return (
                     <div key={preId} className="cert-detail__prereq">
-                      <span className="cert-detail__prereq-code" style={{ color: path.color }}>{preCert.examCode}</span>
+                      <span className="cert-detail__prereq-code" style={{ color: prePath?.color || path.color }}>{preCert.examCode}</span>
+                      <span className="cert-detail__prereq-name">{preCert.name}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {prerequisiteFor && prerequisiteFor.length > 0 && (
+            <div className="cert-detail__section">
+              <h3 className="cert-detail__section-title">Prerequisite For</h3>
+              <div className="cert-detail__prereqs">
+                {prerequisiteFor.map((preCert) => {
+                  return (
+                    <div key={preCert.id} className="cert-detail__prereq">
+                      <span className="cert-detail__prereq-code" style={{ color: preCert.pathColor || path.color }}>{preCert.examCode}</span>
                       <span className="cert-detail__prereq-name">{preCert.name}</span>
                     </div>
                   );

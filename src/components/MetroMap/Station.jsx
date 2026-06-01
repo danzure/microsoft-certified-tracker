@@ -1,14 +1,15 @@
 import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
-import { isRetiring, formatDate } from '../../utils/helpers';
+import { isRetiring, isRetired, formatDate } from '../../utils/helpers';
 import Badge from '../common/Badge';
-import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link } from 'lucide-react';
+import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX } from 'lucide-react';
 import './Station.css';
 
 const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
   const { getStatus, cycleStatus } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
+  const retired = isRetired(cert);
 
   const statusClass = {
     [CERT_STATUS.NOT_STARTED]: 'station--not-started',
@@ -60,7 +61,6 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
             {cert.isInterchange && status === CERT_STATUS.NOT_STARTED && <ArrowRightLeft size={10} />}
           </div>
         </div>
-        {status === CERT_STATUS.IN_PROGRESS && <div className="station__pulse" />}
       </button>
 
       {/* Station Info Card */}
@@ -100,6 +100,12 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
               <Badge variant="retiring" small>
                 <AlertTriangle size={9} />
                 Retiring {formatDate(cert.retirementDate)}
+              </Badge>
+            )}
+            {retired && (
+              <Badge variant="retiring" small outline>
+                <ArchiveX size={9} />
+                Retired {formatDate(cert.retirementDate)}
               </Badge>
             )}
             {cert.isInterchange && (

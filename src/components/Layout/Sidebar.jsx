@@ -15,26 +15,15 @@ const Sidebar = ({ isOpen, onClose }) => {
   return (
     <>
       {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
-      <aside className={`sidebar glass ${isOpen ? 'sidebar--open' : ''}`} id="path-sidebar">
-        <div className="sidebar__header">
-          <span className="sidebar__label">Certification Lines</span>
-        </div>
+      <aside className={`sidebar glass ${isOpen ? 'sidebar--open' : 'sidebar--collapsed'}`} id="path-sidebar">
         <nav className="sidebar__nav">
           {Object.values(PILLARS).map((pillarName) => {
             const pillarPaths = certificationPaths.filter((p) => p.pillar === pillarName);
             if (pillarPaths.length === 0) return null;
 
             return (
-              <div key={pillarName} className="sidebar__pillar-group" style={{ marginBottom: 'var(--space-4)' }}>
-                <div className="sidebar__pillar-title" style={{
-                  fontSize: 'var(--fs-caption1)',
-                  textTransform: 'uppercase',
-                  letterSpacing: 'var(--letter-spacing-wide)',
-                  color: 'var(--text-tertiary)',
-                  fontWeight: 'var(--fw-semibold)',
-                  padding: 'var(--space-2) var(--space-4)',
-                  marginTop: 'var(--space-2)',
-                }}>
+              <div key={pillarName} className="sidebar__pillar-group">
+                <div className="sidebar__pillar-title">
                   {pillarName}
                 </div>
                 {pillarPaths.map((path) => {
@@ -46,12 +35,16 @@ const Sidebar = ({ isOpen, onClose }) => {
                       className={({ isActive }) =>
                         `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
                       }
-                      onClick={onClose}
+                      onClick={() => {
+                        if (window.innerWidth <= 768) {
+                          onClose();
+                        }
+                      }}
                       id={`sidebar-${path.id}`}
                       style={{ '--line-color': path.color, '--line-glow': path.glowColor }}
                     >
                       <div className="sidebar__link-indicator" />
-                      <div className="sidebar__link-icon">
+                      <div className="sidebar__link-icon" title={path.shortName}>
                         {getIcon(path.icon)}
                       </div>
                       <div className="sidebar__link-content">
@@ -81,7 +74,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             className="sidebar__poster-link"
           >
             <Icons.ExternalLink size={14} />
-            Official Certification Poster
+            <span className="sidebar__poster-text">Official Certification Poster</span>
           </a>
           <div className="sidebar__legend">
             <div className="sidebar__legend-item">
