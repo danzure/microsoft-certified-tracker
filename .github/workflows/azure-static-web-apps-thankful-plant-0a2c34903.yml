@@ -42,5 +42,6 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
+          app_location: "/" # Required by the action even for close
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_PLANT_0A2C34903 }}
           action: "close"
