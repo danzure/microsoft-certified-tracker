@@ -309,8 +309,6 @@ const MetroLine = () => {
   }
 
   // ─── Helpers ───
-    const PathIcon = Icons[path.icon] || Icons.Circle;
-
   const renderStation = (cert, idx) => {
     const certStatus = getStatus(cert.id);
     const flatPrereqs = cert.prerequisites ? cert.prerequisites.flat() : [];
