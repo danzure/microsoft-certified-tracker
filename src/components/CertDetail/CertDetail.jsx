@@ -1,7 +1,7 @@
 import { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award } from 'lucide-react';
 import { useProgressContext } from '../../context/ProgressContext';
 import { CERT_STATUS, getCertById, getCertificationsRequiring } from '../../data/certificationPaths';
-import { isRetiring, formatDate } from '../../utils/helpers';
+import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import './CertDetail.css';
 
@@ -34,8 +34,20 @@ const CertDetail = ({ cert, path, onClose }) => {
             <X size={20} />
           </button>
           <div className="cert-detail__header-content">
-            <span className="cert-detail__exam-code">{cert.examCode}</span>
-            <h2 className="cert-detail__name">{cert.name}</h2>
+            <div className="cert-detail__title-row">
+              <div className="cert-detail__title-text">
+                <span className="cert-detail__exam-code">{cert.examCode}</span>
+                <h2 className="cert-detail__name">{cert.name}</h2>
+              </div>
+              {getBadgeUrl(cert.level, cert.id) && (
+                <img 
+                  src={getBadgeUrl(cert.level, cert.id)} 
+                  alt={`${cert.level} Badge`} 
+                  className="cert-detail__badge-icon" 
+                  loading="lazy"
+                />
+              )}
+            </div>
             <div className="cert-detail__badges">
               <Badge variant={levelVariant} outline>{cert.level}</Badge>
               <Badge color={path.color} outline>{path.shortName}</Badge>

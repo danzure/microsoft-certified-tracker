@@ -1,6 +1,6 @@
 import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
-import { isRetiring, isRetired, formatDate } from '../../utils/helpers';
+import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX } from 'lucide-react';
 import './Station.css';
@@ -65,6 +65,14 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
 
       {/* Station Info Card */}
       <div className="station__info" onClick={handleDetail}>
+        {getBadgeUrl(cert.level, cert.id) && (
+          <img 
+            src={getBadgeUrl(cert.level, cert.id)} 
+            alt={`${cert.level} Badge`} 
+            className="station__badge-icon" 
+            loading="lazy"
+          />
+        )}
         <div className="station__info-header">
           <span className="station__exam-code">{cert.examCode}</span>
           <div className="station__badges">

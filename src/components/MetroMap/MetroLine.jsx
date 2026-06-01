@@ -60,20 +60,21 @@ const MetroLine = () => {
 
     if (hasBranches) {
       // 1. Trunk fundamentals: chain them vertically
-      for (let i = 1; i < trunkFundamentals.length; i++) {
+      const chainedFundamentals = trunkFundamentals.filter(c => !c.isIndependent);
+      for (let i = 1; i < chainedFundamentals.length; i++) {
         connections.push({
-          from: trunkFundamentals[i - 1].id,
-          to: trunkFundamentals[i].id,
+          from: chainedFundamentals[i - 1].id,
+          to: chainedFundamentals[i].id,
           type: 'trunk',
         });
       }
 
       // 2. Fork: trunk fundamentals -> first cert in each branch
-      const lastTrunkFund = trunkFundamentals[trunkFundamentals.length - 1];
+      const lastTrunkFund = chainedFundamentals[chainedFundamentals.length - 1];
       if (lastTrunkFund) {
         branchColumns.forEach(branch => {
           const firstBranchCert = branch.allCerts[0];
-          if (firstBranchCert) {
+          if (firstBranchCert && !firstBranchCert.isIndependent) {
             connections.push({
               from: lastTrunkFund.id,
               to: firstBranchCert.id,
@@ -86,10 +87,11 @@ const MetroLine = () => {
 
       // 3. Within each branch: chain certs vertically
       branchColumns.forEach(branch => {
-        for (let i = 1; i < branch.allCerts.length; i++) {
+        const chainedBranchCerts = branch.allCerts.filter(c => !c.isIndependent);
+        for (let i = 1; i < chainedBranchCerts.length; i++) {
           connections.push({
-            from: branch.allCerts[i - 1].id,
-            to: branch.allCerts[i].id,
+            from: chainedBranchCerts[i - 1].id,
+            to: chainedBranchCerts[i].id,
             type: 'branch',
             branchId: branch.id,
           });
@@ -97,19 +99,21 @@ const MetroLine = () => {
       });
 
       // 4. Merge: last cert of each branch that has Expert/Specialty trunk-bottom -> first trunk-bottom cert
-      if (trunkBottom.length > 0) {
-        const firstBottom = trunkBottom[0];
+      const chainedBottom = trunkBottom.filter(c => !c.isIndependent);
+      if (chainedBottom.length > 0) {
+        const firstBottom = chainedBottom[0];
         
         // Flatten prerequisites to handle nested arrays representing "OR" groups (e.g., [['sc-200', 'sc-300']])
         const prereqs = firstBottom.prerequisites ? firstBottom.prerequisites.flat() : [];
 
         branchColumns.forEach(branch => {
-          const lastBranchCert = branch.allCerts[branch.allCerts.length - 1];
+          const chainedBranchCerts = branch.allCerts.filter(c => !c.isIndependent);
+          const lastBranchCert = chainedBranchCerts[chainedBranchCerts.length - 1];
           if (lastBranchCert) {
             // Only connect if the trunk bottom has no specific prereqs, or if this branch contains a prereq
             let shouldConnect = true;
             if (prereqs.length > 0) {
-              shouldConnect = branch.allCerts.some(c => prereqs.includes(c.id));
+              shouldConnect = chainedBranchCerts.some(c => prereqs.includes(c.id));
             }
 
             if (shouldConnect) {
@@ -125,16 +129,16 @@ const MetroLine = () => {
       }
 
       // 5. Trunk bottom: chain the expert/specialty certs
-      for (let i = 1; i < trunkBottom.length; i++) {
+      for (let i = 1; i < chainedBottom.length; i++) {
         connections.push({
-          from: trunkBottom[i - 1].id,
-          to: trunkBottom[i].id,
+          from: chainedBottom[i - 1].id,
+          to: chainedBottom[i].id,
           type: 'trunk',
         });
       }
     } else {
       // Linear layout: chain all certs in order of level groups
-      const orderedCerts = linearGroups.flatMap(g => g.certs);
+      const orderedCerts = linearGroups.flatMap(g => g.certs).filter(c => !c.isIndependent);
       for (let i = 1; i < orderedCerts.length; i++) {
         connections.push({
           from: orderedCerts[i - 1].id,
