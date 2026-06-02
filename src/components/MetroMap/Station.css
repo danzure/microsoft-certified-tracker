@@ -233,8 +233,14 @@
     height: 12px;
   }
 
-
   .station__info {
-    padding: var(--space-2);
+    padding: var(--space-2) 56px var(--space-2) var(--space-2);
+  }
+
+  .station__badge-icon {
+    top: var(--space-2);
+    right: var(--space-2);
+    width: 40px;
+    height: 40px;
   }
 }
