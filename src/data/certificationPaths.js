@@ -76,7 +76,7 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-700/',
         retirementDate: null,
-      },
+      },
       {
         id: 'az-305',
         examCode: 'AZ-305',
@@ -87,7 +87,7 @@ export const certificationPaths = [
         prerequisites: ['az-104'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-305/',
         retirementDate: null,
-      },
+      },
       {
         id: 'az-120',
         examCode: 'AZ-120',
@@ -207,7 +207,7 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-900/',
         retirementDate: null,
-      },
+      },
             {
         id: 'dp-700',
         examCode: 'DP-700',
@@ -403,7 +403,7 @@ export const certificationPaths = [
       { id: 'teams', name: 'Teams Track' },
       { id: 'collab', name: 'Collaboration Track' },
     ],
-    certifications: [
+    certifications: [
       {
         id: 'ms-102',
         examCode: 'MS-102',
@@ -414,7 +414,7 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ms-102/',
         retirementDate: null,
-      },
+      },
       {
         id: 'md-102',
         examCode: 'MD-102',
@@ -480,7 +480,7 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-900/',
         retirementDate: null,
-      },
+      },
       {
         id: 'pl-300',
         examCode: 'PL-300',
@@ -515,7 +515,7 @@ export const certificationPaths = [
         recommendedPrereqs: ['pl-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-400/',
         retirementDate: null,
-      },
+      },
     ],
   },
   {
@@ -768,7 +768,7 @@ export const certificationPaths = [
         level: CERT_LEVELS.FUNDAMENTALS,
         description: 'Validates fundamental knowledge of Git, GitHub products, collaboration, and repository management.',
         prerequisites: [],
-        learnUrl: 'https://resources.github.com/learn/certifications/',
+        learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-foundations/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
       },
       {
@@ -780,7 +780,7 @@ export const certificationPaths = [
         description: 'Focuses on automating software development workflows, pipeline optimization, and task automation.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
-        learnUrl: 'https://resources.github.com/learn/certifications/',
+        learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-actions/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
       },
       {
@@ -792,7 +792,7 @@ export const certificationPaths = [
         description: 'Covers security implementation, vulnerability identification, and managing security within the development lifecycle.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
-        learnUrl: 'https://resources.github.com/learn/certifications/',
+        learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-advanced-security/?practice-assessment-type=certification',
         retirementDate: null,
       },
       {
@@ -804,7 +804,7 @@ export const certificationPaths = [
         description: 'Validates the ability to manage and optimize GitHub environments, including repository management and collaboration.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
-        learnUrl: 'https://resources.github.com/learn/certifications/',
+        learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-administration/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
       },
       {
@@ -816,7 +816,7 @@ export const certificationPaths = [
         description: 'Focuses on using GitHub Copilot, covering prompt engineering, responsible AI, and integrating AI into development workflows.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
-        learnUrl: 'https://resources.github.com/learn/certifications/',
+        learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-copilot/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
       },
       {
@@ -828,7 +828,7 @@ export const certificationPaths = [
         description: 'Develop agentic workflows and advanced AI integrations on GitHub.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
-        learnUrl: 'https://resources.github.com/learn/certifications/',
+        learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/agentic-ai-developer/?practice-assessment-type=certification',
         retirementDate: null,
       },
     ],
