@@ -22,7 +22,7 @@ function App() {
           <div className="app">
             <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
             <div className={`app__body ${sidebarOpen ? '' : 'app__body--collapsed'}`}>
-              <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
+              <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} onToggle={toggleSidebar} />
               <main className="app__content" id="main-content">
                 <Routes>
                   <Route path="/" element={<Dashboard />} />

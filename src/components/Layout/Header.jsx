@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Map, LayoutDashboard, Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, Sun, Moon } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import SearchBar from '../common/SearchBar';
 import ProgressRing from '../common/ProgressRing';
@@ -19,7 +19,7 @@ const Header = ({ onToggleSidebar, sidebarOpen }) => {
   const pathProgress = activePath ? getPathProgress(activePath.id) : null;
 
   return (
-    <header className="header glass" id="app-header">
+    <header className="header" id="app-header">
       <div className="header__left">
         <button
           className="header__menu-btn"
@@ -27,20 +27,12 @@ const Header = ({ onToggleSidebar, sidebarOpen }) => {
           aria-label="Toggle sidebar"
           id="toggle-sidebar"
         >
-          {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+          <Menu size={20} />
         </button>
         <Link to="/" className="header__brand" id="brand-link">
-          <div className="header__logo">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <rect x="1" y="1" width="8" height="8" rx="1.5" fill="#f25022" />
-              <rect x="11" y="1" width="8" height="8" rx="1.5" fill="#7fba00" />
-              <rect x="1" y="11" width="8" height="8" rx="1.5" fill="#00a4ef" />
-              <rect x="11" y="11" width="8" height="8" rx="1.5" fill="#ffb900" />
-            </svg>
-          </div>
-          <div className="header__title">
-            <span className="header__title-main">atozazure | Certification Tracker</span>
-          </div>
+          <span className="header__brand-prefix">atozazure</span>
+          <span className="header__brand-divider hidden sm:inline">|</span>
+          <span className="header__brand-title hidden sm:inline">Certification Tracker</span>
         </Link>
       </div>
 
@@ -67,26 +59,7 @@ const Header = ({ onToggleSidebar, sidebarOpen }) => {
         )}
       </div>
 
-      <nav className="header__right">
-        <Link
-          to="/"
-          className={`header__nav-link ${location.pathname === '/' ? 'header__nav-link--active' : ''}`}
-          id="nav-dashboard"
-        >
-          <LayoutDashboard size={16} />
-          <span>Dashboard</span>
-        </Link>
-        <Link
-          to="/map"
-          className={`header__nav-link ${location.pathname === '/map' ? 'header__nav-link--active' : ''}`}
-          id="nav-map"
-        >
-          <Map size={16} />
-          <span>Map</span>
-        </Link>
-
-        <div className="header__divider" />
-
+      <div className="header__right">
         <button
           className="header__theme-toggle"
           onClick={toggleTheme}
@@ -94,13 +67,10 @@ const Header = ({ onToggleSidebar, sidebarOpen }) => {
           title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
           id="theme-toggle"
         >
-          <div className="header__theme-icon-wrapper">
-            <Sun size={16} className={`header__theme-icon ${!isDark ? 'header__theme-icon--active' : ''}`} />
-            <Moon size={16} className={`header__theme-icon ${isDark ? 'header__theme-icon--active' : ''}`} />
-          </div>
+          {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          <span className="header__theme-text hidden sm:inline">{isDark ? 'Light' : 'Dark'}</span>
         </button>
-
-      </nav>
+      </div>
     </header>
   );
 };

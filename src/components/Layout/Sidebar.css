@@ -22,6 +22,59 @@
   transition: transform var(--transition-base), width var(--transition-base);
 }
 
+.sidebar__header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: padding var(--transition-base), justify-content var(--transition-base);
+  flex-shrink: 0;
+}
+
+.sidebar__header--open {
+  padding: 0 var(--space-4);
+  justify-content: space-between;
+}
+
+.sidebar__header--collapsed {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar__header-title {
+  font-weight: var(--fw-semibold);
+  font-size: 16px;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  padding-left: 4px;
+}
+
+.sidebar__toggle-btn {
+  padding: 6px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.sidebar__toggle-btn:hover {
+  background: var(--colorSubtleBackgroundHover);
+  color: var(--text-primary);
+}
+
+.sidebar__toggle-desktop {
+  display: flex;
+}
+
+.sidebar__toggle-mobile {
+  display: none;
+}
+
 .sidebar__nav {
   flex: 1;
   padding: var(--space-4) var(--space-2) 0;
@@ -254,5 +307,18 @@
   .sidebar--open ~ .sidebar-overlay,
   .sidebar-overlay {
     display: block;
+  }
+
+  .sidebar__toggle-desktop {
+    display: none;
+  }
+  
+  .sidebar__toggle-mobile {
+    display: flex;
+  }
+
+  .sidebar__header--collapsed {
+    padding: 0 var(--space-4);
+    justify-content: space-between;
   }
 }

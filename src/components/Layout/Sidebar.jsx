@@ -4,7 +4,7 @@ import { useProgressContext } from '../../context/ProgressContext';
 import * as Icons from 'lucide-react';
 import './Sidebar.css';
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, onToggle }) => {
   const { getPathProgress } = useProgressContext();
 
   const getIcon = (iconName) => {
@@ -16,7 +16,55 @@ const Sidebar = ({ isOpen, onClose }) => {
     <>
       {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
       <aside className={`sidebar glass ${isOpen ? 'sidebar--open' : 'sidebar--collapsed'}`} id="path-sidebar">
+        <div className={`sidebar__header ${isOpen ? 'sidebar__header--open' : 'sidebar__header--collapsed'}`}>
+          {isOpen && <span className="sidebar__header-title">Navigation</span>}
+          <button className="sidebar__toggle-btn sidebar__toggle-desktop" onClick={onToggle} aria-label="Toggle sidebar">
+            {isOpen ? <Icons.ChevronsLeft size={20} /> : <Icons.ChevronsRight size={20} />}
+          </button>
+          <button className="sidebar__toggle-btn sidebar__toggle-mobile" onClick={onClose} aria-label="Close sidebar">
+            <Icons.X size={20} />
+          </button>
+        </div>
         <nav className="sidebar__nav">
+          <div className="sidebar__pillar-group">
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) => `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`}
+              onClick={() => {
+                if (window.innerWidth <= 768) {
+                  onClose();
+                }
+              }}
+              style={{ '--line-color': 'var(--colorBrandForeground1)' }}
+            >
+              <div className="sidebar__link-indicator" />
+              <div className="sidebar__link-icon" title="Dashboard">
+                <Icons.LayoutDashboard size={18} />
+              </div>
+              <div className="sidebar__link-content">
+                <span className="sidebar__link-name">Dashboard</span>
+              </div>
+            </NavLink>
+            <NavLink
+              to="/map"
+              className={({ isActive }) => `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`}
+              onClick={() => {
+                if (window.innerWidth <= 768) {
+                  onClose();
+                }
+              }}
+              style={{ '--line-color': 'var(--colorBrandForeground1)' }}
+            >
+              <div className="sidebar__link-indicator" />
+              <div className="sidebar__link-icon" title="Map">
+                <Icons.Map size={18} />
+              </div>
+              <div className="sidebar__link-content">
+                <span className="sidebar__link-name">Map</span>
+              </div>
+            </NavLink>
+          </div>
           {Object.values(PILLARS).map((pillarName) => {
             const pillarPaths = certificationPaths.filter((p) => p.pillar === pillarName);
             if (pillarPaths.length === 0) return null;
