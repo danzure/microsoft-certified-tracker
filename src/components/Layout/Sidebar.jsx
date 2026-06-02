@@ -46,24 +46,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
                 <span className="sidebar__link-name">Dashboard</span>
               </div>
             </NavLink>
-            <NavLink
-              to="/map"
-              className={({ isActive }) => `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`}
-              onClick={() => {
-                if (window.innerWidth <= 768) {
-                  onClose();
-                }
-              }}
-              style={{ '--line-color': 'var(--colorBrandForeground1)' }}
-            >
-              <div className="sidebar__link-indicator" />
-              <div className="sidebar__link-icon" title="Map">
-                <Icons.Map size={20} />
-              </div>
-              <div className="sidebar__link-content">
-                <span className="sidebar__link-name">Map</span>
-              </div>
-            </NavLink>
+
           </div>
           {Object.values(PILLARS).map((pillarName) => {
             const pillarPaths = certificationPaths.filter((p) => p.pillar === pillarName);

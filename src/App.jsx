@@ -5,7 +5,7 @@ import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import Dashboard from './components/Dashboard/Dashboard';
 import MetroLine from './components/MetroMap/MetroLine';
-import MetroOverview from './components/MetroMap/MetroOverview';
+
 import { useState } from 'react';
 import './App.css';
 
@@ -27,7 +27,6 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/path/:pathId" element={<MetroLine />} />
-                  <Route path="/map" element={<MetroOverview />} />
                 </Routes>
               </main>
             </div>
