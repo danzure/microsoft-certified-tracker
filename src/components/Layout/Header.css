@@ -7,17 +7,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-4) 0 var(--space-3);
+  padding: 0 12px;
   z-index: var(--z-header);
-  background: linear-gradient(135deg, var(--colorBrandBackground), var(--colorBrandBackgroundHover));
+  background: linear-gradient(135deg, #0f6cbd 0%, #115ea3 100%);
   border-bottom: 1px solid transparent;
   color: #ffffff;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 2px rgba(0, 0, 0, 0.06);
 }
 
 [data-theme="dark"] .header {
-  background: var(--bg-surface-2);
-  border-bottom: 1px solid var(--border-subtle);
+  background: var(--colorNeutralBackground4);
+  border-bottom: 1px solid var(--border-default);
   color: var(--text-primary);
   box-shadow: none;
 }
@@ -31,7 +31,7 @@
 }
 
 .header__left {
-  gap: var(--space-2);
+  gap: 8px;
   flex: 1;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .header__menu-btn {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 6px;
@@ -69,28 +69,30 @@
 .header__brand {
   display: flex;
   align-items: baseline;
+  gap: 8px;
   text-decoration: none;
   min-width: 0;
   color: inherit;
 }
 
 .header__brand-prefix {
-  font-weight: var(--fw-semibold);
+  font-weight: 600;
   font-size: 16px;
-  letter-spacing: var(--letter-spacing-tight);
+  letter-spacing: -0.025em;
+  color: #ffffff;
   flex-shrink: 0;
 }
 
 .header__brand-divider {
   font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
   margin: 0 4px;
-  opacity: 0.4;
 }
 
 .header__brand-title {
   font-size: 12px;
-  opacity: 0.8;
-  letter-spacing: var(--letter-spacing-wide);
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.025em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -179,6 +181,12 @@
 }
 
 @media (min-width: 769px) {
+  .header {
+    padding: 0 20px;
+  }
+  .header__left {
+    gap: 16px;
+  }
   .header__menu-btn {
     display: none;
   }
@@ -189,7 +197,10 @@
     display: none;
   }
   .header {
-    padding: 0 var(--space-3) 0 var(--space-2);
-    gap: var(--space-2);
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .header__menu-btn {
+    display: flex;
   }
 }
