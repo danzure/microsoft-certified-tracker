@@ -3,6 +3,7 @@ import { CERT_STATUS, certificationPaths } from '../data/certificationPaths';
 
 const STORAGE_KEY = 'ms-cert-tracker-progress';
 const IGNORED_STORAGE_KEY = 'ms-cert-tracker-ignored';
+const DISMISSED_CERTS_KEY = 'ms-cert-tracker-dismissed-certs';
 
 const loadData = (key, defaultValue) => {
   try {
@@ -24,6 +25,7 @@ const saveData = (key, data) => {
 export const useProgress = () => {
   const [progress, setProgress] = useState(() => loadData(STORAGE_KEY, {}));
   const [ignoredPaths, setIgnoredPaths] = useState(() => loadData(IGNORED_STORAGE_KEY, []));
+  const [dismissedCerts, setDismissedCerts] = useState(() => loadData(DISMISSED_CERTS_KEY, []));
 
   useEffect(() => {
     saveData(STORAGE_KEY, progress);
@@ -32,6 +34,10 @@ export const useProgress = () => {
   useEffect(() => {
     saveData(IGNORED_STORAGE_KEY, ignoredPaths);
   }, [ignoredPaths]);
+
+  useEffect(() => {
+    saveData(DISMISSED_CERTS_KEY, dismissedCerts);
+  }, [dismissedCerts]);
 
   const getStatus = useCallback(
     (certId) => progress[certId] || CERT_STATUS.NOT_STARTED,
@@ -72,6 +78,16 @@ export const useProgress = () => {
   const isPathIgnored = useCallback((pathId) => {
     return ignoredPaths.includes(pathId);
   }, [ignoredPaths]);
+
+  const toggleCertDismissed = useCallback((certId) => {
+    setDismissedCerts((prev) =>
+      prev.includes(certId) ? prev.filter(id => id !== certId) : [...prev, certId]
+    );
+  }, []);
+
+  const isCertDismissed = useCallback((certId) => {
+    return dismissedCerts.includes(certId);
+  }, [dismissedCerts]);
 
   const getPathProgress = useCallback(
     (pathId) => {
@@ -129,6 +145,7 @@ export const useProgress = () => {
   return {
     progress,
     ignoredPaths,
+    dismissedCerts,
     getStatus,
     setStatus,
     cycleStatus,
@@ -136,6 +153,8 @@ export const useProgress = () => {
     getOverallProgress,
     togglePathIgnored,
     isPathIgnored,
+    toggleCertDismissed,
+    isCertDismissed,
     resetAll,
   };
 };

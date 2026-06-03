@@ -283,84 +283,114 @@
   background: var(--colorBrandForeground1);
 }
 
-/* ─── Bottom Row (Currently Studying & Recommended) ─── */
-.dashboard__bottom-row {
+/* ─── Activity Strip (Between Stats & Path Cards) ─── */
+.dashboard__activity-strip {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border-subtle);
+  gap: 20px;
 }
 
 @media (min-width: 1024px) {
-  .dashboard__bottom-row {
+  .dashboard__activity-strip {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.dashboard__section-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.dashboard__list-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.dashboard__activity-panel {
   background: var(--colorNeutralBackground1);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  padding: 16px;
-  cursor: pointer;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-  transition: all 300ms ease-in-out;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 2px rgba(0, 0, 0, 0.06);
+  animation: slideUp 500ms ease-out both;
 }
 
-[data-theme="dark"] .dashboard__list-item {
+[data-theme="dark"] .dashboard__activity-panel {
   background: var(--colorNeutralBackground3);
   box-shadow: none;
 }
 
-.dashboard__list-item:hover {
-  border-color: var(--colorBrandBackground);
-  background: var(--colorNeutralBackground4);
-  transform: translateY(-2px);
+.dashboard__activity-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
-.dashboard__list-item-icon {
-  width: 40px;
-  height: 40px;
+.dashboard__activity-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--colorBrandForeground1);
+  background: color-mix(in srgb, var(--colorBrandForeground1) 12%, transparent);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 4px;
+  line-height: 1.4;
+}
+
+.dashboard__activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dashboard__activity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--colorNeutralBackground4);
+  border: 1px solid transparent;
   border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+[data-theme="dark"] .dashboard__activity-item {
+  background: var(--colorNeutralBackground1);
+}
+
+.dashboard__activity-item:hover {
+  border-color: var(--colorBrandBackground);
+  background: color-mix(in srgb, var(--colorBrandBackground) 6%, var(--colorNeutralBackground1));
+  transform: translateX(2px);
+}
+
+.dashboard__activity-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: color-mix(in srgb, var(--card-color) 15%, transparent);
+  color: var(--card-color);
 }
 
-.dashboard__list-item-info {
+.dashboard__activity-item-info {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
+  gap: 1px;
 }
 
-.dashboard__list-item-code {
+.dashboard__activity-item-code {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--card-color);
   line-height: 1;
-  margin-bottom: 4px;
 }
 
-.dashboard__list-item-name {
-  font-size: 14px;
+.dashboard__activity-item-name {
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -368,13 +398,46 @@
   text-overflow: ellipsis;
 }
 
-.dashboard__list-item-chevron {
+.dashboard__activity-item-dismiss {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
   color: var(--text-tertiary);
-  transition: color 200ms;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 200ms ease;
+  opacity: 0;
 }
 
-.dashboard__list-item:hover .dashboard__list-item-chevron {
+.dashboard__activity-item:hover .dashboard__activity-item-dismiss {
+  opacity: 1;
+}
+
+.dashboard__activity-item-dismiss:hover {
+  background: color-mix(in srgb, #d13438 10%, transparent);
+  color: #d13438;
+  border-color: color-mix(in srgb, #d13438 25%, transparent);
+}
+
+.dashboard__activity-item-dismiss:active {
+  background: color-mix(in srgb, #d13438 18%, transparent);
+  transform: scale(0.92);
+}
+
+.dashboard__activity-item-chevron {
+  color: var(--text-tertiary);
+  transition: all 200ms ease;
+  flex-shrink: 0;
+}
+
+.dashboard__activity-item:hover .dashboard__activity-item-chevron {
   color: var(--colorBrandForeground1);
+  transform: translateX(2px);
 }
 
 /* ─── Animations ─── */

@@ -19,20 +19,6 @@ const Dashboard = () => {
         .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
     );
 
-  // Recommended next: first not-started cert in paths that have at least one completed/in-progress
-  const recommendations = certificationPaths
-    .filter(path => !isPathIgnored(path.id))
-    .map((path) => {
-      const hasProgress = path.certifications.some(
-        (c) => getStatus(c.id) === CERT_STATUS.COMPLETED || getStatus(c.id) === CERT_STATUS.IN_PROGRESS
-      );
-      if (!hasProgress) return null;
-      const nextCert = path.certifications.find((c) => getStatus(c.id) === CERT_STATUS.NOT_STARTED);
-      if (!nextCert) return null;
-      return { ...nextCert, pathName: path.shortName, pathColor: path.color, pathId: path.id };
-    })
-    .filter(Boolean)
-    .slice(0, 3);
 
   return (
     <div className="dashboard" id="dashboard">
@@ -86,6 +72,44 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Activity & Recommendations Strip */}
+      {inProgressCerts.length > 0 && (
+        <div className="dashboard__activity-strip">
+          {/* Currently Studying */}
+          {inProgressCerts.length > 0 && (
+            <div className="dashboard__activity-panel">
+              <h2 className="dashboard__activity-title">
+                <Icons.Clock size={18} />
+                Currently Studying
+                <span className="dashboard__activity-count">{inProgressCerts.length}</span>
+              </h2>
+              <div className="dashboard__activity-list">
+                {inProgressCerts.map((cert) => (
+                  <div
+                    key={cert.id}
+                    className="dashboard__activity-item"
+                    onClick={() => navigate(`/path/${cert.pathId}`)}
+                    style={{ '--card-color': cert.pathColor }}
+                  >
+                    <div className="dashboard__activity-item-icon">
+                      <Icons.BookOpen size={16} />
+                    </div>
+                    <div className="dashboard__activity-item-info">
+                      <span className="dashboard__activity-item-code">{cert.examCode}</span>
+                      <span className="dashboard__activity-item-name">{cert.name}</span>
+                    </div>
+                    <Badge color={cert.pathColor} small>{cert.pathName}</Badge>
+                    <Icons.ChevronRight size={16} className="dashboard__activity-item-chevron" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+
+        </div>
+      )}
 
       {/* Path Cards */}
       <div className="dashboard__section">
@@ -173,68 +197,7 @@ const Dashboard = () => {
         })}
       </div>
 
-      {/* Bottom Row */}
-      <div className="dashboard__bottom-row">
-        {/* In Progress */}
-        {inProgressCerts.length > 0 && (
-          <div className="dashboard__section-half">
-            <h2 className="dashboard__section-title">
-              <Icons.Clock size={20} />
-              Currently Studying
-            </h2>
-            <div className="dashboard__active-list">
-              {inProgressCerts.map((cert) => (
-                <div
-                  key={cert.id}
-                  className="dashboard__list-item"
-                  onClick={() => navigate(`/path/${cert.pathId}`)}
-                  style={{ '--card-color': cert.pathColor }}
-                >
-                  <div className="dashboard__list-item-icon" style={{ background: `color-mix(in srgb, var(--card-color) 15%, transparent)`, color: 'var(--card-color)' }}>
-                    <Icons.BookOpen size={20} />
-                  </div>
-                  <div className="dashboard__list-item-info">
-                    <span className="dashboard__list-item-code">{cert.examCode}</span>
-                    <span className="dashboard__list-item-name">{cert.name}</span>
-                  </div>
-                  <Badge color={cert.pathColor} small>{cert.pathName}</Badge>
-                  <Icons.ChevronRight size={18} className="dashboard__list-item-chevron" />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {/* Recommendations */}
-        {recommendations.length > 0 && (
-          <div className="dashboard__section-half">
-            <h2 className="dashboard__section-title">
-              <Icons.Lightbulb size={20} />
-              Recommended Next
-            </h2>
-            <div className="dashboard__active-list">
-              {recommendations.map((cert) => (
-                <div
-                  key={cert.id}
-                  className="dashboard__list-item"
-                  onClick={() => navigate(`/path/${cert.pathId}`)}
-                  style={{ '--card-color': cert.pathColor }}
-                >
-                  <div className="dashboard__list-item-icon" style={{ background: `color-mix(in srgb, var(--card-color) 15%, transparent)`, color: 'var(--card-color)' }}>
-                    <Icons.Lightbulb size={20} />
-                  </div>
-                  <div className="dashboard__list-item-info">
-                    <span className="dashboard__list-item-code">{cert.examCode}</span>
-                    <span className="dashboard__list-item-name">{cert.name}</span>
-                  </div>
-                  <Badge color={cert.pathColor} small>{cert.pathName}</Badge>
-                  <Icons.ChevronRight size={18} className="dashboard__list-item-chevron" />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 };
