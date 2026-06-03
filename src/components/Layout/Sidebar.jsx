@@ -107,20 +107,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
             <Icons.ExternalLink size={14} />
             <span className="sidebar__poster-text">Official Certification Poster</span>
           </a>
-          <div className="sidebar__legend">
-            <div className="sidebar__legend-item">
-              <span className="sidebar__legend-dot sidebar__legend-dot--completed" />
-              <span>Completed</span>
-            </div>
-            <div className="sidebar__legend-item">
-              <span className="sidebar__legend-dot sidebar__legend-dot--progress" />
-              <span>In Progress</span>
-            </div>
-            <div className="sidebar__legend-item">
-              <span className="sidebar__legend-dot sidebar__legend-dot--not-started" />
-              <span>Not Started</span>
-            </div>
-          </div>
+
         </div>
       </aside>
     </>
