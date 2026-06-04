@@ -217,6 +217,25 @@
   text-decoration: underline;
 }
 
+/* Ignored/Excluded */
+.station--ignored {
+  opacity: 0.45;
+  transition: opacity var(--transition-fast);
+}
+
+.station--ignored:hover {
+  opacity: 0.7;
+}
+
+.station--ignored .station__node-outer {
+  border-style: dashed;
+  border-color: var(--text-disabled);
+}
+
+.station--ignored .station__info {
+  border-style: dashed;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .station {

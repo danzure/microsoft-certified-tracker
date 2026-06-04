@@ -1,14 +1,26 @@
-import { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award } from 'lucide-react';
+import { IconMap } from '../common/IconMap';
+const { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award, EyeOff, Eye } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
 import { CERT_STATUS, getCertById, getCertificationsRequiring } from '../../data/certificationPaths';
 import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import './CertDetail.css';
 
+/**
+ * A modal panel displaying comprehensive details for a specific certification.
+ * Shows description, skills measured, prerequisites, validity, and provides controls
+ * to update the tracking status or exclude the certification.
+ * 
+ * @param {Object} props
+ * @param {Object} props.cert - The certification data object
+ * @param {Object} props.path - The parent path data object
+ * @param {Function} props.onClose - Callback to close the detail panel
+ */
 const CertDetail = ({ cert, path, onClose }) => {
-  const { getStatus, setStatus } = useProgressContext();
+  const { getStatus, setStatus, toggleCertIgnored, isCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
+  const certIgnored = isCertIgnored(cert.id);
 
   const statusOptions = [
     { value: CERT_STATUS.NOT_STARTED, label: 'Not Started', icon: '○', className: 'cert-detail__status-btn--not-started' },
@@ -27,7 +39,7 @@ const CertDetail = ({ cert, path, onClose }) => {
   return (
     <>
       <div className="cert-detail__overlay" onClick={onClose} />
-      <div className="cert-detail glass" style={{ '--detail-color': path.color }} id="cert-detail-panel">
+      <div className="cert-detail" style={{ '--detail-color': path.color }} id="cert-detail-panel">
         <div className="cert-detail__header">
           <div className="cert-detail__header-strip" />
           <button className="cert-detail__close" onClick={onClose} aria-label="Close detail panel">
@@ -77,6 +89,17 @@ const CertDetail = ({ cert, path, onClose }) => {
             <h3 className="cert-detail__section-title">Description</h3>
             <p className="cert-detail__description">{cert.description}</p>
           </div>
+
+          {cert.skillsMeasured && cert.skillsMeasured.length > 0 && (
+            <div className="cert-detail__section">
+              <h3 className="cert-detail__section-title">Skills Measured</h3>
+              <ul className="cert-detail__skills-list">
+                {cert.skillsMeasured.map((skill, index) => (
+                  <li key={index} className="cert-detail__skill-item">{skill}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="cert-detail__section">
             <h3 className="cert-detail__section-title">Validity & Renewal</h3>
@@ -184,13 +207,31 @@ const CertDetail = ({ cert, path, onClose }) => {
           )}
 
           <div className="cert-detail__section">
+            <h3 className="cert-detail__section-title">Tracking</h3>
+            <button
+              className={`cert-detail__ignore-btn ${certIgnored ? 'cert-detail__ignore-btn--active' : ''}`}
+              onClick={() => toggleCertIgnored(cert.id)}
+            >
+              {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
+              <span>{certIgnored ? 'Excluded from tracking' : 'Included in tracking'}</span>
+              <span className={`cert-detail__ignore-toggle ${certIgnored ? 'cert-detail__ignore-toggle--off' : ''}`}>
+                <span className="cert-detail__ignore-toggle-thumb" />
+              </span>
+            </button>
+            {certIgnored && (
+              <p className="cert-detail__ignore-hint">This certification won't count towards your overall or path progress.</p>
+            )}
+          </div>
+
+          <div className="cert-detail__section">
             <h3 className="cert-detail__section-title">Your Status</h3>
-            <div className="cert-detail__status-options">
+            <div className={`cert-detail__status-options ${certIgnored ? 'cert-detail__status-options--disabled' : ''}`}>
               {statusOptions.map((opt) => (
                 <button
                   key={opt.value}
                   className={`cert-detail__status-btn ${opt.className} ${status === opt.value ? 'cert-detail__status-btn--active' : ''}`}
                   onClick={() => setStatus(cert.id, opt.value)}
+                  disabled={certIgnored}
                 >
                   <span className="cert-detail__status-icon">{opt.icon}</span>
                   {opt.label}

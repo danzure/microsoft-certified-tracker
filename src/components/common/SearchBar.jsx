@@ -1,9 +1,17 @@
-import { Search, X } from 'lucide-react';
+import { IconMap } from './IconMap';
+const { Search, X } = IconMap;
 import { useState, useRef } from 'react';
 import { getAllCertifications } from '../../data/certificationPaths';
 import { useNavigate } from 'react-router-dom';
 import './SearchBar.css';
 
+/**
+ * A search component with autocomplete dropdown that searches across all available certifications.
+ * Displays results that match the query in name, code, path name, or description.
+ * 
+ * @param {Object} props
+ * @param {Function} [props.onClose] - Optional callback triggered when a search result is selected
+ */
 const SearchBar = ({ onClose }) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);

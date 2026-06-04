@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Sun, Moon } from 'lucide-react';
-import * as Icons from 'lucide-react';
+import { IconMap as Icons } from '../common/IconMap';
+const { Menu, Sun, Moon } = Icons;
 import SearchBar from '../common/SearchBar';
 import ProgressRing from '../common/ProgressRing';
 import { useProgressContext } from '../../context/ProgressContext';
@@ -8,7 +8,17 @@ import { useTheme } from '../../context/ThemeContext';
 import { getPathById } from '../../data/certificationPaths';
 import './Header.css';
 
-const Header = ({ onToggleSidebar, sidebarOpen }) => {
+/**
+ * Header Component
+ * 
+ * Displays the top navigation bar containing the sidebar toggle,
+ * application brand, theme toggle, and context-aware central content
+ * (either a search bar or the active path's progress).
+ * 
+ * @param {Object} props
+ * @param {Function} props.onToggleSidebar - Callback to toggle the sidebar's open/close state
+ */
+const Header = ({ onToggleSidebar }) => {
   const location = useLocation();
   const { getPathProgress } = useProgressContext();
   const { toggleTheme, isDark } = useTheme();

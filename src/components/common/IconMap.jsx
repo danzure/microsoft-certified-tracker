@@ -1,0 +1,102 @@
+import {
+  OpenRegular,
+  DismissRegular,
+  SearchRegular,
+  NavigationRegular,
+  WeatherSunnyRegular,
+  WeatherMoonRegular,
+  ChevronDoubleLeftRegular,
+  ChevronDoubleRightRegular,
+  CircleRegular,
+  CheckmarkCircleRegular,
+  ClockRegular,
+  ArrowTrendingRegular,
+  BookOpenRegular,
+  ChevronRightRegular,
+  ArrowRightRegular,
+  EyeRegular,
+  EyeOffRegular,
+  TrophyRegular,
+  WarningRegular,
+  ArrowSwapRegular,
+  CalendarRegular,
+  ArchiveRegular,
+  CheckmarkRegular,
+  LinkRegular,
+  LocationOffRegular,
+  BranchForkRegular,
+} from '@fluentui/react-icons';
+
+// Microsoft Product Icons (custom SVGs for certification paths)
+import {
+  AzureIcon,
+  AzureAIIcon,
+  DataAnalyticsIcon,
+  SecurityIcon,
+  M365Icon,
+  PowerPlatformIcon,
+  CopilotIcon,
+  DynamicsIcon,
+  GitHubIcon,
+  ArchiveIcon,
+  DashboardIcon,
+} from './ProductIcons';
+
+const withSize = (IconComponent) => {
+  // eslint-disable-next-line no-unused-vars
+  return function WrappedIcon({ size, className, style, strokeWidth: _strokeWidth, ...props }) {
+    const defaultSize = 20;
+    const finalSize = size || defaultSize;
+    // Fluent UI icons use width/height or fontSize. We provide both to be safe.
+    const customStyle = { 
+      fontSize: finalSize, 
+      width: finalSize, 
+      height: finalSize, 
+      ...style 
+    };
+    return <IconComponent className={className} style={customStyle} {...props} />;
+  };
+};
+
+export const IconMap = {
+  // ── Microsoft Product Icons (certification paths) ──
+  Cloud: AzureIcon,
+  Brain: AzureAIIcon,
+  Database: DataAnalyticsIcon,
+  Shield: SecurityIcon,
+  Monitor: M365Icon,
+  Zap: PowerPlatformIcon,
+  Bot: CopilotIcon,
+  Briefcase: DynamicsIcon,
+  GitHub: GitHubIcon,
+  GitBranch: withSize(BranchForkRegular),
+  Archive: ArchiveIcon,
+
+  // ── UI Icons (Fluent UI) ──
+  LayoutDashboard: DashboardIcon,
+  ExternalLink: withSize(OpenRegular),
+  X: withSize(DismissRegular),
+  Search: withSize(SearchRegular),
+  Menu: withSize(NavigationRegular),
+  Sun: withSize(WeatherSunnyRegular),
+  Moon: withSize(WeatherMoonRegular),
+  ChevronsLeft: withSize(ChevronDoubleLeftRegular),
+  ChevronsRight: withSize(ChevronDoubleRightRegular),
+  Circle: withSize(CircleRegular),
+  CheckCircle2: withSize(CheckmarkCircleRegular),
+  Clock: withSize(ClockRegular),
+  TrendingUp: withSize(ArrowTrendingRegular),
+  BookOpen: withSize(BookOpenRegular),
+  ChevronRight: withSize(ChevronRightRegular),
+  ArrowRight: withSize(ArrowRightRegular),
+  Eye: withSize(EyeRegular),
+  EyeOff: withSize(EyeOffRegular),
+  Award: withSize(TrophyRegular),
+  AlertTriangle: withSize(WarningRegular),
+  ArrowRightLeft: withSize(ArrowSwapRegular),
+  Calendar: withSize(CalendarRegular),
+  ArchiveX: withSize(ArchiveRegular),
+  Check: withSize(CheckmarkRegular),
+  Link: withSize(LinkRegular),
+  MapPinOff: withSize(LocationOffRegular),
+};

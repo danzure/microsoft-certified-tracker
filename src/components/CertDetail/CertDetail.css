@@ -1,7 +1,7 @@
 .cert-detail__overlay {
   position: fixed;
   inset: 0;
-  background: var(--bg-overlay);
+  background: rgba(0, 0, 0, 0.4);
   z-index: var(--z-overlay);
   animation: fadeIn 150ms ease-out;
 }
@@ -11,21 +11,22 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 440px;
+  width: 480px;
   max-width: 100vw;
   z-index: var(--z-modal);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  animation: slideInFromRight 250ms var(--curve-decelerate);
-  background: var(--bg-surface-1);
-  border-left: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-xl);
+  animation: slideInFromRight 250ms cubic-bezier(0.1, 0.9, 0.2, 1);
+  background: #ffffff;
+  border-left: 1px solid #e0e0e0;
+  box-shadow: 0 25.6px 57.6px 0 rgba(0, 0, 0, 0.22), 0 4.8px 14.4px 0 rgba(0, 0, 0, 0.18);
+  font-family: 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
 }
 
 .cert-detail__header {
   position: relative;
-  padding: var(--space-8) var(--space-8) var(--space-4);
+  padding: 32px 32px 16px;
 }
 
 .cert-detail__header-strip {
@@ -39,187 +40,217 @@
 
 .cert-detail__close {
   position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
+  top: 16px;
+  right: 16px;
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-md);
+  border-radius: 4px;
+  border: none;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-tertiary);
-  transition: all var(--transition-fast);
+  color: #616161;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
 }
 
 .cert-detail__close:hover {
-  background: var(--colorSubtleBackgroundHover);
-  color: var(--text-primary);
+  background: #f5f5f5;
+  color: #242424;
 }
 
 .cert-detail__header-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 8px;
 }
 
 .cert-detail__title-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-4);
-  padding-right: var(--space-6); /* space for close button */
+  gap: 16px;
+  padding-right: 24px;
+  margin-bottom: 8px;
 }
 
 .cert-detail__title-text {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 4px;
 }
 
 .cert-detail__badge-icon {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
   flex-shrink: 0;
-  opacity: 0.9;
 }
 
 .cert-detail__exam-code {
-  font-family: var(--font-mono);
-  font-size: var(--fs-title3);
-  font-weight: var(--fw-bold);
+  font-size: 20px;
+  font-weight: 700;
   color: var(--detail-color);
+  letter-spacing: 0.5px;
 }
 
 .cert-detail__name {
-  font-size: var(--fs-title2);
-  font-weight: var(--fw-semibold);
-  color: var(--text-primary);
-  line-height: var(--lh-tight);
+  font-size: 28px;
+  font-weight: 600;
+  color: #242424;
+  line-height: 1.2;
 }
 
 .cert-detail__badges {
   display: flex;
-  gap: var(--space-2);
+  gap: 8px;
   flex-wrap: wrap;
-  margin-top: var(--space-3);
 }
 
 /* Body */
 .cert-detail__body {
   flex: 1;
-  padding: var(--space-4) var(--space-8) var(--space-8);
+  padding: 16px 32px 32px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: 24px;
 }
 
 .cert-detail__section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 12px;
 }
 
 .cert-detail__section-title {
-  font-size: var(--fs-caption1);
-  font-weight: var(--fw-semibold);
-  color: var(--text-tertiary);
+  font-size: 12px;
+  font-weight: 600;
+  color: #616161;
   text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-wide);
+  letter-spacing: 0.5px;
+  margin: 0;
 }
 
 .cert-detail__description {
-  font-size: var(--fs-body1);
-  color: var(--text-secondary);
-  line-height: var(--lh-relaxed);
+  font-size: 14px;
+  color: #424242;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Skills Measured */
+.cert-detail__skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cert-detail__skill-item {
+  position: relative;
+  padding-left: 16px;
+  font-size: 14px;
+  color: #424242;
+  line-height: 1.6;
+}
+
+.cert-detail__skill-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--detail-color);
 }
 
 /* Alert */
 .cert-detail__alert {
   display: flex;
-  gap: var(--space-3);
-  padding: var(--space-3);
-  border-radius: var(--radius-md);
-  font-size: var(--fs-body1);
-  line-height: var(--lh-relaxed);
+  gap: 12px;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .cert-detail__alert--warning {
-  background: var(--badge-retiring-bg);
-  border: 1px solid var(--badge-retiring-border);
-  color: var(--badge-retiring-fg);
+  background: #fff4ce;
+  border: 1px solid #fde7a9;
+  color: #8a6d3b;
 }
 
 .cert-detail__alert--warning strong {
   display: block;
   margin-bottom: 2px;
+  color: #665020;
 }
 
 .cert-detail__alert--warning p {
-  color: var(--text-secondary);
+  margin: 0;
 }
 
 /* Prerequisites */
 .cert-detail__prereqs {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 12px;
 }
 
 .cert-detail__prereq-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
+  gap: 8px;
 }
 
 .cert-detail__prereq-group-label {
-  font-size: var(--fs-caption1);
-  color: var(--text-tertiary);
+  font-size: 12px;
+  color: #616161;
   text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-wide);
-  font-weight: var(--fw-semibold);
-  margin-bottom: var(--space-1);
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .cert-detail__prereq {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  background: var(--bg-surface-1);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  transition: all var(--transition-fast);
+  gap: 4px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .cert-detail__prereq:hover {
-  border-color: var(--border-default);
-  box-shadow: var(--shadow-sm);
+  border-color: #d1d1d1;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.04);
 }
 
 .cert-detail__prereq-code {
-  font-family: var(--font-mono);
-  font-size: var(--fs-body2);
-  font-weight: var(--fw-bold);
-  color: var(--detail-color);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .cert-detail__prereq-name {
-  font-size: var(--fs-body1);
-  font-weight: var(--fw-semibold);
-  color: var(--text-primary);
-  line-height: var(--lh-tight);
+  font-size: 14px;
+  font-weight: 600;
+  color: #242424;
+  line-height: 1.2;
 }
 
 /* Status Options */
 .cert-detail__status-options {
   display: flex;
-  background: var(--bg-surface-2);
+  background: #f5f5f5;
   padding: 4px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
 }
 
 .cert-detail__status-btn {
@@ -227,34 +258,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-2);
-  border-radius: var(--radius-sm);
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
   border: 1px solid transparent;
   background: transparent;
-  font-size: var(--fs-body1);
-  font-weight: var(--fw-medium);
-  color: var(--text-secondary);
-  transition: all var(--transition-fast);
+  font-size: 14px;
+  font-weight: 600;
+  color: #616161;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
 
 .cert-detail__status-btn:hover {
-  color: var(--text-primary);
+  color: #242424;
 }
 
 .cert-detail__status-btn--active {
-  background: var(--bg-surface-1);
-  box-shadow: var(--shadow-sm);
-  color: var(--text-primary);
-  font-weight: var(--fw-semibold);
-  border-color: var(--border-subtle);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  color: #242424;
+  border-color: #ffffff;
 }
 
 .cert-detail__status-btn--active.cert-detail__status-btn--in-progress {
-  color: var(--badge-inprogress-fg);
+  color: #005a9e; /* fluent blue */
 }
 .cert-detail__status-btn--active.cert-detail__status-btn--completed {
-  color: var(--badge-completed-fg);
+  color: #107c10; /* fluent green */
 }
 
 /* Learn Button */
@@ -262,20 +293,89 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  background: var(--colorBrandBackground);
+  gap: 8px;
+  padding: 12px 16px;
+  background: #0f6cbd;
   color: white;
-  border-radius: var(--radius-md);
-  font-size: var(--fs-body1);
-  font-weight: var(--fw-semibold);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
   text-decoration: none;
-  transition: background var(--transition-fast);
+  transition: background 0.2s;
   margin-top: auto;
 }
 
 .cert-detail__learn-btn:hover {
-  background: var(--colorBrandBackgroundHover);
+  background: #115ea3;
+}
+
+/* Ignore/Exclude Toggle */
+.cert-detail__ignore-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #f5f5f5;
+  color: #242424;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cert-detail__ignore-btn:hover {
+  background: #eeeeee;
+}
+
+.cert-detail__ignore-toggle {
+  width: 40px;
+  height: 20px;
+  border-radius: 10px;
+  background: #0f6cbd;
+  position: relative;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.cert-detail__ignore-toggle--off {
+  background: #616161;
+}
+
+.cert-detail__ignore-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.cert-detail__ignore-toggle--off .cert-detail__ignore-toggle-thumb {
+  transform: translateX(0);
+}
+
+.cert-detail__ignore-toggle:not(.cert-detail__ignore-toggle--off) .cert-detail__ignore-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.cert-detail__ignore-hint {
+  font-size: 12px;
+  color: #616161;
+  line-height: 1.5;
+  margin: 0;
+  padding-top: 4px;
+}
+
+.cert-detail__status-options--disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 /* Mobile */

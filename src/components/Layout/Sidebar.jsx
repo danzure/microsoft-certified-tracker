@@ -1,9 +1,18 @@
 import { NavLink } from 'react-router-dom';
 import { certificationPaths, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
-import * as Icons from 'lucide-react';
+import { IconMap as Icons } from '../common/IconMap';
 import './Sidebar.css';
 
+/**
+ * Navigation sidebar component displaying all available certification paths.
+ * Allows quick jumping to specific paths and highlights the active route.
+ * 
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Whether the sidebar is currently expanded (mobile view)
+ * @param {Function} props.onClose - Callback to close the sidebar
+ * @param {Function} props.onToggle - Callback to toggle the sidebar state
+ */
 const Sidebar = ({ isOpen, onClose, onToggle }) => {
   const { getPathProgress } = useProgressContext();
 

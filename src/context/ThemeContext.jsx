@@ -4,6 +4,10 @@ const STORAGE_KEY = 'ms-cert-tracker-theme';
 
 const ThemeContext = createContext(null);
 
+/**
+ * Provider component that manages the application's dark/light theme state.
+ * Automatically synchronizes the theme with localStorage and updates the DOM.
+ */
 export const ThemeProvider = ({ children }) => {
   const [theme, setThemeState] = useState(() => {
     try {
@@ -36,6 +40,11 @@ export const ThemeProvider = ({ children }) => {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
+/**
+ * Custom hook to consume the ThemeContext.
+ * @returns An object containing the current theme, an isDark boolean, and a toggleTheme function.
+ * @throws {Error} If called outside of a ThemeProvider.
+ */
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {

@@ -25,7 +25,7 @@ export const PILLARS = {
 export const certificationPaths = [
   {
     id: 'azure-infrastructure',
-    name: 'Azure Infrastructure',
+    name: 'Microsoft Azure Infrastructure',
     shortName: 'Azure Infrastructure',
     code: 'AZ',
     pillar: PILLARS.CLOUD_AI,
@@ -35,10 +35,10 @@ export const certificationPaths = [
     icon: 'Cloud',
     description: 'Cloud administration, networking, and architecture for Azure infrastructure.',
     branches: [
-      { id: 'admin', name: 'Admin Track' },
-      { id: 'developer', name: 'Developer Track' },
-      { id: 'networking', name: 'Networking Track' },
-      { id: 'hybrid', name: 'Hybrid Track' },
+      { id: 'admin', name: 'Admin' },
+      { id: 'developer', name: 'Developer' },
+      { id: 'networking', name: 'Networking' },
+      { id: 'hybrid', name: 'Hybrid' },
       { id: 'specialty-sap', name: 'SAP Specialty' },
       { id: 'specialty-vdi', name: 'VDI Specialty' },
     ],
@@ -52,6 +52,11 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-900/',
         retirementDate: null,
+        skillsMeasured: [
+        'Describe cloud concepts (25–30%)',
+        'Describe Azure architecture and services (35–40%)',
+        'Describe Azure management and governance (30–35%)'
+        ],
       },
       {
         id: 'az-104',
@@ -64,6 +69,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-104/',
         retirementDate: null,
+        skillsMeasured: [
+        'Manage Azure identities and governance (20–25%)',
+        'Implement and manage storage (15–20%)',
+        'Deploy and manage Azure compute resources (20–25%)',
+        'Implement and manage virtual networking (15–20%)',
+        'Monitor and maintain Azure resources (10–15%)'
+        ],
       },
       {
         id: 'az-700',
@@ -76,6 +88,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-700/',
         retirementDate: null,
+        skillsMeasured: [
+        'Design and implement core networking infrastructure (25–30%)',
+        'Design, implement, and manage connectivity services (20–25%)',
+        'Design and implement application delivery services (15–20%)',
+        'Design and implement private access to Azure services (10–15%)',
+        'Design and implement Azure network security services (15–20%)'
+        ],
       },
       {
         id: 'az-305',
@@ -87,6 +106,12 @@ export const certificationPaths = [
         prerequisites: ['az-104'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-305/',
         retirementDate: null,
+        skillsMeasured: [
+        'Design identity, governance, and monitoring solutions (25–30%)',
+        'Design data storage solutions (20–25%)',
+        'Design business continuity solutions (15–20%)',
+        'Design infrastructure solutions (30–35%)'
+        ],
       },
       {
         id: 'az-120',
@@ -99,6 +124,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-104'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-120/',
         retirementDate: null,
+        skillsMeasured: [
+        'Migrate SAP workloads to Azure (25–30%)',
+        'Design and implement an infrastructure to support SAP workloads on Azure (25–30%)',
+        'Design and implement high availability and disaster recovery (HADR) (20–25%)',
+        'Maintain SAP workloads on Azure (20–25%)'
+        ],
       },
       {
         id: 'az-140',
@@ -111,13 +142,19 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-104'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-140/',
         retirementDate: null,
+        skillsMeasured: [
+        'Plan and implement an Azure Virtual Desktop infrastructure (40–45%)',
+        'Plan and implement identity and security (15–20%)',
+        'Plan and implement user environments and apps (20–25%)',
+        'Monitor and maintain an Azure Virtual Desktop infrastructure (10–15%)'
+        ],
       },
     ],
   },
   {
     id: 'ai-machine-learning',
-    name: 'AI & Machine Learning',
-    shortName: 'AI & Machine Learning',
+    name: 'Microsoft Azure AI & Machine Learning',
+    shortName: 'Azure AI & ML',
     code: 'AI',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-ai)',
@@ -126,9 +163,9 @@ export const certificationPaths = [
     icon: 'Brain',
     description: 'Build and deploy AI solutions, intelligent agents, and machine learning operations.',
     branches: [
-      { id: 'cloud-ai', name: 'Cloud AI Track' },
-      { id: 'apps-agents', name: 'Apps & Agents Track' },
-      { id: 'mlops', name: 'MLOps Track' },
+      { id: 'cloud-ai', name: 'Cloud AI' },
+      { id: 'apps-agents', name: 'Apps & Agents' },
+      { id: 'mlops', name: 'MLOps' },
     ],
     certifications: [
       {
@@ -140,6 +177,10 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-901/',
         retirementDate: null,
+        skillsMeasured: [
+        'Identify AI concepts and responsibilities (40–45%)',
+        'Implement AI solutions by using Microsoft Foundry (55–60%)'
+        ],
       },
       {
         id: 'ai-200',
@@ -152,6 +193,15 @@ export const certificationPaths = [
         recommendedPrereqs: ['ai-901'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-200/',
         retirementDate: null,
+        skillsMeasured: [
+        'Azure SDKs and third-party SDKs used in Azure.',
+        'Azure data management services.',
+        'Azure monitoring and troubleshooting.',
+        'Azure messaging and eventing.',
+        'Vector databases.',
+        'Python programming.',
+        'Implementing containerized applications on Azure.'
+        ],
       },
       {
         id: 'ai-103',
@@ -164,6 +214,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['ai-901'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-103/',
         retirementDate: null,
+        skillsMeasured: [
+        'Plan and manage an Azure AI solution (25–30%)',
+        'Implement generative AI and agentic solutions (30–35%)',
+        'Implement computer vision solutions (10–15%)',
+        'Implement text analysis solutions (10–15%)',
+        'Implement information extraction solutions (10–15%)'
+        ],
       },
       {
         id: 'ai-300',
@@ -176,14 +233,20 @@ export const certificationPaths = [
         recommendedPrereqs: ['ai-200'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-300/',
         retirementDate: null,
+        skillsMeasured: [
+        'Machine Learning.',
+        'Foundry.',
+        'GitHub Actions.',
+        'Infrastructure as code (IaC) practices with Bicep and Azure CLI.'
+        ],
       },
 
     ],
   },
   {
     id: 'data-engineering',
-    name: 'Data Engineering & Analytics',
-    shortName: 'Data Engineering',
+    name: 'Microsoft Data & Analytics',
+    shortName: 'Data & Analytics',
     code: 'DP',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-data)',
@@ -192,9 +255,9 @@ export const certificationPaths = [
     icon: 'Database',
     description: 'Design and implement data solutions, analytics pipelines, and database systems.',
     branches: [
-      { id: 'engineering', name: 'Engineering Track' },
-      { id: 'analytics', name: 'Analytics Track' },
-      { id: 'admin', name: 'Database Admin Track' },
+      { id: 'engineering', name: 'Engineering' },
+      { id: 'analytics', name: 'Analytics' },
+      { id: 'admin', name: 'Database Admin' },
       { id: 'specialty-cosmos', name: 'Cosmos DB Specialty' },
     ],
     certifications: [
@@ -207,6 +270,12 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-900/',
         retirementDate: null,
+        skillsMeasured: [
+        'Describe core data concepts (25–30%)',
+        'Identify considerations for relational data on Azure (20–25%)',
+        'Describe considerations for working with non-relational data on Azure (15–20%)',
+        'Describe an analytics workload on Azure (25–30%)'
+        ],
       },
             {
         id: 'dp-700',
@@ -219,6 +288,11 @@ export const certificationPaths = [
         recommendedPrereqs: ['dp-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/fabric-data-engineer/',
         retirementDate: null,
+        skillsMeasured: [
+        'Implement and manage an analytics solution (30–35%)',
+        'Ingest and transform data (30–35%)',
+        'Monitor and optimize an analytics solution (30–35%)'
+        ],
       },
       {
         id: 'dp-750',
@@ -231,6 +305,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['dp-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
         retirementDate: null,
+        skillsMeasured: [
+        'Set up and configure an Azure Databricks environment (15–20%)',
+        'Secure and govern Unity Catalog objects (15–20%)',
+        'Prepare and process data (30–35%)',
+        'Deploy and maintain data pipelines and workloads (30–35%)'
+        ],
       },
       {
         id: 'dp-800',
@@ -243,6 +323,11 @@ export const certificationPaths = [
         recommendedPrereqs: ['dp-700'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
         retirementDate: null,
+        skillsMeasured: [
+        'Design and develop database solutions (35–40%)',
+        'Secure, optimize, and deploy database solutions (35–40%)',
+        'Implement AI capabilities in database solutions (25–30%)'
+        ],
       },
       {
         id: 'dp-300',
@@ -255,6 +340,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['dp-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-300/',
         retirementDate: null,
+        skillsMeasured: [
+        'Plan and implement data platform resources (15–20%)',
+        'Implement a secure environment (20–25%)',
+        'Monitor, configure, and optimize database resources (20–25%)',
+        'Configure and manage automation of tasks (15–20%)',
+        'Plan and configure a high availability and disaster recovery (HA/DR) environment (20–25%)'
+        ],
       },
       {
         id: 'dp-600',
@@ -267,6 +359,11 @@ export const certificationPaths = [
         recommendedPrereqs: ['dp-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-600/',
         retirementDate: null,
+        skillsMeasured: [
+        'Maintain a data analytics solution (25–30%)',
+        'Prepare data (45–50%)',
+        'Implement and manage semantic models (25–30%)'
+        ],
       },
       {
         id: 'dp-420',
@@ -279,12 +376,19 @@ export const certificationPaths = [
         recommendedPrereqs: ['dp-700'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-420/',
         retirementDate: null,
+        skillsMeasured: [
+        'Design and implement data models (35–40%)',
+        'Design and implement data distribution (5–10%)',
+        'Integrate an Azure Cosmos DB solution (5–10%)',
+        'Optimize an Azure Cosmos DB solution (15–20%)',
+        'Maintain an Azure Cosmos DB solution (25–30%)'
+        ],
       },
     ],
   },
   {
     id: 'security',
-    name: 'Security, Compliance & Identity',
+    name: 'Microsoft Security, Compliance & Identity',
     shortName: 'Security & Identity',
     code: 'SC',
     pillar: PILLARS.SECURITY,
@@ -294,11 +398,11 @@ export const certificationPaths = [
     icon: 'Shield',
     description: 'Secure cloud environments, manage identity, and protect AI systems.',
     branches: [
-      { id: 'cloud-security', name: 'Cloud Security Track' },
-      { id: 'operations', name: 'SecOps Track' },
-      { id: 'identity', name: 'Identity Track' },
-      { id: 'info-sec', name: 'Info Security Track' },
-      { id: 'business', name: 'Business Track' },
+      { id: 'cloud-security', name: 'Cloud Security' },
+      { id: 'operations', name: 'SecOps' },
+      { id: 'identity', name: 'Identity' },
+      { id: 'info-sec', name: 'Info Security' },
+      { id: 'business', name: 'Business' },
     ],
     certifications: [
       {
@@ -310,6 +414,12 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/sc-900/',
         retirementDate: null,
+        skillsMeasured: [
+        'Describe the concepts of security, compliance, and identity (10–15%)',
+        'Describe the capabilities of Microsoft Entra (25–30%)',
+        'Describe the capabilities of Microsoft security solutions (35–40%)',
+        'Describe the capabilities of Microsoft compliance solutions (20–25%)'
+        ],
       },
       {
         id: 'sc-500',
@@ -322,6 +432,14 @@ export const certificationPaths = [
         recommendedPrereqs: ['sc-900'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/cloud-and-ai-security-engineer-associate/?wt.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Securing access to resources by using Microsoft Entra ID and Azure Key Vault.',
+        'Enforcing security and regulatory compliance.',
+        'Securing storage, databases, and networking.',
+        'Securing compute.',
+        'Securing AI solutions.',
+        'Managing and monitoring security posture.'
+        ],
       },
       {
         id: 'sc-730',
@@ -334,6 +452,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['sc-900'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/cybersecurity-business-professional/',
         retirementDate: null,
+        skillsMeasured: [
+        'Digital reliance, and you frequently use computers, mobile devices, cloud services, and collaboration platforms to access, share, and store information.',
+        'A non-technical background and limited formal training in cybersecurity. Your expertise lies in business processes rather than in IT or security operations.',
+        'High exposure to cyber risks because you regularly handle sensitive data and communicate across networks, but you might not always be aware of potential risks.',
+        'Responsibility for privacy and accountability for safeguarding personal and organizational information in compliance with company policies.'
+        ],
       },
       {
         id: 'sc-100',
@@ -344,6 +468,12 @@ export const certificationPaths = [
         prerequisites: [['sc-200', 'sc-300', 'sc-500']], // Requires ONE OF these
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/sc-100/',
         retirementDate: null,
+        skillsMeasured: [
+        'Design solutions that align with security best practices and priorities (20–25%)',
+        'Design security operations, identity, and compliance capabilities (25–30%)',
+        'Design security solutions for infrastructure (25–30%)',
+        'Design security solutions for applications and data (20–25%)'
+        ],
       },
 
       {
@@ -357,6 +487,11 @@ export const certificationPaths = [
         recommendedPrereqs: ['sc-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/sc-200/',
         retirementDate: null,
+        skillsMeasured: [
+        'Manage a security operations environment (40–45%)',
+        'Respond to security incidents (35–40%)',
+        'Perform threat hunting (20–25%)'
+        ],
       },
       {
         id: 'sc-300',
@@ -369,6 +504,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['sc-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/sc-300/',
         retirementDate: null,
+        skillsMeasured: [
+        'Implement and manage user identities (20–25%)',
+        'Implement authentication and access management (25–30%)',
+        'Plan and implement workload identities (20–25%)',
+        'Plan and automate identity governance (20–25%)'
+        ],
       },
       {
         id: 'sc-401',
@@ -381,6 +522,11 @@ export const certificationPaths = [
         recommendedPrereqs: ['sc-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/sc-401/',
         retirementDate: null,
+        skillsMeasured: [
+        'Implement information protection (30–35%)',
+        'Implement data loss prevention and retention (30–35%)',
+        'Manage risks, alerts, and activities (30–35%)'
+        ],
       },
 
     ],
@@ -397,11 +543,11 @@ export const certificationPaths = [
     icon: 'Monitor',
     description: 'Administer, secure, and optimize Microsoft 365 and modern workplace solutions.',
     branches: [
-      { id: 'admin', name: 'Admin Track' },
-      { id: 'endpoint', name: 'Endpoint Track' },
-      { id: 'messaging', name: 'Messaging Track' },
-      { id: 'teams', name: 'Teams Track' },
-      { id: 'collab', name: 'Collaboration Track' },
+      { id: 'admin', name: 'Admin' },
+      { id: 'endpoint', name: 'Endpoint' },
+      { id: 'messaging', name: 'Messaging' },
+      { id: 'teams', name: 'Teams' },
+      { id: 'collab', name: 'Collaboration' },
     ],
     certifications: [
       {
@@ -414,6 +560,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ms-102/',
         retirementDate: null,
+        skillsMeasured: [
+        'Deploy and manage a Microsoft 365 tenant (25–30%)',
+        'Implement and manage Microsoft Entra identity and access (25–30%)',
+        'Manage security and threats by using Microsoft Defender XDR (30–35%)',
+        'Manage compliance by using Microsoft Purview (10–15%)'
+        ],
       },
       {
         id: 'md-102',
@@ -426,6 +578,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/md-102/',
         retirementDate: null,
+        skillsMeasured: [
+        'Prepare infrastructure for devices (25–30%)',
+        'Manage and maintain devices (30–35%)',
+        'Manage applications (15–20%)',
+        'Protect devices (15–20%)'
+        ],
       },
       {
         id: 'ms-700',
@@ -438,6 +596,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ms-700/',
         retirementDate: null,
+        skillsMeasured: [
+        'Configure and manage a Teams environment (40–45%)',
+        'Manage teams, channels, chats, and apps (20–25%)',
+        'Manage meetings and calling (15–20%)',
+        'Monitor, report on, and troubleshoot Teams (15–20%)'
+        ],
       },
       {
         id: 'ms-721',
@@ -450,12 +614,18 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ms-721/',
         retirementDate: null,
+        skillsMeasured: [
+        'Plan and design collaboration communications systems (20–25%)',
+        'Configure and manage Teams meetings, webinars, and town halls (15–20%)',
+        'Configure and manage Teams Phone (30–35%)',
+        'Configure and manage Teams Rooms and devices (20–25%)'
+        ],
       },
     ],
   },
   {
     id: 'power-platform',
-    name: 'Power Platform',
+    name: 'Microsoft Power Platform',
     shortName: 'Power Platform',
     code: 'PL',
     pillar: PILLARS.BIZ_SOLUTIONS,
@@ -465,10 +635,10 @@ export const certificationPaths = [
     icon: 'Zap',
     description: 'Build low-code applications, automate workflows, and analyze data with Power Platform.',
     branches: [
-      { id: 'functional', name: 'Functional Track' },
-      { id: 'developer', name: 'Developer Track' },
-      { id: 'analyst', name: 'Analyst Track' },
-      { id: 'rpa', name: 'RPA Track' },
+      { id: 'functional', name: 'Functional' },
+      { id: 'developer', name: 'Developer' },
+      { id: 'analyst', name: 'Analyst' },
+      { id: 'rpa', name: 'RPA' },
     ],
     certifications: [
       {
@@ -480,6 +650,13 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-900/',
         retirementDate: null,
+        skillsMeasured: [
+        'Describe the business value of Microsoft Power Platform (15–20%)',
+        'Manage the Microsoft Power Platform environment (15–20%)',
+        'Demonstrate the capabilities of Power Apps (25–30%)',
+        'Demonstrate the capabilities of Power Automate (15–20%)',
+        'Demonstrate the capabilities of Power Pages (10–15%)'
+        ],
       },
       {
         id: 'pl-300',
@@ -492,6 +669,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['pl-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-300/',
         retirementDate: null,
+        skillsMeasured: [
+        'Prepare the data (25–30%)',
+        'Model the data (25–30%)',
+        'Visualize and analyze the data (25–30%)',
+        'Manage and secure Power BI (15–20%)'
+        ],
       },
       {
         id: 'pl-600',
@@ -503,6 +686,11 @@ export const certificationPaths = [
         prerequisites: ['pl-200'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-600/',
         retirementDate: null,
+        skillsMeasured: [
+        'Perform solution envisioning and requirement analysis (45–50%)',
+        'Architect a solution (35–40%)',
+        'Implement the solution (15–20%)'
+        ],
       },
       {
         id: 'pl-400',
@@ -515,13 +703,21 @@ export const certificationPaths = [
         recommendedPrereqs: ['pl-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-400/',
         retirementDate: null,
+        skillsMeasured: [
+        'Create a technical design (10–15%)',
+        'Build Power Platform solutions (10–15%)',
+        'Implement Power Apps improvements (10–15%)',
+        'Extend the user experience (10–15%)',
+        'Extend the platform (30–35%)',
+        'Develop integrations (10–15%)'
+        ],
       },
     ],
   },
   {
     id: 'agentic-ai',
-    name: 'AI & Copilot',
-    shortName: 'AI & Copilot',
+    name: 'Microsoft Copilot & AI Agents',
+    shortName: 'Copilot & AI',
     code: 'AB',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-agentic)',
@@ -530,11 +726,11 @@ export const certificationPaths = [
     icon: 'Bot',
     description: 'Build and architect AI-powered business solutions with Copilot and autonomous agents.',
     branches: [
-      { id: 'sales', name: 'Sales Track' },
-      { id: 'contact-center', name: 'Contact Center Track' },
-      { id: 'builder', name: 'Agent Builder Track' },
-      { id: 'business', name: 'Business Track' },
-      { id: 'leadership', name: 'Leadership Track' },
+      { id: 'sales', name: 'Sales' },
+      { id: 'contact-center', name: 'Contact Center' },
+      { id: 'builder', name: 'Agent Builder' },
+      { id: 'business', name: 'Business' },
+      { id: 'leadership', name: 'Leadership' },
     ],
     certifications: [
       {
@@ -546,6 +742,11 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ab-900/',
         retirementDate: null,
+        skillsMeasured: [
+        'Identify the core features and objects of Microsoft 365 services (30–35%)',
+        'Understand data protection and governance tasks for Microsoft 365 and Copilot (35–40%)',
+        'Perform basic administrative tasks for Copilot and agents (25–30%)'
+        ],
       },
       {
         id: 'ab-210',
@@ -558,6 +759,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ab-210/',
         retirementDate: null,
+        skillsMeasured: [
+        'Configure Dynamics 365 Sales core features.',
+        'Deploy, manage, and monitor agents in Sales.',
+        'Implement collaboration features.',
+        'Tailor AI-powered intelligence features.'
+        ],
       },
       {
         id: 'ab-250',
@@ -570,6 +777,18 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
         retirementDate: null,
+        skillsMeasured: [
+        'Configuring workstreams and engagement channels.',
+        'Designing, managing, and implementing routing strategies.',
+        'Configuring service representative profiles and experiences.',
+        'Enabling productivity tools, including Microsoft Copilot–assisted guidance.',
+        'Implementing and managing agents for customer self-service.',
+        'Identifying implementation opportunities for and managing service-oriented autonomous agents.',
+        'Working with Dynamics 365 Contact Center tools for continuous improvement.',
+        'Monitoring and resolving operational issues identified in the contact center.',
+        'Configuring proactive engagement capabilities, including outbound dial modes and journey orchestration.',
+        'Configuring workforce management capabilities, including demand forecasting, scheduling, and skills alignment.'
+        ],
         isComingSoon: true,
       },
       {
@@ -583,6 +802,11 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/intelligent-applications-builder-associate/?wt.mc_id=credentials_AB410_blog_wwl&practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Developing Dataverse data models, model-driven apps, and canvas apps.',
+        'Integrating agents and Copilot features into canvas apps, model-driven apps, and Power Pages sites.',
+        'Creating cloud flows and business logic.'
+        ],
         isComingSoon: true,
       },
       {
@@ -596,6 +820,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/ai-business-professional/?practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Understand core concepts of AB-700',
+        'Implement and manage AB-700 workloads',
+        'Optimize and monitor AB-700 environments',
+        'Secure AB-700 solutions'
+        ],
       },
       {
         id: 'ab-701',
@@ -607,6 +837,12 @@ export const certificationPaths = [
         prerequisites: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/ai-transformation-leader/?practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Understand core concepts of AB-701',
+        'Implement and manage AB-701 workloads',
+        'Optimize and monitor AB-701 environments',
+        'Secure AB-701 solutions'
+        ],
       },
       {
         id: 'ab-100',
@@ -618,12 +854,27 @@ export const certificationPaths = [
         prerequisites: ['ab-410'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ab-100/',
         retirementDate: null,
+        skillsMeasured: [
+        'Expertise in architecting solutions that use AI, including generative AI and various Foundry Tools tailored to meet business objectives.',
+        'The ability to design agentic-first solutions.',
+        'Skills in designing multi-agent orchestrated solutions.',
+        'Experience designing secure and scalable cross-platform AI solutions.',
+        'Comprehensive knowledge of core Dynamics 365 products, Microsoft Power Platform, Microsoft Copilot Studio, Microsoft Foundry Tools, and Foundry Models.',
+        'Proficiency in working with agents created by using Copilot Studio, AI prompts, Microsoft Foundry, and working knowledge of multiple language models to create intelligent solutions.',
+        'Proficiency in adopting frameworks and delivering measurable outcomes aligned with enterprise success metrics and architecture patterns.',
+        'Expertise in working with open standards and protocols, including Agent2Agent (A2A) and Model Context Protocol (MCP).',
+        'Expertise in responsible AI practices, helping to ensure compliance and advocating for the Microsoft responsible AI guidelines.',
+        'Strong leadership in orchestrating AI features in Microsoft business applications to optimize operations and unlock growth opportunities.',
+        'Skills in securing AI models and data workflows, including detecting and resolving vulnerabilities, enforcing data residency and access controls, safeguarding model tuning, tracking changes, maintaining audit trails, and defending against prompt manipulation.',
+        'Experience in monitoring agent performance and interpreting telemetry data to help ensure reliability, optimize behavior, and drive continuous improvement.',
+        'Ability to conduct a return-on-investment (ROI) analysis of an AI-powered solution.'
+        ],
       }
     ],
   },
   {
     id: 'dynamics-365',
-    name: 'Dynamics 365',
+    name: 'Microsoft Dynamics 365',
     shortName: 'Dynamics 365',
     code: 'MB',
     pillar: PILLARS.BIZ_SOLUTIONS,
@@ -633,9 +884,9 @@ export const certificationPaths = [
     icon: 'Briefcase',
     description: 'Implement, customize, and maintain Dynamics 365 business applications.',
     branches: [
-      { id: 'sales-service', name: 'Sales & Service Track' },
-      { id: 'finance-ops', name: 'Finance & Operations Track' },
-      { id: 'bc', name: 'Business Central Track' },
+      { id: 'sales-service', name: 'Sales & Service' },
+      { id: 'finance-ops', name: 'Finance & Operations' },
+      { id: 'bc', name: 'Business Central' },
     ],
     certifications: [
       {
@@ -648,6 +899,11 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-230/',
         retirementDate: null,
+        skillsMeasured: [
+        'Manage cases in Customer Service (51–55%)',
+        'Configure representative experience and routing (25–30%)',
+        'Extend Customer Service (15–20%)'
+        ],
       },
       {
         id: 'mb-310',
@@ -659,6 +915,13 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-310/',
         retirementDate: null,
+        skillsMeasured: [
+        'Implement financial management (40–45%)',
+        'Implement accounts receivable, credit, collections, and subscription billing (15–20%)',
+        'Implement and manage accounts payable and expenses (10–15%)',
+        'Manage budgeting (10–15%)',
+        'Manage fixed assets (10–15%)'
+        ],
       },
       {
         id: 'mb-330',
@@ -670,6 +933,13 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-330/',
         retirementDate: null,
+        skillsMeasured: [
+        'Implement product information management (25–30%)',
+        'Implement inventory and asset management (20–25%)',
+        'Implement and manage supply chain processes (15–20%)',
+        'Implement warehouse management and transportation management (20–25%)',
+        'Implement master planning (10–15%)'
+        ],
       },
       {
         id: 'mb-500',
@@ -681,6 +951,15 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-500/',
         retirementDate: null,
+        skillsMeasured: [
+        'Plan the architecture and solution design (5–10%)',
+        'Apply developer tools (5–10%)',
+        'Design and develop AOT elements (15–20%)',
+        'Develop and test code (20–25%)',
+        'Implement reporting (10–15%)',
+        'Integrate and manage data solutions (15–20%)',
+        'Implement security and optimize performance (10–15%)'
+        ],
       },
       {
         id: 'mb-800',
@@ -692,6 +971,12 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-800/',
         retirementDate: null,
+        skillsMeasured: [
+        'Set up Business Central (20–25%)',
+        'Configure financials (30–35%)',
+        'Configure sales and purchasing (10–15%)',
+        'Perform Business Central operations (30–35%)'
+        ],
       },
       {
         id: 'mb-820',
@@ -703,25 +988,33 @@ export const certificationPaths = [
         prerequisites: ['mb-800'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-820/',
         retirementDate: null,
+        skillsMeasured: [
+        'Describe Business Central (10–15%)',
+        'Install, develop, and deploy for Business Central (10–15%)',
+        'Develop by using AL objects (35–40%)',
+        'Develop by using AL (15–20%)',
+        'Work with development tools (10–15%)',
+        'Integrate Business Central with other applications (10–15%)'
+        ],
       },
     ],
   },
   {
     id: 'devops',
-    name: 'DevOps & GitHub',
-    shortName: 'DevOps & GitHub',
+    name: 'GitHub & Azure DevOps',
+    shortName: 'GitHub & DevOps',
     code: 'AZ/GH',
     pillar: PILLARS.CLOUD_AI,
-    color: '#F59E0B',
+    color: 'var(--line-devops)',
     glowColor: 'rgba(245, 158, 11, 0.2)',
     cssVar: '--line-devops',
-    icon: 'GitBranch',
+    icon: 'GitHub',
     description: 'Combine development and operations practices with GitHub workflows, actions, and security.',
     branches: [
-      { id: 'admin', name: 'Azure Admin Track' },
-      { id: 'gh-devops', name: 'GitHub DevOps Track' },
-      { id: 'gh-security', name: 'GitHub Security Track' },
-      { id: 'gh-ai', name: 'GitHub AI Track' },
+      { id: 'admin', name: 'Azure Admin' },
+      { id: 'gh-devops', name: 'GitHub DevOps' },
+      { id: 'gh-security', name: 'GitHub Security' },
+      { id: 'gh-ai', name: 'GitHub AI' },
     ],
     certifications: [
       {
@@ -733,6 +1026,11 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-900/',
         retirementDate: null,
+        skillsMeasured: [
+        'Describe cloud concepts (25–30%)',
+        'Describe Azure architecture and services (35–40%)',
+        'Describe Azure management and governance (30–35%)'
+        ],
         isInterchange: true,
         interchangeWith: 'azure-infrastructure',
       },
@@ -747,6 +1045,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-900-devops'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-104/',
         retirementDate: null,
+        skillsMeasured: [
+        'Manage Azure identities and governance (20–25%)',
+        'Implement and manage storage (15–20%)',
+        'Deploy and manage Azure compute resources (20–25%)',
+        'Implement and manage virtual networking (15–20%)',
+        'Monitor and maintain Azure resources (10–15%)'
+        ],
         isInterchange: true,
         interchangeWith: 'azure-infrastructure',
       },
@@ -760,6 +1065,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-104-devops'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-400/',
         retirementDate: null,
+        skillsMeasured: [
+        'Design and implement processes and communications (10–15%)',
+        'Design and implement a source control strategy (10–15%)',
+        'Design and implement build and release pipelines (50–55%)',
+        'Develop a security and compliance plan (10–15%)',
+        'Implement an instrumentation strategy (5–10%)'
+        ],
       },
       {
         id: 'gh-foundations',
@@ -770,6 +1082,12 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-foundations/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Understand core concepts of GH-900',
+        'Implement and manage GH-900 workloads',
+        'Optimize and monitor GH-900 environments',
+        'Secure GH-900 solutions'
+        ],
       },
       {
         id: 'gh-actions',
@@ -782,6 +1100,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['gh-foundations'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-actions/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Author and manage workflows (20–25%)',
+        'Consume and troubleshoot workflows (15–20%)',
+        'Author and maintain actions (15–20%)',
+        'Manage GitHub Actions for the enterprise (20–25%)',
+        'Secure and optimize automation (10–15%)'
+        ],
       },
       {
         id: 'gh-security',
@@ -794,6 +1119,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['gh-foundations'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-advanced-security/?practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Understand core concepts of GH-AdvancedSec',
+        'Implement and manage GH-AdvancedSec workloads',
+        'Optimize and monitor GH-AdvancedSec environments',
+        'Secure GH-AdvancedSec solutions'
+        ],
       },
       {
         id: 'gh-admin',
@@ -806,6 +1137,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['gh-foundations'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-administration/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Manage GitHub identities and access (15–20%)',
+        'Administer GitHub Enterprise environment (10–15%)',
+        'Implement secure software development and compliance (25–30%)',
+        'Manage GitHub Actions (20–25%)',
+        'Monitor and optimize GitHub usage (10–15%)'
+        ],
       },
       {
         id: 'gh-copilot',
@@ -818,6 +1156,15 @@ export const certificationPaths = [
         recommendedPrereqs: ['gh-foundations'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/github-copilot/?WT.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Use GitHub Copilot responsibly (15–20%)',
+        'Use GitHub Copilot features (25–30%)',
+        'GitHub Copilot features (25–30%)',
+        'Understand GitHub Copilot data and architecture (10–15%)',
+        'Apply prompt engineering and context crafting (10–15%)',
+        'Improve developer productivity with GitHub Copilot (10–15%)',
+        'Configure privacy, content exclusions, and safeguards (10–15%)'
+        ],
       },
       {
         id: 'gh-600',
@@ -830,14 +1177,20 @@ export const certificationPaths = [
         recommendedPrereqs: ['gh-foundations'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/agentic-ai-developer/?practice-assessment-type=certification',
         retirementDate: null,
+        skillsMeasured: [
+        'Operating agent workflows inside the SDLC',
+        'Supervising autonomous behavior with GitHub controls',
+        'Evaluating and tuning agent outputs using scans and artifacts',
+        'Configuring custom agents',
+        'Coordinating multi-agent execution safely'
+        ],
       },
     ],
-  }
-,
+  },
   {
     id: 'retired-exams',
-    name: 'Retired & Retiring Exams',
-    shortName: 'Archived Exams',
+    name: 'Retired Certifications',
+    shortName: 'Retired Exams',
     code: 'ARCHIVE',
     pillar: PILLARS.RETIRED,
     color: '#94a3b8',
@@ -861,6 +1214,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-800/',
         retirementDate: null,
+        skillsMeasured: [
+        'Understand core concepts of AZ-800/801',
+        'Implement and manage AZ-800/801 workloads',
+        'Optimize and monitor AZ-800/801 environments',
+        'Secure AZ-800/801 solutions'
+        ],
+        isIndependent: true,
       },
       {
         id: 'az-204',
@@ -873,6 +1233,14 @@ export const certificationPaths = [
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-204/',
         retirementDate: null,
+        skillsMeasured: [
+        'Develop Azure compute solutions (25–30%)',
+        'Develop for Azure storage (15–20%)',
+        'Implement Azure security (15–20%)',
+        'Monitor, troubleshoot, and optimize Azure solutions (5–10%)',
+        'Connect to and consume Azure services and third-party services (20–25%)'
+        ],
+        isIndependent: true,
       },
       {
         id: 'pl-200',
@@ -885,6 +1253,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['pl-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-200/',
         retirementDate: null,
+        skillsMeasured: [
+        'Configure Microsoft Dataverse (25–30%)',
+        'Create apps by using Microsoft Power Apps (25–30%)',
+        'Create and manage logic and process automation (25–30%)',
+        'Manage environments (15–20%)'
+        ],
+        isIndependent: true,
       },
       {
         id: 'pl-500',
@@ -897,6 +1272,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['pl-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-500/',
         retirementDate: null,
+        skillsMeasured: [
+        'Design automations (25–30%)',
+        'Develop automations (45–50%)',
+        'Deploy and manage automations (20–25%)'
+        ],
+        isIndependent: true,
       },
       {
         id: 'ms-900',
@@ -908,6 +1289,13 @@ export const certificationPaths = [
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ms-900/',
         retirementDate: '2026-03-31',
+        skillsMeasured: [
+        'Describe cloud concepts (5–10%)',
+        'Describe Microsoft 365 apps and services (45–50%)',
+        'Describe security, compliance, privacy, and trust in Microsoft 365 (25–30%)',
+        'Describe Microsoft 365 pricing, licensing, and support (10–15%)'
+        ],
+        isIndependent: true,
       },
       {
         id: 'dp-203',
@@ -920,6 +1308,12 @@ export const certificationPaths = [
         recommendedPrereqs: ['dp-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-203/',
         retirementDate: '2025-03-31',
+        skillsMeasured: [
+        'Design and implement data storage (15–20%)',
+        'Develop data processing (40–45%)',
+        'Secure, monitor, and optimize data storage and data processing (30–35%)'
+        ],
+        isIndependent: true,
       },
       {
         id: 'ms-203',
@@ -932,6 +1326,13 @@ export const certificationPaths = [
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/m365-messaging-administrator/',
         retirementDate: '2023-12-31',
+        skillsMeasured: [
+        'Understand core concepts of MS-203',
+        'Implement and manage MS-203 workloads',
+        'Optimize and monitor MS-203 environments',
+        'Secure MS-203 solutions'
+        ],
+        isIndependent: true,
       },
     ]
   }

@@ -3,6 +3,10 @@ import { useProgress } from '../hooks/useProgress';
 
 const ProgressContext = createContext(null);
 
+/**
+ * Provider component that wraps the application and supplies 
+ * the current user's progress state and tracking functions via context.
+ */
 export const ProgressProvider = ({ children }) => {
   const progress = useProgress();
   return (
@@ -13,6 +17,11 @@ export const ProgressProvider = ({ children }) => {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
+/**
+ * Custom hook to consume the ProgressContext.
+ * @returns The context value exposing state and functions from useProgress.
+ * @throws {Error} If called outside of a ProgressProvider.
+ */
 export const useProgressContext = () => {
   const context = useContext(ProgressContext);
   if (!context) {

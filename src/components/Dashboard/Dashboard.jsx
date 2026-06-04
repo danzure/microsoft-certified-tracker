@@ -1,23 +1,33 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { certificationPaths, CERT_STATUS, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import Badge from '../common/Badge';
-import * as Icons from 'lucide-react';
+import { IconMap as Icons } from '../common/IconMap';
 import './Dashboard.css';
 
+/**
+ * Dashboard Component
+ * 
+ * Provides an overview of the user's certification tracking progress.
+ * Displays total statistics, a quick-access strip for actively studied certifications,
+ * and a grid of all available certification paths categorized by technology pillar.
+ */
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored } = useProgressContext();
-  const overall = getOverallProgress();
+  const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored, isCertIgnored } = useProgressContext();
+  const overall = useMemo(() => getOverallProgress(), [getOverallProgress]);
 
   // Get recently in-progress items
-  const inProgressCerts = certificationPaths
-    .filter(path => !isPathIgnored(path.id))
-    .flatMap((path) =>
-      path.certifications
-        .filter((cert) => getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
-        .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
-    );
+  const inProgressCerts = useMemo(() => {
+    return certificationPaths
+      .filter(path => !isPathIgnored(path.id))
+      .flatMap((path) =>
+        path.certifications
+          .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
+          .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
+      );
+  }, [isPathIgnored, isCertIgnored, getStatus]);
 
 
   return (
@@ -144,16 +154,6 @@ const Dashboard = () => {
                         </div>
                         <div className="dashboard__path-actions">
                           <Icons.ArrowRight size={20} className="dashboard__path-arrow" />
-                          <button
-                            className="dashboard__path-toggle-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              togglePathIgnored(path.id);
-                            }}
-                            title={isIgnored ? "Include in overall tracking" : "Exclude from overall tracking"}
-                          >
-                            {isIgnored ? <Icons.Square size={18} /> : <Icons.CheckSquare size={18} />}
-                          </button>
                         </div>
                       </div>
                       
@@ -188,6 +188,17 @@ const Dashboard = () => {
                           />
                         </div>
                       )}
+
+                      <button
+                        className={`dashboard__path-exclude-btn ${isIgnored ? 'dashboard__path-exclude-btn--active' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          togglePathIgnored(path.id);
+                        }}
+                        title={isIgnored ? "Include in overall tracking" : "Exclude from overall tracking"}
+                      >
+                        {isIgnored ? <Icons.EyeOff size={14} /> : <Icons.Eye size={14} />}
+                      </button>
                     </div>
                   );
                 })}
