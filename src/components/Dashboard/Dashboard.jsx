@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { certificationPaths, CERT_STATUS, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import Badge from '../common/Badge';
-import * as Icons from 'lucide-react';
+import { IconMap as Icons } from '../common/IconMap';
 import './Dashboard.css';
 
 const Dashboard = () => {

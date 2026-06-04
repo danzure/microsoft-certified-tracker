@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { certificationPaths, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
-import * as Icons from 'lucide-react';
+import { IconMap as Icons } from '../common/IconMap';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose, onToggle }) => {

@@ -1,4 +1,5 @@
-import { Search, X } from 'lucide-react';
+import { IconMap } from './IconMap';
+const { Search, X } = IconMap;
 import { useState, useRef } from 'react';
 import { getAllCertifications } from '../../data/certificationPaths';
 import { useNavigate } from 'react-router-dom';

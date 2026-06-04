@@ -1,4 +1,5 @@
-import { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award, EyeOff, Eye } from 'lucide-react';
+import { IconMap } from '../common/IconMap';
+const { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award, EyeOff, Eye } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
 import { CERT_STATUS, getCertById, getCertificationsRequiring } from '../../data/certificationPaths';
 import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
@@ -28,7 +29,7 @@ const CertDetail = ({ cert, path, onClose }) => {
   return (
     <>
       <div className="cert-detail__overlay" onClick={onClose} />
-      <div className="cert-detail glass" style={{ '--detail-color': path.color }} id="cert-detail-panel">
+      <div className="cert-detail" style={{ '--detail-color': path.color }} id="cert-detail-panel">
         <div className="cert-detail__header">
           <div className="cert-detail__header-strip" />
           <button className="cert-detail__close" onClick={onClose} aria-label="Close detail panel">

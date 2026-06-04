@@ -52,12 +52,12 @@
 .dashboard__stat-card {
   background: var(--colorNeutralBackground1);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 2px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   animation: slideUp 500ms ease-out both;
 }
 
@@ -147,12 +147,12 @@
   position: relative;
   background: var(--colorNeutralBackground1);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 2px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   transition: all 300ms ease-in-out;
   animation: slideUp 500ms ease-out both;
 }
@@ -163,8 +163,8 @@
 }
 
 .dashboard__path-card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08), 0 0 2px rgba(0, 0, 0, 0.04);
-  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .dashboard__path-card--ignored {
@@ -306,8 +306,8 @@
   width: 100%;
   height: 4px;
   background: var(--border-subtle);
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
   overflow: hidden;
 }
 
@@ -337,9 +337,9 @@
 .dashboard__activity-panel {
   background: var(--colorNeutralBackground1);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 2px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   animation: slideUp 500ms ease-out both;
 }
 

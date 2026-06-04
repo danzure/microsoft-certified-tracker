@@ -4,7 +4,7 @@ import { useProgressContext } from '../../context/ProgressContext';
 import Station from './Station';
 
 import CertDetail from '../CertDetail/CertDetail';
-import * as Icons from 'lucide-react';
+import { IconMap as Icons } from '../common/IconMap';
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import './MetroLine.css';
 

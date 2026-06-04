@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Sun, Moon } from 'lucide-react';
-import * as Icons from 'lucide-react';
+import { IconMap as Icons } from '../common/IconMap';
+const { Menu, Sun, Moon } = Icons;
 import SearchBar from '../common/SearchBar';
 import ProgressRing from '../common/ProgressRing';
 import { useProgressContext } from '../../context/ProgressContext';

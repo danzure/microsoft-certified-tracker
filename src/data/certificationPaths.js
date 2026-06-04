@@ -25,7 +25,7 @@ export const PILLARS = {
 export const certificationPaths = [
   {
     id: 'azure-infrastructure',
-    name: 'Azure Infrastructure',
+    name: 'Microsoft Azure Infrastructure',
     shortName: 'Azure Infrastructure',
     code: 'AZ',
     pillar: PILLARS.CLOUD_AI,
@@ -35,10 +35,10 @@ export const certificationPaths = [
     icon: 'Cloud',
     description: 'Cloud administration, networking, and architecture for Azure infrastructure.',
     branches: [
-      { id: 'admin', name: 'Admin Track' },
-      { id: 'developer', name: 'Developer Track' },
-      { id: 'networking', name: 'Networking Track' },
-      { id: 'hybrid', name: 'Hybrid Track' },
+      { id: 'admin', name: 'Admin' },
+      { id: 'developer', name: 'Developer' },
+      { id: 'networking', name: 'Networking' },
+      { id: 'hybrid', name: 'Hybrid' },
       { id: 'specialty-sap', name: 'SAP Specialty' },
       { id: 'specialty-vdi', name: 'VDI Specialty' },
     ],
@@ -153,8 +153,8 @@ export const certificationPaths = [
   },
   {
     id: 'ai-machine-learning',
-    name: 'AI & Machine Learning',
-    shortName: 'AI & Machine Learning',
+    name: 'Microsoft Azure AI & Machine Learning',
+    shortName: 'Azure AI & ML',
     code: 'AI',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-ai)',
@@ -163,9 +163,9 @@ export const certificationPaths = [
     icon: 'Brain',
     description: 'Build and deploy AI solutions, intelligent agents, and machine learning operations.',
     branches: [
-      { id: 'cloud-ai', name: 'Cloud AI Track' },
-      { id: 'apps-agents', name: 'Apps & Agents Track' },
-      { id: 'mlops', name: 'MLOps Track' },
+      { id: 'cloud-ai', name: 'Cloud AI' },
+      { id: 'apps-agents', name: 'Apps & Agents' },
+      { id: 'mlops', name: 'MLOps' },
     ],
     certifications: [
       {
@@ -245,8 +245,8 @@ export const certificationPaths = [
   },
   {
     id: 'data-engineering',
-    name: 'Data Engineering & Analytics',
-    shortName: 'Data Engineering',
+    name: 'Microsoft Data & Analytics',
+    shortName: 'Data & Analytics',
     code: 'DP',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-data)',
@@ -255,9 +255,9 @@ export const certificationPaths = [
     icon: 'Database',
     description: 'Design and implement data solutions, analytics pipelines, and database systems.',
     branches: [
-      { id: 'engineering', name: 'Engineering Track' },
-      { id: 'analytics', name: 'Analytics Track' },
-      { id: 'admin', name: 'Database Admin Track' },
+      { id: 'engineering', name: 'Engineering' },
+      { id: 'analytics', name: 'Analytics' },
+      { id: 'admin', name: 'Database Admin' },
       { id: 'specialty-cosmos', name: 'Cosmos DB Specialty' },
     ],
     certifications: [
@@ -388,7 +388,7 @@ export const certificationPaths = [
   },
   {
     id: 'security',
-    name: 'Security, Compliance & Identity',
+    name: 'Microsoft Security, Compliance & Identity',
     shortName: 'Security & Identity',
     code: 'SC',
     pillar: PILLARS.SECURITY,
@@ -398,11 +398,11 @@ export const certificationPaths = [
     icon: 'Shield',
     description: 'Secure cloud environments, manage identity, and protect AI systems.',
     branches: [
-      { id: 'cloud-security', name: 'Cloud Security Track' },
-      { id: 'operations', name: 'SecOps Track' },
-      { id: 'identity', name: 'Identity Track' },
-      { id: 'info-sec', name: 'Info Security Track' },
-      { id: 'business', name: 'Business Track' },
+      { id: 'cloud-security', name: 'Cloud Security' },
+      { id: 'operations', name: 'SecOps' },
+      { id: 'identity', name: 'Identity' },
+      { id: 'info-sec', name: 'Info Security' },
+      { id: 'business', name: 'Business' },
     ],
     certifications: [
       {
@@ -543,11 +543,11 @@ export const certificationPaths = [
     icon: 'Monitor',
     description: 'Administer, secure, and optimize Microsoft 365 and modern workplace solutions.',
     branches: [
-      { id: 'admin', name: 'Admin Track' },
-      { id: 'endpoint', name: 'Endpoint Track' },
-      { id: 'messaging', name: 'Messaging Track' },
-      { id: 'teams', name: 'Teams Track' },
-      { id: 'collab', name: 'Collaboration Track' },
+      { id: 'admin', name: 'Admin' },
+      { id: 'endpoint', name: 'Endpoint' },
+      { id: 'messaging', name: 'Messaging' },
+      { id: 'teams', name: 'Teams' },
+      { id: 'collab', name: 'Collaboration' },
     ],
     certifications: [
       {
@@ -625,7 +625,7 @@ export const certificationPaths = [
   },
   {
     id: 'power-platform',
-    name: 'Power Platform',
+    name: 'Microsoft Power Platform',
     shortName: 'Power Platform',
     code: 'PL',
     pillar: PILLARS.BIZ_SOLUTIONS,
@@ -635,10 +635,10 @@ export const certificationPaths = [
     icon: 'Zap',
     description: 'Build low-code applications, automate workflows, and analyze data with Power Platform.',
     branches: [
-      { id: 'functional', name: 'Functional Track' },
-      { id: 'developer', name: 'Developer Track' },
-      { id: 'analyst', name: 'Analyst Track' },
-      { id: 'rpa', name: 'RPA Track' },
+      { id: 'functional', name: 'Functional' },
+      { id: 'developer', name: 'Developer' },
+      { id: 'analyst', name: 'Analyst' },
+      { id: 'rpa', name: 'RPA' },
     ],
     certifications: [
       {
@@ -716,8 +716,8 @@ export const certificationPaths = [
   },
   {
     id: 'agentic-ai',
-    name: 'AI & Copilot',
-    shortName: 'AI & Copilot',
+    name: 'Microsoft Copilot & AI Agents',
+    shortName: 'Copilot & AI',
     code: 'AB',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-agentic)',
@@ -726,11 +726,11 @@ export const certificationPaths = [
     icon: 'Bot',
     description: 'Build and architect AI-powered business solutions with Copilot and autonomous agents.',
     branches: [
-      { id: 'sales', name: 'Sales Track' },
-      { id: 'contact-center', name: 'Contact Center Track' },
-      { id: 'builder', name: 'Agent Builder Track' },
-      { id: 'business', name: 'Business Track' },
-      { id: 'leadership', name: 'Leadership Track' },
+      { id: 'sales', name: 'Sales' },
+      { id: 'contact-center', name: 'Contact Center' },
+      { id: 'builder', name: 'Agent Builder' },
+      { id: 'business', name: 'Business' },
+      { id: 'leadership', name: 'Leadership' },
     ],
     certifications: [
       {
@@ -874,7 +874,7 @@ export const certificationPaths = [
   },
   {
     id: 'dynamics-365',
-    name: 'Dynamics 365',
+    name: 'Microsoft Dynamics 365',
     shortName: 'Dynamics 365',
     code: 'MB',
     pillar: PILLARS.BIZ_SOLUTIONS,
@@ -884,9 +884,9 @@ export const certificationPaths = [
     icon: 'Briefcase',
     description: 'Implement, customize, and maintain Dynamics 365 business applications.',
     branches: [
-      { id: 'sales-service', name: 'Sales & Service Track' },
-      { id: 'finance-ops', name: 'Finance & Operations Track' },
-      { id: 'bc', name: 'Business Central Track' },
+      { id: 'sales-service', name: 'Sales & Service' },
+      { id: 'finance-ops', name: 'Finance & Operations' },
+      { id: 'bc', name: 'Business Central' },
     ],
     certifications: [
       {
@@ -1001,20 +1001,20 @@ export const certificationPaths = [
   },
   {
     id: 'devops',
-    name: 'DevOps & GitHub',
-    shortName: 'DevOps & GitHub',
+    name: 'GitHub & Azure DevOps',
+    shortName: 'GitHub & DevOps',
     code: 'AZ/GH',
     pillar: PILLARS.CLOUD_AI,
-    color: '#F59E0B',
+    color: 'var(--line-devops)',
     glowColor: 'rgba(245, 158, 11, 0.2)',
     cssVar: '--line-devops',
-    icon: 'GitBranch',
+    icon: 'GitHub',
     description: 'Combine development and operations practices with GitHub workflows, actions, and security.',
     branches: [
-      { id: 'admin', name: 'Azure Admin Track' },
-      { id: 'gh-devops', name: 'GitHub DevOps Track' },
-      { id: 'gh-security', name: 'GitHub Security Track' },
-      { id: 'gh-ai', name: 'GitHub AI Track' },
+      { id: 'admin', name: 'Azure Admin' },
+      { id: 'gh-devops', name: 'GitHub DevOps' },
+      { id: 'gh-security', name: 'GitHub Security' },
+      { id: 'gh-ai', name: 'GitHub AI' },
     ],
     certifications: [
       {
@@ -1186,12 +1186,11 @@ export const certificationPaths = [
         ],
       },
     ],
-  }
-,
+  },
   {
     id: 'retired-exams',
-    name: 'Retired & Retiring Exams',
-    shortName: 'Archived Exams',
+    name: 'Retired Certifications',
+    shortName: 'Retired Exams',
     code: 'ARCHIVE',
     pillar: PILLARS.RETIRED,
     color: '#94a3b8',

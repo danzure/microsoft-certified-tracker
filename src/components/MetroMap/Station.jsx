@@ -2,7 +2,8 @@ import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationP
 import { useProgressContext } from '../../context/ProgressContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
-import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff } from 'lucide-react';
+import { IconMap } from '../common/IconMap';
+const { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff } = IconMap;
 import './Station.css';
 
 const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
