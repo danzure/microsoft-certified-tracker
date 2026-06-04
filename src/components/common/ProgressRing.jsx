@@ -1,5 +1,16 @@
 import './ProgressRing.css';
 
+/**
+ * An SVG-based circular progress indicator.
+ * 
+ * @param {Object} props
+ * @param {number} [props.percent=0] - Completion percentage (0-100)
+ * @param {number} [props.size=64] - Diameter of the ring in pixels
+ * @param {number} [props.strokeWidth=4] - Width of the progress stroke
+ * @param {string} [props.color='#0078d4'] - Color of the filled progress section
+ * @param {string} [props.label] - Optional text label displayed below the ring
+ * @param {boolean} [props.showPercent=true] - Whether to show the percentage text inside the ring
+ */
 const ProgressRing = ({ percent = 0, size = 64, strokeWidth = 4, color = '#0078d4', label, showPercent = true }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;

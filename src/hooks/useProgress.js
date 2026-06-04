@@ -23,6 +23,12 @@ const saveData = (key, data) => {
   }
 };
 
+/**
+ * Custom hook to manage user's certification progress and tracking states.
+ * Handles persistence to localStorage and provides state manipulation methods.
+ * 
+ * @returns {Object} Progress state, tracking lists, and mutation functions
+ */
 export const useProgress = () => {
   const [progress, setProgress] = useState(() => loadData(STORAGE_KEY, {}));
   const [ignoredPaths, setIgnoredPaths] = useState(() => loadData(IGNORED_STORAGE_KEY, []));

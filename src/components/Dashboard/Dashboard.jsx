@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { certificationPaths, CERT_STATUS, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
@@ -5,19 +6,28 @@ import Badge from '../common/Badge';
 import { IconMap as Icons } from '../common/IconMap';
 import './Dashboard.css';
 
+/**
+ * Dashboard Component
+ * 
+ * Provides an overview of the user's certification tracking progress.
+ * Displays total statistics, a quick-access strip for actively studied certifications,
+ * and a grid of all available certification paths categorized by technology pillar.
+ */
 const Dashboard = () => {
   const navigate = useNavigate();
   const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored, isCertIgnored } = useProgressContext();
-  const overall = getOverallProgress();
+  const overall = useMemo(() => getOverallProgress(), [getOverallProgress]);
 
   // Get recently in-progress items
-  const inProgressCerts = certificationPaths
-    .filter(path => !isPathIgnored(path.id))
-    .flatMap((path) =>
-      path.certifications
-        .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
-        .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
-    );
+  const inProgressCerts = useMemo(() => {
+    return certificationPaths
+      .filter(path => !isPathIgnored(path.id))
+      .flatMap((path) =>
+        path.certifications
+          .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
+          .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
+      );
+  }, [isPathIgnored, isCertIgnored, getStatus]);
 
 
   return (

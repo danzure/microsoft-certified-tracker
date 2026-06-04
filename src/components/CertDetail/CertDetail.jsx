@@ -6,6 +6,16 @@ import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import './CertDetail.css';
 
+/**
+ * A modal panel displaying comprehensive details for a specific certification.
+ * Shows description, skills measured, prerequisites, validity, and provides controls
+ * to update the tracking status or exclude the certification.
+ * 
+ * @param {Object} props
+ * @param {Object} props.cert - The certification data object
+ * @param {Object} props.path - The parent path data object
+ * @param {Function} props.onClose - Callback to close the detail panel
+ */
 const CertDetail = ({ cert, path, onClose }) => {
   const { getStatus, setStatus, toggleCertIgnored, isCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);

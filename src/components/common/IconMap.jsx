@@ -1,5 +1,4 @@
 import {
-  BoardRegular,
   OpenRegular,
   DismissRegular,
   SearchRegular,
@@ -44,6 +43,7 @@ import {
 } from './ProductIcons';
 
 const withSize = (IconComponent) => {
+  // eslint-disable-next-line no-unused-vars
   return function WrappedIcon({ size, className, style, strokeWidth: _strokeWidth, ...props }) {
     const defaultSize = 20;
     const finalSize = size || defaultSize;

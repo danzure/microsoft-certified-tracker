@@ -1,5 +1,10 @@
 import { CERT_STATUS } from '../data/certificationPaths';
 
+/**
+ * Returns a human-readable label for a given certification status.
+ * @param {string} status - The certification status
+ * @returns {string} The formatted status label
+ */
 export const getStatusLabel = (status) => {
   switch (status) {
     case CERT_STATUS.COMPLETED: return 'Completed';

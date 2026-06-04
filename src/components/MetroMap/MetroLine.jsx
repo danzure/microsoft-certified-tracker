@@ -12,6 +12,11 @@ const LEVELS = [CERT_LEVELS.FUNDAMENTALS, CERT_LEVELS.ASSOCIATE, CERT_LEVELS.EXP
 const RAIL_WIDTH = 6;
 const CURVE_RADIUS = 24;
 
+/**
+ * Core visualization component that renders a certification path as a "metro map".
+ * Dynamically constructs the visual tree layout, SVG connecting tracks, and stations
+ * based on the certifications and prerequisites defined in the path data.
+ */
 const MetroLine = () => {
   const { pathId } = useParams();
   const path = getPathById(pathId);

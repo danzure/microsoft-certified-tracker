@@ -6,6 +6,18 @@ import { IconMap } from '../common/IconMap';
 const { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff } = IconMap;
 import './Station.css';
 
+/**
+ * Represents a single node (station) on the MetroLine map.
+ * Displays the certification's status, level badges, and basic information.
+ * Allows interacting to cycle status or open the detailed view.
+ * 
+ * @param {Object} props
+ * @param {Object} props.cert - The certification data
+ * @param {string} props.pathColor - The thematic color of the path
+ * @param {Function} props.onSelect - Callback triggered when the station is right-clicked or clicked for details
+ * @param {number} props.index - Positional index for animation delay
+ * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
+ */
 const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
   const { getStatus, cycleStatus, isCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);
