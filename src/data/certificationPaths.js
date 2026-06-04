@@ -1018,7 +1018,7 @@ export const certificationPaths = [
     ],
     certifications: [
       {
-        id: 'az-900-devops',
+        id: 'az-900',
         examCode: 'AZ-900',
         name: 'Azure Fundamentals',
         level: CERT_LEVELS.FUNDAMENTALS,
@@ -1035,14 +1035,14 @@ export const certificationPaths = [
         interchangeWith: 'azure-infrastructure',
       },
       {
-        id: 'az-104-devops',
+        id: 'az-104',
         examCode: 'AZ-104',
         name: 'Azure Administrator Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'admin',
         description: 'Demonstrate key skills to configure, manage, secure, and administer key professional functions in Microsoft Azure.',
         prerequisites: [],
-        recommendedPrereqs: ['az-900-devops'],
+        recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-104/',
         retirementDate: null,
         skillsMeasured: [
@@ -1062,7 +1062,7 @@ export const certificationPaths = [
         level: CERT_LEVELS.EXPERT,
         description: 'Design and implement DevOps practices for version control, compliance, CI/CD, and monitoring.',
         prerequisites: [],
-        recommendedPrereqs: ['az-104-devops'],
+        recommendedPrereqs: ['az-104'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-400/',
         retirementDate: null,
         skillsMeasured: [
