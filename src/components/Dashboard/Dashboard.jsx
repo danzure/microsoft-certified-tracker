@@ -7,7 +7,7 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored } = useProgressContext();
+  const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored, isCertIgnored } = useProgressContext();
   const overall = getOverallProgress();
 
   // Get recently in-progress items
@@ -15,7 +15,7 @@ const Dashboard = () => {
     .filter(path => !isPathIgnored(path.id))
     .flatMap((path) =>
       path.certifications
-        .filter((cert) => getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
+        .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
         .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
     );
 
@@ -144,16 +144,6 @@ const Dashboard = () => {
                         </div>
                         <div className="dashboard__path-actions">
                           <Icons.ArrowRight size={20} className="dashboard__path-arrow" />
-                          <button
-                            className="dashboard__path-toggle-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              togglePathIgnored(path.id);
-                            }}
-                            title={isIgnored ? "Include in overall tracking" : "Exclude from overall tracking"}
-                          >
-                            {isIgnored ? <Icons.Square size={18} /> : <Icons.CheckSquare size={18} />}
-                          </button>
                         </div>
                       </div>
                       
@@ -188,6 +178,17 @@ const Dashboard = () => {
                           />
                         </div>
                       )}
+
+                      <button
+                        className={`dashboard__path-exclude-btn ${isIgnored ? 'dashboard__path-exclude-btn--active' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          togglePathIgnored(path.id);
+                        }}
+                        title={isIgnored ? "Include in overall tracking" : "Exclude from overall tracking"}
+                      >
+                        {isIgnored ? <Icons.EyeOff size={14} /> : <Icons.Eye size={14} />}
+                      </button>
                     </div>
                   );
                 })}

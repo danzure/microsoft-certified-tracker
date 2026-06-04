@@ -213,20 +213,58 @@
   color: var(--colorBrandForeground1);
 }
 
-.dashboard__path-toggle-btn {
-  color: var(--text-tertiary);
-  padding: 4px;
-  border-radius: 6px;
+.dashboard__path-exclude-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 200ms ease;
   background: transparent;
+  color: var(--text-tertiary);
+  border: none;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--curve-easy-ease),
+              color var(--duration-fast) var(--curve-easy-ease);
+  opacity: 0;
+  z-index: 2;
 }
 
-.dashboard__path-toggle-btn:hover {
+.dashboard__path-card:hover .dashboard__path-exclude-btn {
+  opacity: 1;
+}
+
+.dashboard__path-exclude-btn:hover {
+  background: var(--colorSubtleBackgroundHover);
   color: var(--text-primary);
-  background: var(--colorNeutralBackground4);
+}
+
+.dashboard__path-exclude-btn:active {
+  background: var(--colorSubtleBackgroundActive);
+  color: var(--text-primary);
+}
+
+.dashboard__path-exclude-btn:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.dashboard__path-exclude-btn--active {
+  opacity: 1;
+  color: var(--status-retiring);
+  background: var(--badge-retiring-bg);
+}
+
+.dashboard__path-exclude-btn--active:hover {
+  background: color-mix(in srgb, var(--status-retiring) 14%, transparent);
+}
+
+.dashboard__path-exclude-btn--active:active {
+  background: color-mix(in srgb, var(--status-retiring) 20%, transparent);
 }
 
 .dashboard__path-name {

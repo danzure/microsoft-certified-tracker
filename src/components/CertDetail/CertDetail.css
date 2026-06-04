@@ -134,6 +134,35 @@
   line-height: var(--lh-relaxed);
 }
 
+/* Skills Measured */
+.cert-detail__skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cert-detail__skill-item {
+  position: relative;
+  padding-left: var(--space-4);
+  font-size: var(--fs-body1);
+  color: var(--text-secondary);
+  line-height: var(--lh-relaxed);
+}
+
+.cert-detail__skill-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--detail-color);
+}
+
 /* Alert */
 .cert-detail__alert {
   display: flex;
@@ -276,6 +305,85 @@
 
 .cert-detail__learn-btn:hover {
   background: var(--colorBrandBackgroundHover);
+}
+
+/* Ignore/Exclude Toggle */
+.cert-detail__ignore-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-body1);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.cert-detail__ignore-btn:hover {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+.cert-detail__ignore-btn--active {
+  color: var(--badge-retiring-fg);
+  border-color: var(--badge-retiring-border);
+  background: var(--badge-retiring-bg);
+}
+
+.cert-detail__ignore-btn--active:hover {
+  border-color: var(--badge-retiring-fg);
+}
+
+.cert-detail__ignore-toggle {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--colorBrandBackground);
+  position: relative;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+
+.cert-detail__ignore-toggle--off {
+  background: var(--text-disabled);
+}
+
+.cert-detail__ignore-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  transition: transform var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.cert-detail__ignore-toggle--off .cert-detail__ignore-toggle-thumb {
+  transform: translateX(0);
+}
+
+.cert-detail__ignore-toggle:not(.cert-detail__ignore-toggle--off) .cert-detail__ignore-toggle-thumb {
+  transform: translateX(16px);
+}
+
+.cert-detail__ignore-hint {
+  font-size: var(--fs-caption1);
+  color: var(--badge-retiring-fg);
+  line-height: var(--lh-relaxed);
+  padding: 0 var(--space-1);
+}
+
+.cert-detail__status-options--disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 /* Mobile */

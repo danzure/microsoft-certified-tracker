@@ -2,14 +2,15 @@ import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationP
 import { useProgressContext } from '../../context/ProgressContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
-import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX } from 'lucide-react';
+import { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff } from 'lucide-react';
 import './Station.css';
 
 const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
-  const { getStatus, cycleStatus } = useProgressContext();
+  const { getStatus, cycleStatus, isCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
   const retired = isRetired(cert);
+  const certIgnored = isCertIgnored(cert.id);
 
   const statusClass = {
     [CERT_STATUS.NOT_STARTED]: 'station--not-started',
@@ -37,7 +38,7 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
 
   return (
     <div
-      className={`station ${statusClass} ${cert.isInterchange ? 'station--interchange' : ''} ${isUnlocked ? 'station--unlocked' : ''}`}
+      className={`station ${statusClass} ${cert.isInterchange ? 'station--interchange' : ''} ${isUnlocked ? 'station--unlocked' : ''} ${certIgnored ? 'station--ignored' : ''}`}
       style={{
         '--station-color': pathColor,
         '--station-index': index,
@@ -125,6 +126,12 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
             {cert.isComingSoon && (
               <Badge variant="default" small>
                 Coming soon
+              </Badge>
+            )}
+            {certIgnored && (
+              <Badge variant="retiring" small>
+                <EyeOff size={9} />
+                Excluded
               </Badge>
             )}
           </div>

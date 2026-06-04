@@ -3,6 +3,7 @@ import { CERT_STATUS, certificationPaths } from '../data/certificationPaths';
 
 const STORAGE_KEY = 'ms-cert-tracker-progress';
 const IGNORED_STORAGE_KEY = 'ms-cert-tracker-ignored';
+const IGNORED_CERTS_STORAGE_KEY = 'ms-cert-tracker-ignored-certs';
 const DISMISSED_CERTS_KEY = 'ms-cert-tracker-dismissed-certs';
 
 const loadData = (key, defaultValue) => {
@@ -25,6 +26,7 @@ const saveData = (key, data) => {
 export const useProgress = () => {
   const [progress, setProgress] = useState(() => loadData(STORAGE_KEY, {}));
   const [ignoredPaths, setIgnoredPaths] = useState(() => loadData(IGNORED_STORAGE_KEY, []));
+  const [ignoredCerts, setIgnoredCerts] = useState(() => loadData(IGNORED_CERTS_STORAGE_KEY, []));
   const [dismissedCerts, setDismissedCerts] = useState(() => loadData(DISMISSED_CERTS_KEY, []));
 
   useEffect(() => {
@@ -34,6 +36,10 @@ export const useProgress = () => {
   useEffect(() => {
     saveData(IGNORED_STORAGE_KEY, ignoredPaths);
   }, [ignoredPaths]);
+
+  useEffect(() => {
+    saveData(IGNORED_CERTS_STORAGE_KEY, ignoredCerts);
+  }, [ignoredCerts]);
 
   useEffect(() => {
     saveData(DISMISSED_CERTS_KEY, dismissedCerts);
@@ -79,6 +85,16 @@ export const useProgress = () => {
     return ignoredPaths.includes(pathId);
   }, [ignoredPaths]);
 
+  const toggleCertIgnored = useCallback((certId) => {
+    setIgnoredCerts((prev) =>
+      prev.includes(certId) ? prev.filter(id => id !== certId) : [...prev, certId]
+    );
+  }, []);
+
+  const isCertIgnored = useCallback((certId) => {
+    return ignoredCerts.includes(certId);
+  }, [ignoredCerts]);
+
   const toggleCertDismissed = useCallback((certId) => {
     setDismissedCerts((prev) =>
       prev.includes(certId) ? prev.filter(id => id !== certId) : [...prev, certId]
@@ -94,11 +110,12 @@ export const useProgress = () => {
       const path = certificationPaths.find((p) => p.id === pathId);
       if (!path) return { total: 0, completed: 0, inProgress: 0, percent: 0 };
 
-      const total = path.certifications.length;
-      const completed = path.certifications.filter(
+      const tracked = path.certifications.filter(c => !ignoredCerts.includes(c.id));
+      const total = tracked.length;
+      const completed = tracked.filter(
         (c) => progress[c.id] === CERT_STATUS.COMPLETED
       ).length;
-      const inProgress = path.certifications.filter(
+      const inProgress = tracked.filter(
         (c) => progress[c.id] === CERT_STATUS.IN_PROGRESS
       ).length;
 
@@ -109,7 +126,7 @@ export const useProgress = () => {
         percent: total > 0 ? Math.round((completed / total) * 100) : 0,
       };
     },
-    [progress]
+    [progress, ignoredCerts]
   );
 
   const getOverallProgress = useCallback(() => {
@@ -121,8 +138,8 @@ export const useProgress = () => {
       if (ignoredPaths.includes(path.id)) return; // Skip ignored paths
 
       path.certifications.forEach((cert) => {
-        // Skip interchange duplicates
-        if (!cert.isInterchange) {
+        // Skip interchange duplicates and individually ignored certs
+        if (!cert.isInterchange && !ignoredCerts.includes(cert.id)) {
           total++;
           if (progress[cert.id] === CERT_STATUS.COMPLETED) completed++;
           if (progress[cert.id] === CERT_STATUS.IN_PROGRESS) inProgress++;
@@ -136,7 +153,7 @@ export const useProgress = () => {
       inProgress,
       percent: total > 0 ? Math.round((completed / total) * 100) : 0,
     };
-  }, [progress, ignoredPaths]);
+  }, [progress, ignoredPaths, ignoredCerts]);
 
   const resetAll = useCallback(() => {
     setProgress({});
@@ -145,6 +162,7 @@ export const useProgress = () => {
   return {
     progress,
     ignoredPaths,
+    ignoredCerts,
     dismissedCerts,
     getStatus,
     setStatus,
@@ -153,6 +171,8 @@ export const useProgress = () => {
     getOverallProgress,
     togglePathIgnored,
     isPathIgnored,
+    toggleCertIgnored,
+    isCertIgnored,
     toggleCertDismissed,
     isCertDismissed,
     resetAll,
