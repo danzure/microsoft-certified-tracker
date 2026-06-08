@@ -217,6 +217,69 @@
   text-decoration: underline;
 }
 
+.station__fast-untrack-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--text-tertiary);
+  border: none;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--curve-easy-ease),
+              color var(--duration-fast) var(--curve-easy-ease),
+              opacity var(--transition-fast);
+  opacity: 0;
+  z-index: 2;
+}
+
+.station:hover .station__fast-untrack-btn {
+  opacity: 1;
+}
+
+.station__fast-untrack-btn:hover:not(:disabled) {
+  background: var(--colorSubtleBackgroundHover);
+  color: var(--text-primary);
+}
+
+.station__fast-untrack-btn:active:not(:disabled) {
+  background: var(--colorSubtleBackgroundActive);
+  color: var(--text-primary);
+}
+
+.station__fast-untrack-btn:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.station__fast-untrack-btn--active {
+  opacity: 1;
+  color: var(--status-retiring);
+  background: var(--badge-retiring-bg);
+}
+
+.station__fast-untrack-btn--active:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--status-retiring) 14%, transparent);
+}
+
+.station__fast-untrack-btn--active:active:not(:disabled) {
+  background: color-mix(in srgb, var(--status-retiring) 20%, transparent);
+}
+
+.station__fast-untrack-btn:disabled {
+  cursor: not-allowed;
+}
+
+.station:hover .station__fast-untrack-btn:disabled {
+  opacity: 0.5;
+}
+
 /* Ignored/Excluded */
 .station--ignored {
   opacity: 0.45;

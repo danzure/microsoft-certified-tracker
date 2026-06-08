@@ -17,10 +17,11 @@ import './CertDetail.css';
  * @param {Function} props.onClose - Callback to close the detail panel
  */
 const CertDetail = ({ cert, path, onClose }) => {
-  const { getStatus, setStatus, toggleCertIgnored, isCertIgnored } = useProgressContext();
+  const { getStatus, setStatus, toggleCertIgnored, isCertIgnored, isPathIgnored } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
-  const certIgnored = isCertIgnored(cert.id);
+  const isPathExcluded = isPathIgnored(path.id);
+  const certIgnored = isCertIgnored(cert.id) || isPathExcluded;
 
   const statusOptions = [
     { value: CERT_STATUS.NOT_STARTED, label: 'Not Started', icon: '○', className: 'cert-detail__status-btn--not-started' },
@@ -210,16 +211,24 @@ const CertDetail = ({ cert, path, onClose }) => {
             <h3 className="cert-detail__section-title">Tracking</h3>
             <button
               className={`cert-detail__ignore-btn ${certIgnored ? 'cert-detail__ignore-btn--active' : ''}`}
-              onClick={() => toggleCertIgnored(cert.id)}
+              onClick={() => isPathExcluded ? null : toggleCertIgnored(cert.id)}
+              disabled={isPathExcluded}
+              style={{ cursor: isPathExcluded ? 'not-allowed' : 'pointer', opacity: isPathExcluded ? 0.8 : 1 }}
             >
               {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
-              <span>{certIgnored ? 'Excluded from tracking' : 'Included in tracking'}</span>
-              <span className={`cert-detail__ignore-toggle ${certIgnored ? 'cert-detail__ignore-toggle--off' : ''}`}>
-                <span className="cert-detail__ignore-toggle-thumb" />
-              </span>
+              <span>{isPathExcluded ? 'Path Excluded' : (certIgnored ? 'Excluded from tracking' : 'Included in tracking')}</span>
+              {!isPathExcluded && (
+                <span className={`cert-detail__ignore-toggle ${certIgnored ? 'cert-detail__ignore-toggle--off' : ''}`}>
+                  <span className="cert-detail__ignore-toggle-thumb" />
+                </span>
+              )}
             </button>
             {certIgnored && (
-              <p className="cert-detail__ignore-hint">This certification won't count towards your overall or path progress.</p>
+              <p className="cert-detail__ignore-hint">
+                {isPathExcluded 
+                  ? `The entire ${path.shortName} path is excluded from tracking.`
+                  : "This certification won't count towards your overall or path progress."}
+              </p>
             )}
           </div>
 

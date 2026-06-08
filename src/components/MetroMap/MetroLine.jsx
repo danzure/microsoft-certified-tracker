@@ -20,7 +20,7 @@ const CURVE_RADIUS = 24;
 const MetroLine = () => {
   const { pathId } = useParams();
   const path = getPathById(pathId);
-  const { getStatus } = useProgressContext();
+  const { getStatus, isPathIgnored } = useProgressContext();
   const [selectedCert, setSelectedCert] = useState(null);
 
   const treeContainerRef = useRef(null);
@@ -332,6 +332,7 @@ const MetroLine = () => {
         index={idx}
         isTrunk={!cert.branch}
         isUnlocked={isUnlocked}
+        isPathIgnored={isPathIgnored(path.id)}
       />
     );
   };

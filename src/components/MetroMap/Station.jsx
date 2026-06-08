@@ -3,7 +3,7 @@ import { useProgressContext } from '../../context/ProgressContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import { IconMap } from '../common/IconMap';
-const { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff } = IconMap;
+const { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff, Eye } = IconMap;
 import './Station.css';
 
 /**
@@ -18,12 +18,12 @@ import './Station.css';
  * @param {number} props.index - Positional index for animation delay
  * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
  */
-const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
-  const { getStatus, cycleStatus, isCertIgnored } = useProgressContext();
+const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }) => {
+  const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
   const retired = isRetired(cert);
-  const certIgnored = isCertIgnored(cert.id);
+  const certIgnored = isCertIgnored(cert.id) || isPathIgnored;
 
   const statusClass = {
     [CERT_STATUS.NOT_STARTED]: 'station--not-started',
@@ -162,6 +162,20 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
             <ExternalLink size={12} />
             Microsoft Learn
           </a>
+          <button
+            className={`station__fast-untrack-btn ${certIgnored ? 'station__fast-untrack-btn--active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (!isPathIgnored) {
+                toggleCertIgnored(cert.id);
+              }
+            }}
+            disabled={isPathIgnored}
+            title={isPathIgnored ? "Path is excluded" : (certIgnored ? "Include in tracking" : "Exclude from tracking")}
+          >
+            {certIgnored ? <EyeOff size={14} /> : <Eye size={14} />}
+          </button>
         </div>
       </div>
     </div>
