@@ -94,7 +94,7 @@ Output is written to the `dist/` directory.
 This project is configured for automatic deployment to **Azure Static Web Apps** via GitHub Actions. Pushes to `main` trigger the CI/CD pipeline defined in:
 
 ```
-.github/workflows/azure-static-web-apps-thankful-plant-0a2c34903.yml
+.github/workflows/azure-static-web-apps-brave-tree-034dbef03.yml
 ```
 
 The workflow builds the Vite project and deploys the `dist/` output to Azure.
