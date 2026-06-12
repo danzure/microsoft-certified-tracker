@@ -4,23 +4,24 @@ import { useProgressContext } from '../../context/ProgressContext';
 import Station from './Station';
 
 import CertDetail from '../CertDetail/CertDetail';
+import ProgressRing from '../common/ProgressRing';
 import { IconMap as Icons } from '../common/IconMap';
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import './MetroLine.css';
+import './PathMap.css';
 
 const LEVELS = [CERT_LEVELS.FUNDAMENTALS, CERT_LEVELS.ASSOCIATE, CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY];
 const RAIL_WIDTH = 6;
 const CURVE_RADIUS = 24;
 
 /**
- * Core visualization component that renders a certification path as a "metro map".
+ * Core visualization component that renders a certification path as a connected map.
  * Dynamically constructs the visual tree layout, SVG connecting tracks, and stations
  * based on the certifications and prerequisites defined in the path data.
  */
-const MetroLine = () => {
+const PathMap = () => {
   const { pathId } = useParams();
   const path = getPathById(pathId);
-  const { getStatus, isPathIgnored } = useProgressContext();
+  const { getStatus, getPathProgress, isPathIgnored } = useProgressContext();
   const [selectedCert, setSelectedCert] = useState(null);
 
   const treeContainerRef = useRef(null);
@@ -30,6 +31,12 @@ const MetroLine = () => {
 
   const branches = useMemo(() => path?.branches || [], [path?.branches]);
   const hasBranches = branches.length > 0 && path?.certifications.some(c => c.branch);
+
+  // ─── Path progress for the header ───
+  const pathProgress = useMemo(() => {
+    if (!path) return { total: 0, completed: 0, inProgress: 0, percent: 0 };
+    return getPathProgress(path.id);
+  }, [path, getPathProgress]);
 
   // ─── Computed data for tree layout ───
   const { trunkFundamentals, trunkBottom, branchColumns } = useMemo(() => {
@@ -309,7 +316,7 @@ const MetroLine = () => {
   // ─── Error state ───
   if (!path) {
     return (
-      <div className="metro-line__not-found">
+      <div className="path-map__not-found">
         <Icons.MapPinOff size={48} />
         <h2>Path not found</h2>
         <p>The certification path you're looking for doesn't exist.</p>
@@ -347,7 +354,7 @@ const MetroLine = () => {
 
     return (
       <svg
-        className="metro-line__track-svg"
+        className="path-map__track-svg"
         width="100%"
         height="100%"
         style={{
@@ -409,15 +416,46 @@ const MetroLine = () => {
     );
   };
 
-  return (
-    <div className="metro-line" style={{ '--path-color': path.color, '--path-glow': path.glowColor }}>
+  const PathIcon = Icons[path.icon] || Icons.Circle;
 
+  return (
+    <div className="path-map" style={{ '--path-color': path.color, '--path-glow': path.glowColor }}>
+
+      {/* ─── Path Header ─── */}
+      <div className="path-map__header">
+        <div className="path-map__header-icon">
+          <PathIcon size={28} />
+        </div>
+        <div className="path-map__header-info">
+          <h1 className="path-map__header-title">{path.name}</h1>
+          <p className="path-map__header-desc">{path.description}</p>
+        </div>
+        <div className="path-map__header-stats">
+          <div className="path-map__header-progress">
+            <ProgressRing percent={pathProgress.percent} size={48} strokeWidth={4} color={path.color} />
+          </div>
+          <div className="path-map__header-counts">
+            <span className="path-map__header-stat">
+              <Icons.CheckCircle2 size={14} />
+              <strong>{pathProgress.completed}</strong> completed
+            </span>
+            <span className="path-map__header-stat">
+              <Icons.Clock size={14} />
+              <strong>{pathProgress.inProgress}</strong> active
+            </span>
+            <span className="path-map__header-stat">
+              <Icons.Circle size={14} />
+              <strong>{pathProgress.total - pathProgress.completed - pathProgress.inProgress}</strong> remaining
+            </span>
+          </div>
+        </div>
+      </div>
 
       {/* ─── Map Viewport ─── */}
-      <div className="metro-line__map-viewport">
+      <div className="path-map__viewport">
         {/* ─── Tree Container ─── */}
         <div 
-          className="metro-line__tree-container" 
+          className="path-map__tree-container" 
           ref={treeContainerRef}
           style={hasBranches ? { '--branch-count': branchColumns.length || 1 } : undefined}
         >
@@ -428,10 +466,10 @@ const MetroLine = () => {
             <>
               {/* ── Trunk Top: Fundamentals ── */}
               {trunkFundamentals.length > 0 && (
-                <div className="metro-line__trunk-top">
-                  <div className="metro-line__trunk-stations">
+                <div className="path-map__trunk-top">
+                  <div className="path-map__trunk-stations">
                     {trunkFundamentals.map((cert, idx) => (
-                      <div key={cert.id} className="metro-line__trunk-station-wrap">
+                      <div key={cert.id} className="path-map__trunk-station-wrap">
                         {renderStation(cert, idx)}
                       </div>
                     ))}
@@ -441,25 +479,25 @@ const MetroLine = () => {
 
               {/* ── Spacer for fork zone ── */}
               {trunkFundamentals.length > 0 && (
-                <div className="metro-line__fork-spacer" ref={forkSpacerRef} />
+                <div className="path-map__fork-spacer" ref={forkSpacerRef} />
               )}
 
               {/* ── Branch Columns ── */}
-              <div className="metro-line__branches-scroll">
+              <div className="path-map__branches-scroll">
                 <div
-                  className="metro-line__branches-grid"
+                  className="path-map__branches-grid"
                   ref={gridRef}
                   style={{ gridTemplateColumns: `repeat(${branchColumns.length}, minmax(160px, 1fr))` }}
                 >
                   {branchColumns.map(branch => {
                     return (
-                      <div key={branch.id} className="metro-line__branch-column" id={`branch-col-${branch.id}`}>
-                        <div className="metro-line__branch-column-header">
+                      <div key={branch.id} className="path-map__branch-column" id={`branch-col-${branch.id}`}>
+                        <div className="path-map__branch-column-header">
                           <Icons.GitBranch size={11} />
                           <span>{branch.name}</span>
                         </div>
                         {branch.allCerts.map((cert, idx) => (
-                          <div key={cert.id} className="metro-line__branch-station">
+                          <div key={cert.id} className="path-map__branch-station">
                             {renderStation(cert, idx)}
                           </div>
                         ))}
@@ -471,17 +509,17 @@ const MetroLine = () => {
 
               {/* ── Spacer for merge zone ── */}
               {trunkBottom.length > 0 && (
-                <div className="metro-line__merge-spacer" />
+                <div className="path-map__merge-spacer" />
               )}
 
               {/* ── Trunk Bottom (Expert/Specialty) ── */}
               {trunkBottom.length > 0 && (
-                <div className="metro-line__trunk-bottom">
+                <div className="path-map__trunk-bottom">
                   {trunkBottomGroups.map(group => (
-                    <div key={group.level} className="metro-line__trunk-level-group">
-                      <div className="metro-line__trunk-stations">
+                    <div key={group.level} className="path-map__trunk-level-group">
+                      <div className="path-map__trunk-stations">
                         {group.certs.map((cert, idx) => (
-                          <div key={cert.id} className="metro-line__trunk-station-wrap">
+                          <div key={cert.id} className="path-map__trunk-station-wrap">
                             {renderStation(cert, idx)}
                           </div>
                         ))}
@@ -493,12 +531,12 @@ const MetroLine = () => {
             </>
           ) : (
             /* ─── Linear Layout (no branches, e.g. DevOps) ─── */
-            <div className="metro-line__stations">
+            <div className="path-map__stations">
               {linearGroups.map(group => (
-                <div key={group.level} className="metro-line__level-group">
-                  <div className="metro-line__level-nodes">
+                <div key={group.level} className="path-map__level-group">
+                  <div className="path-map__level-nodes">
                     {group.certs.map((cert, idx) => (
-                      <div key={cert.id} className="metro-line__node-wrapper metro-line__node-wrapper--trunk">
+                      <div key={cert.id} className="path-map__node-wrapper path-map__node-wrapper--trunk">
                         {renderStation(cert, idx)}
                       </div>
                     ))}
@@ -518,4 +556,4 @@ const MetroLine = () => {
   );
 };
 
-export default MetroLine;
+export default PathMap;

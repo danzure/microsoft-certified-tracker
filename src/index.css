@@ -105,7 +105,7 @@
   --colorBrandForeground2: #115ea3;
   --colorBrandStroke1: #0f6cbd;
 
-  /* ── Metro Line Colors ── */
+  /* ── Path Map Colors ── */
   --line-azure: #0f6cbd;
   --line-ai: #7c3aed;
   --line-data: #0e9b6e;
@@ -117,7 +117,7 @@
   --line-github: #24292F;
   --line-agentic: #14b8a6;
 
-  /* Metro Line Glow */
+  /* Path Map Glow */
   --glow-azure: rgba(15, 108, 189, 0.12);
   --glow-ai: rgba(124, 58, 237, 0.12);
   --glow-data: rgba(14, 155, 110, 0.12);
@@ -286,7 +286,7 @@
   --colorBrandForeground2: #62abf5;
   --colorBrandStroke1: #479ef5;
 
-  /* Metro Line Colors (brighter for dark bg) */
+  /* Path Map Colors (brighter for dark bg) */
   --line-azure: #479ef5;
   --line-ai: #a78bfa;
   --line-data: #34d399;
@@ -591,8 +591,8 @@ input, textarea, select {
 .station,
 .station *,
 .progress-ring *,
-.metro-line__track-line,
-.metro-overview__progress-fill,
+.path-map__track-line,
+.path-map__progress-fill,
 .dashboard__hero-line {
   transition-property: none;
 }

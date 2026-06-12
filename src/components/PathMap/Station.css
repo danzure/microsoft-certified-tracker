@@ -123,7 +123,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 160px;
+  min-height: 160px;
   padding: var(--space-2) 64px var(--space-2) var(--space-3);
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
@@ -215,6 +215,49 @@
 .station__learn-link:hover {
   color: var(--colorBrandForeground2);
   text-decoration: underline;
+}
+
+/* Status Cycle Button */
+.station__cycle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-caption2);
+  font-weight: var(--fw-semibold);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-2);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.station__cycle-btn:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+.station__cycle-btn--in-progress {
+  border-color: var(--badge-inprogress-border);
+  background: var(--badge-inprogress-bg);
+  color: var(--badge-inprogress-fg);
+}
+
+.station__cycle-btn--in-progress:hover {
+  background: color-mix(in srgb, var(--badge-inprogress-fg) 16%, transparent);
+}
+
+.station__cycle-btn--completed {
+  border-color: var(--badge-completed-border);
+  background: var(--badge-completed-bg);
+  color: var(--badge-completed-fg);
+}
+
+.station__cycle-btn--completed:hover {
+  background: color-mix(in srgb, var(--badge-completed-fg) 16%, transparent);
 }
 
 .station__fast-untrack-btn {

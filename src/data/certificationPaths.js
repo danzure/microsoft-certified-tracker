@@ -1,5 +1,5 @@
 // Microsoft Certification Paths Data
-// Each path represents a "metro line" with stations (certifications)
+// Each path represents a track with stations (certifications)
 // Certifications can be grouped into named branches (tracks) within each path
 
 export const CERT_LEVELS = {
@@ -999,22 +999,17 @@ export const certificationPaths = [
     ],
   },
   {
-    id: 'devops',
-    name: 'GitHub & Azure DevOps',
-    shortName: 'GitHub & DevOps',
-    code: 'AZ/GH',
+    id: 'azure-devops',
+    name: 'Azure DevOps',
+    shortName: 'Azure DevOps',
+    code: 'AZ',
     pillar: PILLARS.CLOUD_AI,
-    color: 'var(--line-devops)',
-    glowColor: 'rgba(245, 158, 11, 0.2)',
+    color: '#0078d4',
+    glowColor: 'rgba(0, 120, 212, 0.2)',
     cssVar: '--line-devops',
-    icon: 'GitHub',
-    description: 'Combine development and operations practices with GitHub workflows, actions, and security.',
-    branches: [
-      { id: 'admin', name: 'Azure Admin' },
-      { id: 'gh-devops', name: 'GitHub DevOps' },
-      { id: 'gh-security', name: 'GitHub Security' },
-      { id: 'gh-ai', name: 'GitHub AI' },
-    ],
+    icon: 'AzureDevOps',
+    description: 'Design and implement DevOps practices for version control, compliance, CI/CD, and monitoring.',
+    branches: [],
     certifications: [
       {
         id: 'az-900',
@@ -1038,7 +1033,6 @@ export const certificationPaths = [
         examCode: 'AZ-104',
         name: 'Azure Administrator Associate',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'admin',
         description: 'Demonstrate key skills to configure, manage, secure, and administer key professional functions in Microsoft Azure.',
         prerequisites: [],
         recommendedPrereqs: ['az-900'],
@@ -1072,6 +1066,25 @@ export const certificationPaths = [
         'Implement an instrumentation strategy (5–10%)'
         ],
       },
+    ],
+  },
+  {
+    id: 'github',
+    name: 'GitHub',
+    shortName: 'GitHub',
+    code: 'GH',
+    pillar: PILLARS.CLOUD_AI,
+    color: 'var(--line-github)',
+    glowColor: 'var(--glow-github)',
+    cssVar: '--line-github',
+    icon: 'GitHub',
+    description: 'Automate software development workflows, pipeline optimization, and AI integrations with GitHub.',
+    branches: [
+      { id: 'devops', name: 'DevOps' },
+      { id: 'security', name: 'Security' },
+      { id: 'ai', name: 'AI' },
+    ],
+    certifications: [
       {
         id: 'gh-foundations',
         examCode: 'GH-900',
@@ -1093,7 +1106,7 @@ export const certificationPaths = [
         examCode: 'GH-200',
         name: 'GitHub Actions',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'gh-devops',
+        branch: 'devops',
         description: 'Focuses on automating software development workflows, pipeline optimization, and task automation.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
@@ -1112,7 +1125,7 @@ export const certificationPaths = [
         examCode: 'GH-AdvancedSec',
         name: 'GitHub Advanced Security',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'gh-security',
+        branch: 'security',
         description: 'Covers security implementation, vulnerability identification, and managing security within the development lifecycle.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
@@ -1130,7 +1143,7 @@ export const certificationPaths = [
         examCode: 'GH-100',
         name: 'GitHub Administration',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'gh-devops',
+        branch: 'devops',
         description: 'Validates the ability to manage and optimize GitHub environments, including repository management and collaboration.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
@@ -1149,7 +1162,7 @@ export const certificationPaths = [
         examCode: 'GH-300',
         name: 'GitHub Copilot',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'gh-ai',
+        branch: 'ai',
         description: 'Focuses on using GitHub Copilot, covering prompt engineering, responsible AI, and integrating AI into development workflows.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
@@ -1170,7 +1183,7 @@ export const certificationPaths = [
         examCode: 'GH-600',
         name: 'GitHub Agentic AI Developer (Beta)',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'gh-ai',
+        branch: 'ai',
         description: 'Develop agentic workflows and advanced AI integrations on GitHub.',
         prerequisites: [],
         recommendedPrereqs: ['gh-foundations'],
@@ -1183,7 +1196,7 @@ export const certificationPaths = [
         'Configuring custom agents',
         'Coordinating multi-agent execution safely'
         ],
-      },
+      }
     ],
   },
   {

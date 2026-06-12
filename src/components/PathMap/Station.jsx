@@ -7,7 +7,7 @@ const { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeO
 import './Station.css';
 
 /**
- * Represents a single node (station) on the MetroLine map.
+ * Represents a single node (station) on the certification path map.
  * Displays the certification's status, level badges, and basic information.
  * Allows interacting to cycle status or open the detailed view.
  * 
@@ -38,16 +38,28 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
     Specialty: 'default',
   }[cert.level];
 
-  const handleClick = (e) => {
+  const handleOpenDetail = (e) => {
+    e.stopPropagation();
+    onSelect?.(cert);
+  };
+
+  const handleCycleStatus = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     cycleStatus(cert.id);
   };
 
-  const handleDetail = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onSelect?.(cert);
-  };
+  const statusLabel = {
+    [CERT_STATUS.NOT_STARTED]: 'Not Started',
+    [CERT_STATUS.IN_PROGRESS]: 'In Progress',
+    [CERT_STATUS.COMPLETED]: 'Completed',
+  }[status];
+
+  const nextStatusLabel = {
+    [CERT_STATUS.NOT_STARTED]: 'Start',
+    [CERT_STATUS.IN_PROGRESS]: 'Complete',
+    [CERT_STATUS.COMPLETED]: 'Reset',
+  }[status];
 
   return (
     <div
@@ -63,10 +75,9 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
       <button
         id={`station-node-${cert.id}`}
         className="station__node"
-        onClick={handleClick}
-        onContextMenu={handleDetail}
-        aria-label={`${cert.examCode} - ${cert.name} - Click to change status`}
-        title="Click to cycle status"
+        onClick={handleOpenDetail}
+        aria-label={`${cert.examCode} - ${cert.name} - Click for details`}
+        title={`${statusLabel} — Click for details`}
       >
         <div className="station__node-outer">
           <div className="station__node-inner">
@@ -78,7 +89,7 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
       </button>
 
       {/* Station Info Card */}
-      <div className="station__info" onClick={handleDetail}>
+      <div className="station__info" onClick={handleOpenDetail}>
         {getBadgeUrl(cert.level, cert.id) && (
           <img 
             src={getBadgeUrl(cert.level, cert.id)} 
@@ -162,6 +173,15 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
             <ExternalLink size={12} />
             Microsoft Learn
           </a>
+          <button
+            className={`station__cycle-btn station__cycle-btn--${status.replace('_', '-')}`}
+            onClick={handleCycleStatus}
+            title={`${statusLabel} — Click to ${nextStatusLabel.toLowerCase()}`}
+            aria-label={`Change status: ${statusLabel}`}
+          >
+            <IconMap.RefreshCw size={12} />
+            {nextStatusLabel}
+          </button>
           <button
             className={`station__fast-untrack-btn ${certIgnored ? 'station__fast-untrack-btn--active' : ''}`}
             onClick={(e) => {

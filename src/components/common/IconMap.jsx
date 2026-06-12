@@ -25,6 +25,7 @@ import {
   LinkRegular,
   LocationOffRegular,
   BranchForkRegular,
+  ArrowSyncRegular,
 } from '@fluentui/react-icons';
 
 // Microsoft Product Icons (custom SVGs for certification paths)
@@ -40,6 +41,7 @@ import {
   GitHubIcon,
   ArchiveIcon,
   DashboardIcon,
+  AzureDevOpsIcon,
 } from './ProductIcons';
 
 const withSize = (IconComponent) => {
@@ -69,6 +71,7 @@ export const IconMap = {
   Bot: CopilotIcon,
   Briefcase: DynamicsIcon,
   GitHub: GitHubIcon,
+  AzureDevOps: AzureDevOpsIcon,
   GitBranch: withSize(BranchForkRegular),
   Archive: ArchiveIcon,
 
@@ -99,4 +102,5 @@ export const IconMap = {
   Check: withSize(CheckmarkRegular),
   Link: withSize(LinkRegular),
   MapPinOff: withSize(LocationOffRegular),
+  RefreshCw: withSize(ArrowSyncRegular),
 };

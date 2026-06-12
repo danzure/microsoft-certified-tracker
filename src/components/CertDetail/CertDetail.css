@@ -1,7 +1,7 @@
 .cert-detail__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--bg-overlay);
   z-index: var(--z-overlay);
   animation: fadeIn 150ms ease-out;
 }
@@ -18,10 +18,10 @@
   flex-direction: column;
   overflow-y: auto;
   animation: slideInFromRight 250ms cubic-bezier(0.1, 0.9, 0.2, 1);
-  background: #ffffff;
-  border-left: 1px solid #e0e0e0;
-  box-shadow: 0 25.6px 57.6px 0 rgba(0, 0, 0, 0.22), 0 4.8px 14.4px 0 rgba(0, 0, 0, 0.18);
-  font-family: 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+  background: var(--bg-surface-1);
+  border-left: 1px solid var(--border-default);
+  box-shadow: var(--shadow-64);
+  font-family: var(--font-primary);
 }
 
 .cert-detail__header {
@@ -44,20 +44,20 @@
   right: 16px;
   width: 32px;
   height: 32px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: none;
   background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #616161;
-  transition: background 0.2s, color 0.2s;
+  color: var(--text-tertiary);
+  transition: background var(--transition-fast), color var(--transition-fast);
   cursor: pointer;
 }
 
 .cert-detail__close:hover {
-  background: #f5f5f5;
-  color: #242424;
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
 }
 
 .cert-detail__header-content {
@@ -98,7 +98,7 @@
 .cert-detail__name {
   font-size: 28px;
   font-weight: 600;
-  color: #242424;
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
@@ -126,7 +126,7 @@
 .cert-detail__section-title {
   font-size: 12px;
   font-weight: 600;
-  color: #616161;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0;
@@ -134,7 +134,7 @@
 
 .cert-detail__description {
   font-size: 14px;
-  color: #424242;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
 }
@@ -153,7 +153,7 @@
   position: relative;
   padding-left: 16px;
   font-size: 14px;
-  color: #424242;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
@@ -173,21 +173,21 @@
   display: flex;
   gap: 12px;
   padding: 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   line-height: 1.6;
 }
 
 .cert-detail__alert--warning {
-  background: #fff4ce;
-  border: 1px solid #fde7a9;
-  color: #8a6d3b;
+  background: var(--badge-retiring-bg);
+  border: 1px solid var(--badge-retiring-border);
+  color: var(--badge-retiring-fg);
 }
 
 .cert-detail__alert--warning strong {
   display: block;
   margin-bottom: 2px;
-  color: #665020;
+  color: var(--badge-retiring-fg);
 }
 
 .cert-detail__alert--warning p {
@@ -209,7 +209,7 @@
 
 .cert-detail__prereq-group-label {
   font-size: 12px;
-  color: #616161;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
@@ -221,16 +221,16 @@
   align-items: flex-start;
   gap: 4px;
   padding: 16px;
-  background: #ffffff;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .cert-detail__prereq:hover {
-  border-color: #d1d1d1;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
 }
 
 .cert-detail__prereq-code {
@@ -241,16 +241,16 @@
 .cert-detail__prereq-name {
   font-size: 14px;
   font-weight: 600;
-  color: #242424;
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
 /* Status Options */
 .cert-detail__status-options {
   display: flex;
-  background: #f5f5f5;
+  background: var(--bg-surface-2);
   padding: 4px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
 }
 
 .cert-detail__status-btn {
@@ -260,32 +260,32 @@
   justify-content: center;
   gap: 8px;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid transparent;
   background: transparent;
   font-size: 14px;
   font-weight: 600;
-  color: #616161;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  color: var(--text-tertiary);
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
   cursor: pointer;
 }
 
 .cert-detail__status-btn:hover {
-  color: #242424;
+  color: var(--text-primary);
 }
 
 .cert-detail__status-btn--active {
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  color: #242424;
-  border-color: #ffffff;
+  background: var(--bg-surface-1);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
 }
 
 .cert-detail__status-btn--active.cert-detail__status-btn--in-progress {
-  color: #005a9e; /* fluent blue */
+  color: var(--colorBrandForeground1);
 }
 .cert-detail__status-btn--active.cert-detail__status-btn--completed {
-  color: #107c10; /* fluent green */
+  color: var(--status-completed);
 }
 
 /* Learn Button */
@@ -295,18 +295,18 @@
   justify-content: center;
   gap: 8px;
   padding: 12px 16px;
-  background: #0f6cbd;
+  background: var(--colorBrandBackground);
   color: white;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s;
+  transition: background var(--transition-fast);
   margin-top: auto;
 }
 
 .cert-detail__learn-btn:hover {
-  background: #115ea3;
+  background: var(--colorBrandBackgroundHover);
 }
 
 /* Ignore/Exclude Toggle */
@@ -316,33 +316,33 @@
   gap: 12px;
   width: 100%;
   padding: 12px 16px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: none;
-  background: #f5f5f5;
-  color: #242424;
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background var(--transition-fast);
 }
 
 .cert-detail__ignore-btn:hover {
-  background: #eeeeee;
+  background: var(--bg-surface-hover);
 }
 
 .cert-detail__ignore-toggle {
   width: 40px;
   height: 20px;
   border-radius: 10px;
-  background: #0f6cbd;
+  background: var(--colorBrandBackground);
   position: relative;
   margin-left: auto;
   flex-shrink: 0;
-  transition: background 0.2s;
+  transition: background var(--transition-fast);
 }
 
 .cert-detail__ignore-toggle--off {
-  background: #616161;
+  background: var(--text-tertiary);
 }
 
 .cert-detail__ignore-toggle-thumb {
@@ -367,7 +367,7 @@
 
 .cert-detail__ignore-hint {
   font-size: 12px;
-  color: #616161;
+  color: var(--text-tertiary);
   line-height: 1.5;
   margin: 0;
   padding-top: 4px;

@@ -40,11 +40,13 @@ export const AzureAIIcon = ({ size = 20, className, style, ...props }) => {
   );
 };
 
+import fabricSvg from '../../assets/icons/fabric.svg';
+
 // ─── Data & Analytics ─────────────────────────────────────────────────────────
 export const DataAnalyticsIcon = ({ size = 20, className, style, ...props }) => {
   return (
     <img 
-      src={sqlDatabaseSvg} 
+      src={fabricSvg} 
       alt="Data & Analytics" 
       width={size} 
       height={size} 
@@ -130,7 +132,21 @@ export const DynamicsIcon = ({ size = 20, className, style, color, ...props }) =
   );
 };
 
-// ─── GitHub & DevOps ──────────────────────────────────────────────────────────
+// ─── Azure DevOps ─────────────────────────────────────────────────────────────
+export const AzureDevOpsIcon = ({ size = 20, className, style, ...props }) => {
+  return (
+    <Icon 
+      icon="devicon:azuredevops" 
+      width={size} 
+      height={size} 
+      className={className} 
+      style={style} 
+      {...props} 
+    />
+  );
+};
+
+// ─── GitHub ──────────────────────────────────────────────────────────
 export const GitHubIcon = ({ size = 20, className, style, ...props }) => {
   return (
     <Icon 

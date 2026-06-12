@@ -1,0 +1,318 @@
+.path-map {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  animation: fadeIn 400ms ease-out;
+  padding-bottom: var(--space-8);
+  height: 100%;
+}
+
+/* ─── Path Header ─── */
+.path-map__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  margin: var(--space-4) var(--space-4) 0;
+  animation: slideUp 400ms ease-out both;
+}
+
+[data-theme="dark"] .path-map__header {
+  background: var(--colorNeutralBackground3);
+  box-shadow: none;
+}
+
+.path-map__header-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--path-color) 12%, transparent);
+  color: var(--path-color);
+  flex-shrink: 0;
+}
+
+.path-map__header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.path-map__header-title {
+  font-size: var(--fs-title3);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+  line-height: var(--lh-tight);
+}
+
+.path-map__header-desc {
+  font-size: var(--fs-body1);
+  color: var(--text-secondary);
+  line-height: var(--lh-normal);
+  margin: 0;
+}
+
+.path-map__header-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-shrink: 0;
+}
+
+.path-map__header-progress {
+  flex-shrink: 0;
+}
+
+.path-map__header-counts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.path-map__header-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-caption1);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.path-map__header-stat strong {
+  color: var(--text-primary);
+  font-weight: var(--fw-semibold);
+}
+
+.path-map__content {
+  /* Dynamically clamp width based on number of branches and center it.
+     This ensures 1-column layouts (like DevOps) are perfectly centered 
+     instead of stretching across the screen and clinging to the left edge. */
+  max-width: calc(var(--branch-count) * 320px);
+  margin: 0 auto;
+}
+
+/* ─── Map Viewport ─── */
+.path-map__viewport {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+  padding-bottom: var(--space-4);
+}
+.path-map__viewport::-webkit-scrollbar {
+  height: 6px;
+}
+.path-map__viewport::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+
+/* ─── Tree Container ─── */
+.path-map__tree-container {
+  position: relative;
+  background: var(--surface-default);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  min-width: min-content;
+}
+
+/* ─── SVG Track Overlay ─── */
+.path-map__track-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  animation: trackFadeIn 600ms ease-out 500ms both;
+}
+
+@keyframes trackFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── Trunk Sections (Top & Bottom) ─── */
+.path-map__trunk-top,
+.path-map__trunk-bottom {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+
+.path-map__trunk-bottom {
+  padding-top: var(--space-4);
+}
+
+.path-map__trunk-stations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.path-map__trunk-station-wrap {
+  position: relative;
+  /* Match the width of a single branch column so the nodes perfectly align with the center column (if odd number of columns) */
+  width: calc((100% - ((var(--branch-count) - 1) * var(--space-6))) / var(--branch-count));
+  min-width: 160px;
+}
+
+/* ─── Fork & Merge Spacers ─── */
+.path-map__fork-spacer,
+.path-map__merge-spacer {
+  height: 48px;
+  position: relative;
+  z-index: 0;
+}
+
+/* ─── Branches Grid ─── */
+.path-map__branches-scroll {
+  width: 100%;
+  padding-bottom: var(--space-4);
+}
+
+.path-map__branches-grid {
+  display: grid;
+  gap: var(--space-6);
+  /* grid-template-columns injected via JS */
+}
+
+.path-map__branch-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.path-map__branch-column-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  margin-left: 42px;
+  font-size: var(--fs-caption1, 12px);
+  font-weight: var(--fw-semibold);
+  color: var(--path-color);
+  background: color-mix(in srgb, var(--path-color) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--path-color) 20%, transparent);
+  border-radius: var(--radius-full);
+  width: fit-content;
+  z-index: 2;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--path-color) 10%, transparent);
+}
+
+.path-map__branch-level-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+}
+
+.path-map__branch-level-label {
+  margin-left: 42px;
+  margin-top: var(--space-2);
+}
+
+.path-map__branch-station {
+  position: relative;
+}
+
+/* ─── Linear Layout (e.g. DevOps) ─── */
+.path-map__stations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  position: relative;
+  z-index: 3;
+}
+
+.path-map__level-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.path-map__level-nodes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.path-map__node-wrapper {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ─── Not Found ─── */
+.path-map__not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-16);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.path-map__not-found h2 {
+  font-size: var(--fs-title3);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+/* ─── Animations ─── */
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .path-map__branches-grid {
+    grid-template-columns: 1fr !important; /* Stack vertically on small screens */
+  }
+
+  .path-map__trunk-station-wrap {
+    width: 100%; /* Reset to full width since branches are stacked */
+  }
+
+  .path-map__header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: var(--space-2) var(--space-2) 0;
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .path-map__header-stats {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .path-map__header-counts {
+    flex-direction: row;
+    gap: var(--space-3);
+  }
+}

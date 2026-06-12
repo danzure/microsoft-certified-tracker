@@ -46,6 +46,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
                 }
               }}
               style={{ '--line-color': 'var(--colorBrandForeground1)' }}
+              title="Dashboard"
             >
               <div className="sidebar__link-indicator" />
               <div className="sidebar__link-icon" title="Dashboard">
@@ -82,6 +83,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
                       }}
                       id={`sidebar-${path.id}`}
                       style={{ '--line-color': path.color, '--line-glow': path.glowColor }}
+                      title={path.shortName}
                     >
                       <div className="sidebar__link-indicator" />
                       <div className="sidebar__link-icon" title={path.shortName}>

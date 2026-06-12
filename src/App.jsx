@@ -7,7 +7,7 @@ import { useState, Suspense, lazy } from 'react';
 import './App.css';
 
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
-const MetroLine = lazy(() => import('./components/MetroMap/MetroLine'));
+const PathMap = lazy(() => import('./components/PathMap/PathMap'));
 
 /**
  * Main application component.
@@ -29,10 +29,20 @@ function App() {
             <div className={`app__body ${sidebarOpen ? '' : 'app__body--collapsed'}`}>
               <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} onToggle={toggleSidebar} />
               <main className="app__content" id="main-content">
-                <Suspense fallback={<div className="loading-spinner">Loading...</div>}>
+                <Suspense fallback={
+                  <div className="loading-skeleton">
+                    <div className="loading-skeleton__bar loading-skeleton__bar--wide" />
+                    <div className="loading-skeleton__bar loading-skeleton__bar--medium" />
+                    <div className="loading-skeleton__row">
+                      <div className="loading-skeleton__card" />
+                      <div className="loading-skeleton__card" />
+                      <div className="loading-skeleton__card" />
+                    </div>
+                  </div>
+                }>
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
-                    <Route path="/path/:pathId" element={<MetroLine />} />
+                    <Route path="/path/:pathId" element={<PathMap />} />
                   </Routes>
                 </Suspense>
               </main>

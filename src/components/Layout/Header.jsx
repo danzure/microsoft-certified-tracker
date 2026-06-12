@@ -1,32 +1,21 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { IconMap as Icons } from '../common/IconMap';
 const { Menu, Sun, Moon } = Icons;
 import SearchBar from '../common/SearchBar';
-import ProgressRing from '../common/ProgressRing';
-import { useProgressContext } from '../../context/ProgressContext';
 import { useTheme } from '../../context/ThemeContext';
-import { getPathById } from '../../data/certificationPaths';
 import './Header.css';
 
 /**
  * Header Component
  * 
  * Displays the top navigation bar containing the sidebar toggle,
- * application brand, theme toggle, and context-aware central content
- * (either a search bar or the active path's progress).
+ * application brand, theme toggle, and search bar.
  * 
  * @param {Object} props
  * @param {Function} props.onToggleSidebar - Callback to toggle the sidebar's open/close state
  */
 const Header = ({ onToggleSidebar }) => {
-  const location = useLocation();
-  const { getPathProgress } = useProgressContext();
   const { toggleTheme, isDark } = useTheme();
-  
-  const pathMatch = location.pathname.match(/^\/path\/(.+)$/);
-  const pathId = pathMatch ? pathMatch[1] : null;
-  const activePath = pathId ? getPathById(pathId) : null;
-  const pathProgress = activePath ? getPathProgress(activePath.id) : null;
 
   return (
     <header className="header" id="app-header">
@@ -47,26 +36,7 @@ const Header = ({ onToggleSidebar }) => {
       </div>
 
       <div className="header__center">
-        {activePath ? (
-          <div className="header__active-path">
-            {(() => {
-              const PathIcon = Icons[activePath.icon] || Icons.Circle;
-              return <PathIcon size={16} color={activePath.color} />;
-            })()}
-            <span className="header__active-path-title" style={{ color: activePath.color }}>
-              {activePath.name}
-            </span>
-            <div className="header__active-path-divider" />
-            <div className="header__active-path-progress">
-              <ProgressRing percent={pathProgress.percent} size={16} strokeWidth={2.5} color={activePath.color} showPercent={false} />
-              <span className="header__active-path-stat">
-                {pathProgress.percent}%
-              </span>
-            </div>
-          </div>
-        ) : (
-          <SearchBar />
-        )}
+        <SearchBar />
       </div>
 
       <div className="header__right">

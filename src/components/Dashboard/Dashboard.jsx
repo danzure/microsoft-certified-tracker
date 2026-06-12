@@ -39,14 +39,14 @@ const Dashboard = () => {
           Certification Tracker
         </h1>
         <p className="dashboard__subtitle">
-          Manage and track your progress across {certificationPaths.length} Microsoft certification paths. Streamline your learning and enforce your career growth.
+          Manage and track your progress across {certificationPaths.length} Microsoft certification paths. Streamline your learning and reinforce your career growth.
         </p>
       </div>
 
       {/* Stats Row */}
       <div className="dashboard__stats">
         <div className="dashboard__stat-card" style={{ animationDelay: '0ms' }}>
-          <div className="dashboard__stat-icon">
+          <div className="dashboard__stat-icon dashboard__stat-icon--total">
             <Icons.Award size={20} />
           </div>
           <div className="dashboard__stat-info">
@@ -55,7 +55,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard__stat-card" style={{ animationDelay: '50ms' }}>
-          <div className="dashboard__stat-icon">
+          <div className="dashboard__stat-icon dashboard__stat-icon--completed">
             <Icons.CheckCircle2 size={20} />
           </div>
           <div className="dashboard__stat-info">
@@ -64,7 +64,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard__stat-card" style={{ animationDelay: '100ms' }}>
-          <div className="dashboard__stat-icon">
+          <div className="dashboard__stat-icon dashboard__stat-icon--progress">
             <Icons.Clock size={20} />
           </div>
           <div className="dashboard__stat-info">
@@ -73,7 +73,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard__stat-card" style={{ animationDelay: '150ms' }}>
-          <div className="dashboard__stat-icon">
+          <div className="dashboard__stat-icon dashboard__stat-icon--percent">
             <Icons.TrendingUp size={20} />
           </div>
           <div className="dashboard__stat-info">
@@ -82,6 +82,14 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Getting Started Hint */}
+      {overall.completed === 0 && overall.inProgress === 0 && (
+        <div className="dashboard__empty-hint">
+          <Icons.TrendingUp size={16} />
+          <span>Start your certification journey — click any path below to begin tracking your progress.</span>
+        </div>
+      )}
 
       {/* Activity & Recommendations Strip */}
       {inProgressCerts.length > 0 && (
