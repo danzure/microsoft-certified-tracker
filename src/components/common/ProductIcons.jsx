@@ -2,7 +2,6 @@
 import { Icon } from '@iconify/react';
 import azureSvg from '../../assets/icons/azure.svg';
 import azureAiSvg from '../../assets/icons/azure-ai.svg';
-import sqlDatabaseSvg from '../../assets/icons/sql-database.svg';
 import securitySvg from '../../assets/icons/security.svg';
 import powerPlatformSvg from '../../assets/icons/power-platform.svg';
 import m365Svg from '../../assets/icons/m365-icon.svg';
