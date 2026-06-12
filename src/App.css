@@ -1,7 +1,8 @@
 .app {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .app__body {
@@ -13,7 +14,9 @@
 .app__content {
   flex: 1;
   margin-left: var(--sidebar-width);
-  min-height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: margin-left var(--transition-base);
 }
 
