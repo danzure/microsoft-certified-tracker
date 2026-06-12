@@ -16,12 +16,12 @@ export const ProgressProvider = ({ children }) => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 /**
  * Custom hook to consume the ProgressContext.
  * @returns The context value exposing state and functions from useProgress.
  * @throws {Error} If called outside of a ProgressProvider.
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export const useProgressContext = () => {
   const context = useContext(ProgressContext);
   if (!context) {

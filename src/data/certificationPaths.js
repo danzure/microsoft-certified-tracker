@@ -817,7 +817,6 @@ export const certificationPaths = [
         branch: 'business',
         description: 'Candidates for this Microsoft Certification should be adept at using generative AI productivity tools and core Microsoft 365 apps to enhance business outcomes and decision-making, without requiring coding or app development skills.',
         prerequisites: [],
-        recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/ai-business-professional/?practice-assessment-type=certification',
         retirementDate: null,
         skillsMeasured: [
@@ -834,7 +833,7 @@ export const certificationPaths = [
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'leadership',
         description: 'This Microsoft Certification is for business decision-makers who guide AI transformation and innovation with Microsoft 365 Copilot, Azure AI, and Microsoft Foundry, without requiring coding skills.',
-        prerequisites: ['ab-900'],
+        prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/ai-transformation-leader/?practice-assessment-type=certification',
         retirementDate: null,
         skillsMeasured: [

@@ -1,10 +1,12 @@
 // Microsoft Product Icons
 import { Icon } from '@iconify/react';
 import azureSvg from '../../assets/icons/azure.svg';
-import machineLearningSvg from '../../assets/icons/machine-learning.svg';
+import azureAiSvg from '../../assets/icons/azure-ai.svg';
 import sqlDatabaseSvg from '../../assets/icons/sql-database.svg';
 import securitySvg from '../../assets/icons/security.svg';
 import powerPlatformSvg from '../../assets/icons/power-platform.svg';
+import m365Svg from '../../assets/icons/m365-icon.svg';
+import copilotSvg from '../../assets/icons/copilot.svg';
 
 // Each icon accepts: size, color, className, style props
 
@@ -27,7 +29,7 @@ export const AzureIcon = ({ size = 20, className, style, ...props }) => {
 export const AzureAIIcon = ({ size = 20, className, style, ...props }) => {
   return (
     <img 
-      src={machineLearningSvg} 
+      src={azureAiSvg} 
       alt="Azure AI & ML" 
       width={size} 
       height={size} 
@@ -71,12 +73,13 @@ export const SecurityIcon = ({ size = 20, className, style, ...props }) => {
 // ─── Microsoft 365 ────────────────────────────────────────────────────────────
 export const M365Icon = ({ size = 20, className, style, ...props }) => {
   return (
-    <Icon 
-      icon="logos:microsoft-windows-icon" 
+    <img 
+      src={m365Svg} 
+      alt="Microsoft 365" 
       width={size} 
       height={size} 
       className={className} 
-      style={style} 
+      style={{ ...style, objectFit: 'contain' }} 
       {...props} 
     />
   );
@@ -100,12 +103,13 @@ export const PowerPlatformIcon = ({ size = 20, className, style, ...props }) => 
 // ─── Copilot & AI ─────────────────────────────────────────────────────────────
 export const CopilotIcon = ({ size = 20, className, style, ...props }) => {
   return (
-    <Icon 
-      icon="logos:github-copilot" 
+    <img 
+      src={copilotSvg} 
+      alt="Copilot & AI" 
       width={size} 
       height={size} 
       className={className} 
-      style={style} 
+      style={{ ...style, objectFit: 'contain' }} 
       {...props} 
     />
   );
