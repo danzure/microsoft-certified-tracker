@@ -147,6 +147,11 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
                 Interchange
               </Badge>
             )}
+            {cert.isBeta && (
+              <Badge variant="default" small>
+                Beta
+              </Badge>
+            )}
             {cert.isComingSoon && (
               <Badge variant="default" small>
                 Coming soon

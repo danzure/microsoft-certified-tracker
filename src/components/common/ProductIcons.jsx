@@ -6,186 +6,85 @@ import defenderSvg from '../../assets/icons/defender.svg';
 import powerPlatformSvg from '../../assets/icons/power-platform.svg';
 import copilotSvg from '../../assets/icons/copilot.svg';
 import dynamicsSvg from '../../assets/icons/dynamics.svg';
+import fabricSvg from '../../assets/icons/fabric.svg';
+import dashboardSvg from '../../assets/icons/dashboard.svg';
+import archiveSvg from '../../assets/icons/archive.svg';
+
+// Base component for image-based icons
+const ImageIcon = ({ src, alt, size = 20, className, style, ...props }) => (
+  <img
+    src={src}
+    alt={alt}
+    width={size}
+    height={size}
+    className={className}
+    style={{ ...style, objectFit: 'contain' }}
+    {...props}
+  />
+);
 
 // Each icon accepts: size, color, className, style props
 
 // ─── Azure Logo ───────────────────────────────────────────────────────────────
-export const AzureIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={azureSvg}
-      alt="Azure"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const AzureIcon = (props) => <ImageIcon src={azureSvg} alt="Azure" {...props} />;
 
 // ─── Azure AI & ML ────────────────────────────────────────────────────────────
-export const AzureAIIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={azureAiSvg}
-      alt="Azure AI & ML"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
-
-import fabricSvg from '../../assets/icons/fabric.svg';
+export const AzureAIIcon = (props) => <ImageIcon src={azureAiSvg} alt="Azure AI & ML" {...props} />;
 
 // ─── Data & Analytics ─────────────────────────────────────────────────────────
-export const DataAnalyticsIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={fabricSvg}
-      alt="Data & Analytics"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const DataAnalyticsIcon = (props) => <ImageIcon src={fabricSvg} alt="Data & Analytics" {...props} />;
 
 // ─── Security & Identity ──────────────────────────────────────────────────────
-export const SecurityIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={defenderSvg}
-      alt="Microsoft Defender"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const SecurityIcon = (props) => <ImageIcon src={defenderSvg} alt="Microsoft Defender" {...props} />;
 
 // ─── Microsoft 365 ────────────────────────────────────────────────────────────
-export const M365Icon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <Icon
-      icon="logos:microsoft-icon"
-      width={size}
-      height={size}
-      className={className}
-      style={style}
-      {...props}
-    />
-  );
-};
+export const M365Icon = ({ size = 20, className, style, ...props }) => (
+  <Icon
+    icon="logos:microsoft-icon"
+    width={size}
+    height={size}
+    className={className}
+    style={style}
+    {...props}
+  />
+);
 
 // ─── Power Platform ──────────────────────────────────────────────────────────
-export const PowerPlatformIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={powerPlatformSvg}
-      alt="Power Platform"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const PowerPlatformIcon = (props) => <ImageIcon src={powerPlatformSvg} alt="Power Platform" {...props} />;
 
 // ─── Copilot & AI ─────────────────────────────────────────────────────────────
-export const CopilotIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={copilotSvg}
-      alt="Copilot & AI"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const CopilotIcon = (props) => <ImageIcon src={copilotSvg} alt="Copilot & AI" {...props} />;
 
 // ─── Dynamics 365 ─────────────────────────────────────────────────────────────
-export const DynamicsIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={dynamicsSvg}
-      alt="Dynamics 365"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const DynamicsIcon = (props) => <ImageIcon src={dynamicsSvg} alt="Dynamics 365" {...props} />;
 
 // ─── Azure DevOps ─────────────────────────────────────────────────────────────
-export const AzureDevOpsIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <Icon
-      icon="devicon:azuredevops"
-      width={size}
-      height={size}
-      className={className}
-      style={style}
-      {...props}
-    />
-  );
-};
+export const AzureDevOpsIcon = ({ size = 20, className, style, ...props }) => (
+  <Icon
+    icon="devicon:azuredevops"
+    width={size}
+    height={size}
+    className={className}
+    style={style}
+    {...props}
+  />
+);
 
 // ─── GitHub ──────────────────────────────────────────────────────────
-export const GitHubIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <Icon
-      icon="logos:github-icon"
-      width={size}
-      height={size}
-      className={className}
-      style={style}
-      {...props}
-    />
-  );
-};
+export const GitHubIcon = ({ size = 20, className, style, ...props }) => (
+  <Icon
+    icon="logos:github-icon"
+    width={size}
+    height={size}
+    className={className}
+    style={style}
+    {...props}
+  />
+);
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
-import dashboardSvg from '../../assets/icons/dashboard.svg';
-export const DashboardIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={dashboardSvg}
-      alt="Dashboard"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const DashboardIcon = (props) => <ImageIcon src={dashboardSvg} alt="Dashboard" {...props} />;
 
 // ─── Retired / Archived ──────────────────────────────────────────────────────
-import archiveSvg from '../../assets/icons/archive.svg';
-export const ArchiveIcon = ({ size = 20, className, style, ...props }) => {
-  return (
-    <img
-      src={archiveSvg}
-      alt="Archive"
-      width={size}
-      height={size}
-      className={className}
-      style={{ ...style, objectFit: 'contain' }}
-      {...props}
-    />
-  );
-};
+export const ArchiveIcon = (props) => <ImageIcon src={archiveSvg} alt="Archive" {...props} />;
+
