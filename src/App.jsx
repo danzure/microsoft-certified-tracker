@@ -8,6 +8,7 @@ import './App.css';
 
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 const PathMap = lazy(() => import('./components/PathMap/PathMap'));
+const CareerPathBuilder = lazy(() => import('./components/CareerPathBuilder/CareerPathBuilder'));
 
 /**
  * Main application component.
@@ -42,6 +43,7 @@ function App() {
                 }>
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
+                    <Route path="/career-paths" element={<CareerPathBuilder />} />
                     <Route path="/path/:pathId" element={<PathMap />} />
                   </Routes>
                 </Suspense>
