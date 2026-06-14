@@ -89,6 +89,11 @@ const CareerPathBuilder = () => {
                 badgeClass = 'cpb-timeline-badge--completed';
                 StatusIcon = Icons.CheckCircle2;
                 statusText = 'Completed';
+              } else if (status === CERT_STATUS.NEEDS_RENEWAL) {
+                nodeClass = 'cpb-timeline-node--needs-renewal';
+                badgeClass = 'cpb-timeline-badge--needs-renewal';
+                StatusIcon = Icons.AlertTriangle;
+                statusText = 'Needs Renewal';
               } else if (status === CERT_STATUS.IN_PROGRESS) {
                 nodeClass = 'cpb-timeline-node--in-progress';
                 badgeClass = 'cpb-timeline-badge--in-progress';

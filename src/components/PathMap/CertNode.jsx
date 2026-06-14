@@ -29,6 +29,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
     [CERT_STATUS.NOT_STARTED]: 'cert-node--not-started',
     [CERT_STATUS.IN_PROGRESS]: 'cert-node--in-progress',
     [CERT_STATUS.COMPLETED]: 'cert-node--completed',
+    [CERT_STATUS.NEEDS_RENEWAL]: 'cert-node--needs-renewal',
   }[status];
 
   const levelVariant = {
@@ -53,12 +54,14 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
     [CERT_STATUS.NOT_STARTED]: 'Not Started',
     [CERT_STATUS.IN_PROGRESS]: 'In Progress',
     [CERT_STATUS.COMPLETED]: 'Completed',
+    [CERT_STATUS.NEEDS_RENEWAL]: 'Needs Renewal',
   }[status];
 
   const nextStatusLabel = {
     [CERT_STATUS.NOT_STARTED]: 'Start',
     [CERT_STATUS.IN_PROGRESS]: 'Complete',
     [CERT_STATUS.COMPLETED]: 'Reset',
+    [CERT_STATUS.NEEDS_RENEWAL]: 'Renew',
   }[status];
 
   return (
@@ -82,6 +85,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
         <div className="cert-node__node-outer">
           <div className="cert-node__node-inner">
             {status === CERT_STATUS.COMPLETED && <Check size={14} strokeWidth={3} />}
+            {status === CERT_STATUS.NEEDS_RENEWAL && <AlertTriangle size={14} strokeWidth={2} />}
             {status === CERT_STATUS.IN_PROGRESS && <div className="cert-node__node-half" />}
             {cert.isInterchange && status === CERT_STATUS.NOT_STARTED && <ArrowRightLeft size={10} />}
           </div>

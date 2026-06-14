@@ -95,10 +95,16 @@
 }
 
 .cert-node--in-progress .cert-node__node-outer {
-  border-color: var(--status-in-progress);
+  border-color: var(--warning-color, #f59e0b);
 }
 
+.cert-node--needs-renewal .cert-node__node-outer {
+  border-color: #ff6b6b;
+}
 
+.cert-node--needs-renewal .cert-node__node-inner {
+  color: #ff6b6b;
+}
 
 /* Completed */
 .cert-node--completed .cert-node__node-inner {
@@ -275,6 +281,16 @@
 
 .cert-node__cycle-btn--completed:hover {
   background: color-mix(in srgb, var(--badge-completed-fg) 16%, transparent);
+}
+
+.cert-node__cycle-btn--needs-renewal {
+  border-color: rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+}
+
+.cert-node__cycle-btn--needs-renewal:hover {
+  background: rgba(255, 107, 107, 0.2);
 }
 
 .cert-node__fast-untrack-btn {

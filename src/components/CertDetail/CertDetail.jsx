@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { IconMap } from '../common/IconMap';
 const { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award, EyeOff, Eye } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
-import { CERT_STATUS, getCertById, getCertificationsRequiring } from '../../data/certificationPaths';
+import { CERT_STATUS, getCertById, getCertificationsRequiring, doesCertExpire } from '../../data/certificationPaths';
 import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import './CertDetail.css';
@@ -18,11 +18,20 @@ import './CertDetail.css';
  * @param {Function} props.onClose - Callback to close the detail panel
  */
 const CertDetail = ({ cert, path, onClose }) => {
-  const { getStatus, setStatus, toggleCertIgnored, isCertIgnored, isPathIgnored } = useProgressContext();
+  const { getStatus, setStatus, toggleCertIgnored, isCertIgnored, isPathIgnored, completionDates, setCompletionDate } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
   const isPathExcluded = isPathIgnored(path.id);
   const certIgnored = isCertIgnored(cert.id) || isPathExcluded;
+
+  const completionDateStr = completionDates?.[cert.id];
+  const expires = doesCertExpire(cert.level);
+
+  let expiryDate = null;
+  if (expires && completionDateStr) {
+    expiryDate = new Date(completionDateStr);
+    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+  }
 
   const statusOptions = [
     { value: CERT_STATUS.NOT_STARTED, label: 'Not Started', icon: '○', className: 'cert-detail__status-btn--not-started' },
@@ -156,6 +165,23 @@ const CertDetail = ({ cert, path, onClose }) => {
             </div>
           )}
 
+          {status === CERT_STATUS.NEEDS_RENEWAL && (
+            <div className="cert-detail__alert cert-detail__alert--danger">
+              <AlertTriangle size={16} />
+              <div>
+                <strong>Needs Renewal</strong>
+                <p>This certification has expired or is nearing expiration. Complete the renewal assessment on Microsoft Learn.</p>
+                <button 
+                  className="cert-detail__renew-btn"
+                  onClick={() => setCompletionDate(cert.id, new Date().toISOString())}
+                >
+                  <Award size={14} />
+                  Mark as Renewed
+                </button>
+              </div>
+            </div>
+          )}
+
           {cert.prerequisites && cert.prerequisites.length > 0 && (
             <div className="cert-detail__section">
               <h3 className="cert-detail__section-title">Prerequisites</h3>
@@ -269,7 +295,7 @@ const CertDetail = ({ cert, path, onClose }) => {
               {statusOptions.map((opt) => (
                 <button
                   key={opt.value}
-                  className={`cert-detail__status-btn ${opt.className} ${status === opt.value ? 'cert-detail__status-btn--active' : ''}`}
+                  className={`cert-detail__status-btn ${opt.className} ${(status === opt.value || (status === CERT_STATUS.NEEDS_RENEWAL && opt.value === CERT_STATUS.COMPLETED)) ? 'cert-detail__status-btn--active' : ''}`}
                   onClick={() => setStatus(cert.id, opt.value)}
                   disabled={certIgnored}
                 >
@@ -278,6 +304,27 @@ const CertDetail = ({ cert, path, onClose }) => {
                 </button>
               ))}
             </div>
+            {(status === CERT_STATUS.COMPLETED || status === CERT_STATUS.NEEDS_RENEWAL) && (
+              <div style={{ marginTop: '8px' }}>
+                <label className="cert-detail__section-title" style={{ fontSize: '10px' }}>Completion Date</label>
+                <input 
+                  type="date" 
+                  className="cert-detail__date-input"
+                  value={completionDateStr ? completionDateStr.split('T')[0] : ''}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      setCompletionDate(cert.id, new Date(e.target.value).toISOString());
+                    }
+                  }}
+                  disabled={certIgnored}
+                />
+                {expiryDate && (
+                  <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '6px' }}>
+                    Expires: <strong>{formatDate(expiryDate.toISOString())}</strong>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <a

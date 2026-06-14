@@ -13,6 +13,11 @@ export const CERT_STATUS = {
   NOT_STARTED: 'not_started',
   IN_PROGRESS: 'in_progress',
   COMPLETED: 'completed',
+  NEEDS_RENEWAL: 'needs_renewal',
+};
+
+export const doesCertExpire = (level) => {
+  return [CERT_LEVELS.ASSOCIATE, CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY].includes(level);
 };
 
 export const PILLARS = {

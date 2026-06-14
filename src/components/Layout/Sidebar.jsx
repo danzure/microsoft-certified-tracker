@@ -138,7 +138,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
             <Icons.ExternalLink size={14} />
             <span className="sidebar__poster-text">Official Certification Poster</span>
           </a>
-
+          <div className="sidebar__build-version">v1.5.0</div>
         </div>
       </aside>
     </>

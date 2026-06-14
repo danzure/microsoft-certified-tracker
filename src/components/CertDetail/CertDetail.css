@@ -194,6 +194,60 @@
   margin: 0;
 }
 
+.cert-detail__alert--danger {
+  background: rgba(219, 40, 40, 0.1);
+  border: 1px solid rgba(219, 40, 40, 0.3);
+  color: #ff6b6b;
+}
+
+.cert-detail__alert--danger strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #ff6b6b;
+}
+
+.cert-detail__alert--danger p {
+  margin: 0;
+}
+
+.cert-detail__renew-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--transition-fast);
+}
+
+.cert-detail__renew-btn:hover {
+  background: #ff5252;
+}
+
+.cert-detail__date-input {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-size: 14px;
+  width: 100%;
+  margin-top: 8px;
+  transition: border-color var(--transition-fast);
+}
+
+.cert-detail__date-input:focus {
+  border-color: var(--detail-color, var(--colorBrandForeground1));
+  outline: none;
+}
+
 /* Prerequisites */
 .cert-detail__prereqs {
   display: flex;

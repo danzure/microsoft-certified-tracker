@@ -248,6 +248,16 @@
   text-decoration: underline;
 }
 
+.sidebar__build-version {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  opacity: 0.6;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: -4px;
+}
+
 .sidebar__legend {
   display: flex;
   flex-direction: column;

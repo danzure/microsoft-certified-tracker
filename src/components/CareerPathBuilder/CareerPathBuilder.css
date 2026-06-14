@@ -206,6 +206,13 @@
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
+.cpb-timeline-node--needs-renewal {
+  background: var(--bg-card);
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
+}
+
 .cpb-timeline-card {
   flex: 1;
   background: var(--bg-glass);
@@ -293,6 +300,11 @@
 .cpb-timeline-badge--not-started {
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
+}
+
+.cpb-timeline-badge--needs-renewal {
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
 }
 
 @media (max-width: 768px) {
