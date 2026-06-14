@@ -76,6 +76,11 @@ const CertDetail = ({ cert, path, onClose }) => {
                   Interchange
                 </Badge>
               )}
+              {cert.isBeta && (
+                <Badge variant="default">
+                  Beta
+                </Badge>
+              )}
               {cert.isComingSoon && (
                 <Badge variant="default">
                   Coming soon

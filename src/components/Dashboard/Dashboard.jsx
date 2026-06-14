@@ -95,37 +95,33 @@ const Dashboard = () => {
       {inProgressCerts.length > 0 && (
         <div className="dashboard__activity-strip">
           {/* Currently Studying */}
-          {inProgressCerts.length > 0 && (
-            <div className="dashboard__activity-panel">
-              <h2 className="dashboard__activity-title">
-                <Icons.Clock size={18} />
-                Currently Studying
-                <span className="dashboard__activity-count">{inProgressCerts.length}</span>
-              </h2>
-              <div className="dashboard__activity-list">
-                {inProgressCerts.map((cert) => (
-                  <div
-                    key={cert.id}
-                    className="dashboard__activity-item"
-                    onClick={() => navigate(`/path/${cert.pathId}`)}
-                    style={{ '--card-color': cert.pathColor }}
-                  >
-                    <div className="dashboard__activity-item-icon">
-                      <Icons.BookOpen size={16} />
-                    </div>
-                    <div className="dashboard__activity-item-info">
-                      <span className="dashboard__activity-item-code">{cert.examCode}</span>
-                      <span className="dashboard__activity-item-name">{cert.name}</span>
-                    </div>
-                    <Badge color={cert.pathColor} small>{cert.pathName}</Badge>
-                    <Icons.ChevronRight size={16} className="dashboard__activity-item-chevron" />
+          <div className="dashboard__activity-panel">
+            <h2 className="dashboard__activity-title">
+              <Icons.Clock size={18} />
+              Currently Studying
+              <span className="dashboard__activity-count">{inProgressCerts.length}</span>
+            </h2>
+            <div className="dashboard__activity-list">
+              {inProgressCerts.map((cert) => (
+                <div
+                  key={cert.id}
+                  className="dashboard__activity-item"
+                  onClick={() => navigate(`/path/${cert.pathId}`)}
+                  style={{ '--card-color': cert.pathColor }}
+                >
+                  <div className="dashboard__activity-item-icon">
+                    <Icons.BookOpen size={16} />
                   </div>
-                ))}
-              </div>
+                  <div className="dashboard__activity-item-info">
+                    <span className="dashboard__activity-item-code">{cert.examCode}</span>
+                    <span className="dashboard__activity-item-name">{cert.name}</span>
+                  </div>
+                  <Badge color={cert.pathColor} small>{cert.pathName}</Badge>
+                  <Icons.ChevronRight size={16} className="dashboard__activity-item-chevron" />
+                </div>
+              ))}
             </div>
-          )}
-
-
+          </div>
         </div>
       )}
 

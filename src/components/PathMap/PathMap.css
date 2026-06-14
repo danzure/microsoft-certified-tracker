@@ -237,6 +237,8 @@
   gap: var(--space-8);
   position: relative;
   z-index: 3;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .path-map__level-group {

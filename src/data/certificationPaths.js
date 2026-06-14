@@ -280,7 +280,7 @@ export const certificationPaths = [
             {
         id: 'dp-700',
         examCode: 'DP-700',
-        name: 'Fabric Data Engineer Associate (Beta)',
+        name: 'Fabric Data Engineer Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'engineering',
         description: 'As a Fabric Data Engineer, you should have subject matter expertise with data loading patterns, data architectures, and orchestration processes.',
@@ -297,7 +297,7 @@ export const certificationPaths = [
       {
         id: 'dp-750',
         examCode: 'DP-750',
-        name: 'Azure Databricks Data Engineer Associate (Beta)',
+        name: 'Azure Databricks Data Engineer Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'engineering',
         description: 'Build scalable, secure data pipelines for AI and analytics using Azure Databricks.',
@@ -315,7 +315,7 @@ export const certificationPaths = [
       {
         id: 'dp-800',
         examCode: 'DP-800',
-        name: 'Data Security Engineer Associate (Beta)',
+        name: 'Data Security Engineer Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'engineering',
         description: 'Implement and manage security for data in Azure.',
@@ -424,7 +424,7 @@ export const certificationPaths = [
       {
         id: 'sc-500',
         examCode: 'SC-500',
-        name: 'Cloud & AI Security Engineer Associate (Beta)',
+        name: 'Cloud & AI Security Engineer Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'cloud-security',
         description: 'This certification validates your ability to design, implement, and manage end‑to‑end security controls across Azure, hybrid, and AI-enabled environments to protect identities, data, applications, infrastructure, and maintain regulatory compliance.',
@@ -432,6 +432,7 @@ export const certificationPaths = [
         recommendedPrereqs: ['sc-900'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/cloud-and-ai-security-engineer-associate/?wt.mc_id=certposter_poster_wwl&practice-assessment-type=certification',
         retirementDate: null,
+        isBeta: true,
         skillsMeasured: [
         'Securing access to resources by using Microsoft Entra ID and Azure Key Vault.',
         'Enforcing security and regulatory compliance.',
@@ -769,7 +770,7 @@ export const certificationPaths = [
       {
         id: 'ab-250',
         examCode: 'AB-250',
-        name: 'AI Contact Center Specialist (Beta)',
+        name: 'AI Contact Center Specialist',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'contact-center',
         description: 'Design and deploy AI-powered contact center solutions with autonomous agents.',
@@ -789,12 +790,12 @@ export const certificationPaths = [
         'Configuring proactive engagement capabilities, including outbound dial modes and journey orchestration.',
         'Configuring workforce management capabilities, including demand forecasting, scheduling, and skills alignment.'
         ],
-        isComingSoon: true,
+        isBeta: true,
       },
       {
         id: 'ab-410',
         examCode: 'AB-410',
-        name: 'AI Agent Builder (Beta)',
+        name: 'AI Agent Builder',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'builder',
         description: 'This certification validates your ability to design, build, and implement AI-powered solutions using Microsoft Power Platform, leveraging Copilot, low-code tools, and integrated data experiences.',
@@ -807,7 +808,7 @@ export const certificationPaths = [
         'Integrating agents and Copilot features into canvas apps, model-driven apps, and Power Pages sites.',
         'Creating cloud flows and business logic.'
         ],
-        isComingSoon: true,
+        isBeta: true,
       },
       {
         id: 'ab-700',
@@ -1181,7 +1182,7 @@ export const certificationPaths = [
       {
         id: 'gh-600',
         examCode: 'GH-600',
-        name: 'GitHub Agentic AI Developer (Beta)',
+        name: 'GitHub Agentic AI Developer',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'ai',
         description: 'Develop agentic workflows and advanced AI integrations on GitHub.',
@@ -1189,6 +1190,7 @@ export const certificationPaths = [
         recommendedPrereqs: ['gh-foundations'],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/agentic-ai-developer/?practice-assessment-type=certification',
         retirementDate: null,
+        isBeta: true,
         skillsMeasured: [
         'Operating agent workflows inside the SDLC',
         'Supervising autonomous behavior with GitHub controls',
@@ -1225,7 +1227,7 @@ export const certificationPaths = [
         prerequisites: [],
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-800/',
-        retirementDate: null,
+        retirementDate: '2026-09-30',
         skillsMeasured: [
         'Understand core concepts of AZ-800/801',
         'Implement and manage AZ-800/801 workloads',
@@ -1244,7 +1246,7 @@ export const certificationPaths = [
         prerequisites: [],
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-204/',
-        retirementDate: null,
+        retirementDate: '2026-07-31',
         skillsMeasured: [
         'Develop Azure compute solutions (25–30%)',
         'Develop for Azure storage (15–20%)',
@@ -1264,7 +1266,7 @@ export const certificationPaths = [
         prerequisites: [],
         recommendedPrereqs: ['pl-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-200/',
-        retirementDate: null,
+        retirementDate: '2026-08-31',
         skillsMeasured: [
         'Configure Microsoft Dataverse (25–30%)',
         'Create apps by using Microsoft Power Apps (25–30%)',
@@ -1283,7 +1285,7 @@ export const certificationPaths = [
         prerequisites: [],
         recommendedPrereqs: ['pl-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-500/',
-        retirementDate: null,
+        retirementDate: '2026-06-30',
         skillsMeasured: [
         'Design automations (25–30%)',
         'Develop automations (45–50%)',
