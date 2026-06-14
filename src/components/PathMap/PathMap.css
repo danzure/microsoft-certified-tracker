@@ -126,7 +126,7 @@
 }
 
 /* ─── SVG Track Overlay ─── */
-.path-map__track-svg {
+.path-map__line-svg {
   position: absolute;
   top: 0;
   left: 0;
@@ -134,10 +134,10 @@
   height: 100%;
   pointer-events: none;
   z-index: 5;
-  animation: trackFadeIn 600ms ease-out 500ms both;
+  animation: lineFadeIn 600ms ease-out 500ms both;
 }
 
-@keyframes trackFadeIn {
+@keyframes lineFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
@@ -156,14 +156,14 @@
   padding-top: var(--space-4);
 }
 
-.path-map__trunk-stations {
+.path-map__trunk-nodes {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
 }
 
-.path-map__trunk-station-wrap {
+.path-map__trunk-node-wrap {
   position: relative;
   /* Match the width of a single branch column so the nodes perfectly align with the center column (if odd number of columns) */
   width: calc((100% - ((var(--branch-count) - 1) * var(--space-6))) / var(--branch-count));
@@ -201,18 +201,36 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px;
-  margin-left: 42px;
+  padding: 6px 16px;
+  margin: 0 auto;
   font-size: var(--fs-caption1, 12px);
   font-weight: var(--fw-semibold);
-  color: var(--path-color);
-  background: color-mix(in srgb, var(--path-color) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--path-color) 20%, transparent);
+  color: var(--text-primary);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
   width: fit-content;
+  position: relative;
+  overflow: hidden;
   z-index: 2;
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--path-color) 10%, transparent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
+.path-map__branch-column-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--path-color) 20%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.path-map__branch-column-header svg {
+  color: var(--path-color);
+}
+
 
 .path-map__branch-level-group {
   display: flex;
@@ -226,12 +244,12 @@
   margin-top: var(--space-2);
 }
 
-.path-map__branch-station {
+.path-map__branch-node {
   position: relative;
 }
 
 /* ─── Linear Layout (e.g. DevOps) ─── */
-.path-map__stations {
+.path-map__cert-nodes {
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
@@ -295,7 +313,7 @@
     grid-template-columns: 1fr !important; /* Stack vertically on small screens */
   }
 
-  .path-map__trunk-station-wrap {
+  .path-map__trunk-node-wrap {
     width: 100%; /* Reset to full width since branches are stacked */
   }
 

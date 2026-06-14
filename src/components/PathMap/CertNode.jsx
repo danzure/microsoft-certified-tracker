@@ -4,21 +4,21 @@ import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/help
 import Badge from '../common/Badge';
 import { IconMap } from '../common/IconMap';
 const { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff, Eye } = IconMap;
-import './Station.css';
+import './CertNode.css';
 
 /**
- * Represents a single node (station) on the certification path map.
+ * Represents a single node (cert-node) on the certification path map.
  * Displays the certification's status, level badges, and basic information.
  * Allows interacting to cycle status or open the detailed view.
  * 
  * @param {Object} props
  * @param {Object} props.cert - The certification data
  * @param {string} props.pathColor - The thematic color of the path
- * @param {Function} props.onSelect - Callback triggered when the station is right-clicked or clicked for details
+ * @param {Function} props.onSelect - Callback triggered when the cert-node is right-clicked or clicked for details
  * @param {number} props.index - Positional index for animation delay
  * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
  */
-const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }) => {
+const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }) => {
   const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
@@ -26,9 +26,9 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
   const certIgnored = isCertIgnored(cert.id) || isPathIgnored;
 
   const statusClass = {
-    [CERT_STATUS.NOT_STARTED]: 'station--not-started',
-    [CERT_STATUS.IN_PROGRESS]: 'station--in-progress',
-    [CERT_STATUS.COMPLETED]: 'station--completed',
+    [CERT_STATUS.NOT_STARTED]: 'cert-node--not-started',
+    [CERT_STATUS.IN_PROGRESS]: 'cert-node--in-progress',
+    [CERT_STATUS.COMPLETED]: 'cert-node--completed',
   }[status];
 
   const levelVariant = {
@@ -63,44 +63,44 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
 
   return (
     <div
-      className={`station ${statusClass} ${cert.isInterchange ? 'station--interchange' : ''} ${isUnlocked ? 'station--unlocked' : ''} ${certIgnored ? 'station--ignored' : ''}`}
+      className={`cert-node ${statusClass} ${cert.isInterchange ? 'cert-node--interchange' : ''} ${isUnlocked ? 'cert-node--unlocked' : ''} ${certIgnored ? 'cert-node--ignored' : ''}`}
       style={{
-        '--station-color': pathColor,
-        '--station-index': index,
-        '--station-delay': `${index * 100 + 200}ms`,
+        '--cert-node-color': pathColor,
+        '--cert-node-index': index,
+        '--cert-node-delay': `${index * 100 + 200}ms`,
       }}
-      id={`station-${cert.id}`}
+      id={`cert-node-${cert.id}`}
     >
-      {/* Station Node (Circle) */}
+      {/* CertNode Node (Circle) */}
       <button
-        id={`station-node-${cert.id}`}
-        className="station__node"
+        id={`cert-node-node-${cert.id}`}
+        className="cert-node__node"
         onClick={handleOpenDetail}
         aria-label={`${cert.examCode} - ${cert.name} - Click for details`}
         title={`${statusLabel} — Click for details`}
       >
-        <div className="station__node-outer">
-          <div className="station__node-inner">
+        <div className="cert-node__node-outer">
+          <div className="cert-node__node-inner">
             {status === CERT_STATUS.COMPLETED && <Check size={14} strokeWidth={3} />}
-            {status === CERT_STATUS.IN_PROGRESS && <div className="station__node-half" />}
+            {status === CERT_STATUS.IN_PROGRESS && <div className="cert-node__node-half" />}
             {cert.isInterchange && status === CERT_STATUS.NOT_STARTED && <ArrowRightLeft size={10} />}
           </div>
         </div>
       </button>
 
-      {/* Station Info Card */}
-      <div className="station__info" onClick={handleOpenDetail}>
+      {/* CertNode Info Card */}
+      <div className="cert-node__info" onClick={handleOpenDetail}>
         {getBadgeUrl(cert.level, cert.id) && (
           <img 
             src={getBadgeUrl(cert.level, cert.id)} 
             alt={`${cert.level} Badge`} 
-            className="station__badge-icon" 
+            className="cert-node__badge-icon" 
             loading="lazy"
           />
         )}
-        <div className="station__info-header">
-          <span className="station__exam-code">{cert.examCode}</span>
-          <div className="station__badges">
+        <div className="cert-node__info-header">
+          <span className="cert-node__exam-code">{cert.examCode}</span>
+          <div className="cert-node__badges">
             <Badge variant={levelVariant} small>{cert.level}</Badge>
             
             {cert.level === CERT_LEVELS.FUNDAMENTALS && (
@@ -165,21 +165,21 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
             )}
           </div>
         </div>
-        <h3 className="station__name">{cert.name}</h3>
-        <p className="station__description">{cert.description}</p>
-        <div className="station__actions">
+        <h3 className="cert-node__name">{cert.name}</h3>
+        <p className="cert-node__description">{cert.description}</p>
+        <div className="cert-node__actions">
           <a
             href={cert.learnUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="station__learn-link"
+            className="cert-node__learn-link"
             onClick={(e) => e.stopPropagation()}
           >
             <ExternalLink size={12} />
             Microsoft Learn
           </a>
           <button
-            className={`station__cycle-btn station__cycle-btn--${status.replace('_', '-')}`}
+            className={`cert-node__cycle-btn cert-node__cycle-btn--${status.replace('_', '-')}`}
             onClick={handleCycleStatus}
             title={`${statusLabel} — Click to ${nextStatusLabel.toLowerCase()}`}
             aria-label={`Change status: ${statusLabel}`}
@@ -188,7 +188,7 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
             {nextStatusLabel}
           </button>
           <button
-            className={`station__fast-untrack-btn ${certIgnored ? 'station__fast-untrack-btn--active' : ''}`}
+            className={`cert-node__fast-untrack-btn ${certIgnored ? 'cert-node__fast-untrack-btn--active' : ''}`}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -207,4 +207,4 @@ const Station = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }
   );
 };
 
-export default Station;
+export default CertNode;

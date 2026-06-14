@@ -45,7 +45,7 @@ const Dashboard = () => {
 
       {/* Stats Row */}
       <div className="dashboard__stats">
-        <div className="dashboard__stat-card" style={{ animationDelay: '0ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '0ms', '--card-color': 'var(--colorBrandForeground1)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--total">
             <Icons.Award size={20} />
           </div>
@@ -54,7 +54,7 @@ const Dashboard = () => {
             <span className="dashboard__stat-label">Total Certifications</span>
           </div>
         </div>
-        <div className="dashboard__stat-card" style={{ animationDelay: '50ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '50ms', '--card-color': 'var(--status-completed)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--completed">
             <Icons.CheckCircle2 size={20} />
           </div>
@@ -63,7 +63,7 @@ const Dashboard = () => {
             <span className="dashboard__stat-label">Completed</span>
           </div>
         </div>
-        <div className="dashboard__stat-card" style={{ animationDelay: '100ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '100ms', '--card-color': 'var(--status-in-progress)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--progress">
             <Icons.Clock size={20} />
           </div>
@@ -72,7 +72,7 @@ const Dashboard = () => {
             <span className="dashboard__stat-label">In Progress</span>
           </div>
         </div>
-        <div className="dashboard__stat-card" style={{ animationDelay: '150ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '150ms', '--card-color': 'var(--colorBrandForeground1)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--percent">
             <Icons.TrendingUp size={20} />
           </div>

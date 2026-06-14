@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { IconMap } from '../common/IconMap';
 const { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award, EyeOff, Eye } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
@@ -36,6 +37,27 @@ const CertDetail = ({ cert, path, onClose }) => {
   }[cert.level] || 'default';
 
   const prerequisiteFor = getCertificationsRequiring(cert.id);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName) || e.target.isContentEditable) return;
+
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key.toLowerCase() === 'e' && !isPathExcluded) {
+        toggleCertIgnored(cert.id);
+      } else if (e.key.toLowerCase() === 's' && !certIgnored) {
+        const statuses = [CERT_STATUS.NOT_STARTED, CERT_STATUS.IN_PROGRESS, CERT_STATUS.COMPLETED];
+        const currentIndex = statuses.indexOf(status);
+        const nextIndex = (currentIndex + 1) % statuses.length;
+        setStatus(cert.id, statuses[nextIndex]);
+      } else if (e.key === 'Enter') {
+        window.open(cert.learnUrl, '_blank', 'noopener,noreferrer');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, cert.id, cert.learnUrl, status, certIgnored, isPathExcluded, toggleCertIgnored, setStatus]);
 
   return (
     <>
@@ -213,7 +235,9 @@ const CertDetail = ({ cert, path, onClose }) => {
           )}
 
           <div className="cert-detail__section">
-            <h3 className="cert-detail__section-title">Tracking</h3>
+            <h3 className="cert-detail__section-title">
+              Tracking <span style={{fontSize: '10px', fontWeight: 'normal', opacity: 0.6, marginLeft: '6px'}}>(Press E)</span>
+            </h3>
             <button
               className={`cert-detail__ignore-btn ${certIgnored ? 'cert-detail__ignore-btn--active' : ''}`}
               onClick={() => isPathExcluded ? null : toggleCertIgnored(cert.id)}
@@ -238,7 +262,9 @@ const CertDetail = ({ cert, path, onClose }) => {
           </div>
 
           <div className="cert-detail__section">
-            <h3 className="cert-detail__section-title">Your Status</h3>
+            <h3 className="cert-detail__section-title">
+              Your Status <span style={{fontSize: '10px', fontWeight: 'normal', opacity: 0.6, marginLeft: '6px'}}>(Press S to cycle)</span>
+            </h3>
             <div className={`cert-detail__status-options ${certIgnored ? 'cert-detail__status-options--disabled' : ''}`}>
               {statusOptions.map((opt) => (
                 <button
@@ -261,7 +287,7 @@ const CertDetail = ({ cert, path, onClose }) => {
             className="cert-detail__learn-btn"
           >
             <ExternalLink size={16} />
-            View on Microsoft Learn
+            View on Microsoft Learn <span style={{fontSize: '10px', opacity: 0.6, marginLeft: '8px'}}>(Press Enter)</span>
           </a>
         </div>
       </div>

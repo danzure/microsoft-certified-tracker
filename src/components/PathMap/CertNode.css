@@ -1,4 +1,4 @@
-.station {
+.cert-node {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
@@ -7,8 +7,8 @@
   max-width: 480px;
 }
 
-/* Station Node */
-.station__node {
+/* CertNode Node */
+.cert-node__node {
   position: relative;
   z-index: 10;
   flex-shrink: 0;
@@ -22,26 +22,26 @@
   justify-content: center;
 }
 
-.station__node-outer {
+.cert-node__node-outer {
   width: 28px;
   height: 28px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--station-color);
+  border: 3px solid var(--cert-node-color);
   background: var(--bg-surface-1);
   transition: transform var(--duration-fast) var(--curve-decelerate),
               box-shadow var(--duration-fast) var(--curve-decelerate);
   position: relative;
 }
 
-.station__node:hover .station__node-outer {
+.cert-node__node:hover .cert-node__node-outer {
   transform: scale(1.12);
   box-shadow: var(--shadow-lg);
 }
 
-.station__node-inner {
+.cert-node__node-inner {
   width: 16px;
   height: 16px;
   border-radius: var(--radius-full);
@@ -53,100 +53,115 @@
 }
 
 /* Not Started */
-.station--not-started .station__node-inner {
+.cert-node--not-started .cert-node__node-inner {
   background: transparent;
   color: var(--text-tertiary);
 }
 
-.station--not-started .station__node-outer {
+.cert-node--not-started .cert-node__node-outer {
   border-style: dashed;
   opacity: 0.5;
 }
 
-.station--not-started:hover .station__node-outer {
+.cert-node--not-started:hover .cert-node__node-outer {
   opacity: 0.8;
 }
 
 /* Unlocked — prereq completed, cert available to start */
-.station--unlocked.station--not-started .station__node-outer {
+.cert-node--unlocked.cert-node--not-started .cert-node__node-outer {
   border-style: solid;
   opacity: 0.75;
 }
 
-.station--unlocked.station--not-started:hover .station__node-outer {
+.cert-node--unlocked.cert-node--not-started:hover .cert-node__node-outer {
   opacity: 1;
 }
 
 /* In Progress */
-.station--in-progress .station__node-inner {
+.cert-node--in-progress .cert-node__node-inner {
   background: transparent;
   overflow: hidden;
   position: relative;
 }
 
-.station__node-half {
+.cert-node__node-half {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 50%;
-  background: var(--station-color);
+  background: var(--cert-node-color);
   border-radius: 0 0 8px 8px;
 }
 
-.station--in-progress .station__node-outer {
+.cert-node--in-progress .cert-node__node-outer {
   border-color: var(--status-in-progress);
 }
 
 
 
 /* Completed */
-.station--completed .station__node-inner {
-  background: var(--station-color);
+.cert-node--completed .cert-node__node-inner {
+  background: var(--cert-node-color);
   color: white;
 }
 
-.station--completed .station__node-outer {
-  border-color: var(--station-color);
+.cert-node--completed .cert-node__node-outer {
+  border-color: var(--cert-node-color);
 }
 
 /* Interchange */
-.station--interchange .station__node-outer {
+.cert-node--interchange .cert-node__node-outer {
   border-radius: var(--radius-md);
 }
 
-.station--interchange .station__node-inner {
+.cert-node--interchange .cert-node__node-inner {
   border-radius: var(--radius-sm);
   color: var(--text-tertiary);
 }
 
-/* Station Info Card — compact */
-.station__info {
+/* CertNode Info Card — compact */
+.cert-node__info {
   flex: 1;
   display: flex;
   flex-direction: column;
   height: 172px;
   padding: var(--space-2) 64px var(--space-2) var(--space-3);
-  background: var(--bg-surface-1);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   cursor: pointer;
-  transition: background var(--transition-fast),
-              border-color var(--transition-fast),
-              box-shadow var(--transition-fast);
+  transition: all 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
   min-width: 0;
   position: relative;
+  overflow: hidden;
   z-index: 6;
 }
 
-.station__info:hover {
-  background: var(--bg-surface-hover);
-  border-color: var(--border-default);
-  box-shadow: var(--shadow-md);
+.cert-node__info::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cert-node-color) 15%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 300ms ease;
 }
 
-.station__badge-icon {
+.cert-node__info:hover {
+  border-color: color-mix(in srgb, var(--cert-node-color) 50%, var(--border-subtle));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.cert-node__info:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cert-node-color) 25%, transparent) 0%, transparent 100%);
+}
+
+.cert-node__badge-icon {
   position: absolute;
   top: var(--space-3);
   right: var(--space-3);
@@ -156,7 +171,7 @@
   opacity: 0.9;
 }
 
-.station__info-header {
+.cert-node__info-header {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -164,20 +179,20 @@
   flex-wrap: wrap;
 }
 
-.station__exam-code {
+.cert-node__exam-code {
   font-family: var(--font-mono);
   font-size: var(--fs-caption1);
   font-weight: var(--fw-semibold);
-  color: var(--station-color);
+  color: var(--cert-node-color);
 }
 
-.station__badges {
+.cert-node__badges {
   display: flex;
   gap: var(--space-1);
   flex-wrap: wrap;
 }
 
-.station__name {
+.cert-node__name {
   font-size: var(--fs-body2, 13px);
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
@@ -185,7 +200,7 @@
   line-height: var(--lh-tight);
 }
 
-.station__description {
+.cert-node__description {
   font-size: var(--fs-caption2, 11px);
   color: var(--text-secondary);
   line-height: var(--lh-relaxed);
@@ -198,13 +213,13 @@
   overflow: hidden;
 }
 
-.station__actions {
+.cert-node__actions {
   display: flex;
   gap: var(--space-3);
   margin-top: auto;
 }
 
-.station__learn-link {
+.cert-node__learn-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
@@ -214,13 +229,13 @@
   transition: color var(--transition-fast);
 }
 
-.station__learn-link:hover {
+.cert-node__learn-link:hover {
   color: var(--colorBrandForeground2);
   text-decoration: underline;
 }
 
 /* Status Cycle Button */
-.station__cycle-btn {
+.cert-node__cycle-btn {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
@@ -236,33 +251,33 @@
   white-space: nowrap;
 }
 
-.station__cycle-btn:hover {
+.cert-node__cycle-btn:hover {
   background: var(--bg-surface-hover);
   border-color: var(--border-default);
   color: var(--text-primary);
 }
 
-.station__cycle-btn--in-progress {
+.cert-node__cycle-btn--in-progress {
   border-color: var(--badge-inprogress-border);
   background: var(--badge-inprogress-bg);
   color: var(--badge-inprogress-fg);
 }
 
-.station__cycle-btn--in-progress:hover {
+.cert-node__cycle-btn--in-progress:hover {
   background: color-mix(in srgb, var(--badge-inprogress-fg) 16%, transparent);
 }
 
-.station__cycle-btn--completed {
+.cert-node__cycle-btn--completed {
   border-color: var(--badge-completed-border);
   background: var(--badge-completed-bg);
   color: var(--badge-completed-fg);
 }
 
-.station__cycle-btn--completed:hover {
+.cert-node__cycle-btn--completed:hover {
   background: color-mix(in srgb, var(--badge-completed-fg) 16%, transparent);
 }
 
-.station__fast-untrack-btn {
+.cert-node__fast-untrack-btn {
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -283,88 +298,88 @@
   z-index: 2;
 }
 
-.station:hover .station__fast-untrack-btn {
+.cert-node:hover .cert-node__fast-untrack-btn {
   opacity: 1;
 }
 
-.station__fast-untrack-btn:hover:not(:disabled) {
+.cert-node__fast-untrack-btn:hover:not(:disabled) {
   background: var(--colorSubtleBackgroundHover);
   color: var(--text-primary);
 }
 
-.station__fast-untrack-btn:active:not(:disabled) {
+.cert-node__fast-untrack-btn:active:not(:disabled) {
   background: var(--colorSubtleBackgroundActive);
   color: var(--text-primary);
 }
 
-.station__fast-untrack-btn:focus-visible {
+.cert-node__fast-untrack-btn:focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 1px;
   opacity: 1;
 }
 
-.station__fast-untrack-btn--active {
+.cert-node__fast-untrack-btn--active {
   opacity: 1;
   color: var(--status-retiring);
   background: var(--badge-retiring-bg);
 }
 
-.station__fast-untrack-btn--active:hover:not(:disabled) {
+.cert-node__fast-untrack-btn--active:hover:not(:disabled) {
   background: color-mix(in srgb, var(--status-retiring) 14%, transparent);
 }
 
-.station__fast-untrack-btn--active:active:not(:disabled) {
+.cert-node__fast-untrack-btn--active:active:not(:disabled) {
   background: color-mix(in srgb, var(--status-retiring) 20%, transparent);
 }
 
-.station__fast-untrack-btn:disabled {
+.cert-node__fast-untrack-btn:disabled {
   cursor: not-allowed;
 }
 
-.station:hover .station__fast-untrack-btn:disabled {
+.cert-node:hover .cert-node__fast-untrack-btn:disabled {
   opacity: 0.5;
 }
 
 /* Ignored/Excluded */
-.station--ignored {
+.cert-node--ignored {
   opacity: 0.45;
   transition: opacity var(--transition-fast);
 }
 
-.station--ignored:hover {
+.cert-node--ignored:hover {
   opacity: 0.7;
 }
 
-.station--ignored .station__node-outer {
+.cert-node--ignored .cert-node__node-outer {
   border-style: dashed;
   border-color: var(--text-disabled);
 }
 
-.station--ignored .station__info {
+.cert-node--ignored .cert-node__info {
   border-style: dashed;
 }
 
 /* Mobile */
 @media (max-width: 768px) {
-  .station {
+  .cert-node {
     gap: var(--space-2);
   }
 
-  .station__node-outer {
+  .cert-node__node-outer {
     width: 24px;
     height: 24px;
   }
 
-  .station__node-inner {
+  .cert-node__node-inner {
     width: 12px;
     height: 12px;
   }
 
-  .station__info {
+  .cert-node__info {
     padding: var(--space-2) 56px var(--space-2) var(--space-2);
   }
 
-  .station__badge-icon {
+  .cert-node__badge-icon {
     top: var(--space-2);
     right: var(--space-2);
     width: 40px;

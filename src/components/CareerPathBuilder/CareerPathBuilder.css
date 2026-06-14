@@ -34,29 +34,50 @@
 }
 
 .cpb-role-card {
-  background: color-mix(in srgb, var(--card-color) 15%, var(--bg-card));
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.25rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--border-subtle, var(--border-color));
+  border-radius: 16px;
+  padding: 1.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 1;
+}
+
+.cpb-role-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 15%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
 .cpb-role-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-color));
-  background: color-mix(in srgb, var(--card-color) 25%, var(--bg-card));
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-subtle, var(--border-color)));
+}
+
+.cpb-role-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 25%, transparent) 0%, transparent 100%);
 }
 
 .cpb-role-card--active {
   border-color: var(--card-color);
-  box-shadow: 0 0 0 2px var(--card-color), 0 8px 24px var(--shadow-color);
-  background: linear-gradient(to bottom right, color-mix(in srgb, var(--card-color) 12%, var(--bg-card)), color-mix(in srgb, var(--card-color) 35%, var(--bg-card)));
-  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px var(--card-color), 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+.cpb-role-card--active::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 35%, transparent) 0%, transparent 100%);
 }
 
 .cpb-role-card--active::before {
@@ -67,6 +88,8 @@
   width: 100%;
   height: 4px;
   background-color: var(--card-color);
+  z-index: 2;
+  box-shadow: 0 0 8px var(--card-color);
 }
 
 .cpb-role-card-header {
@@ -185,17 +208,39 @@
 
 .cpb-timeline-card {
   flex: 1;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--border-subtle, var(--border-color));
+  border-radius: 16px;
   padding: 1.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 1;
+}
+
+.cpb-timeline-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 15%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
 .cpb-timeline-card:hover {
-  transform: translateX(4px);
-  border-color: var(--card-color);
+  transform: translateX(4px) translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-subtle, var(--border-color)));
+}
+
+.cpb-timeline-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 25%, transparent) 0%, transparent 100%);
 }
 
 .cpb-timeline-card-header {
