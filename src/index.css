@@ -493,7 +493,7 @@ input, textarea, select {
   50% { opacity: 0.5; }
 }
 
-@keyframes stationPulse {
+@keyframes cert-nodePulse {
   0%, 100% {
     box-shadow: 0 0 0 0 var(--pulse-color, rgba(251, 191, 36, 0.4));
   }
@@ -511,8 +511,8 @@ input, textarea, select {
   }
 }
 
-@keyframes drawTrack {
-  from { stroke-dashoffset: var(--track-length, 1000); }
+@keyframes drawLine {
+  from { stroke-dashoffset: var(--line-length, 1000); }
   to { stroke-dashoffset: 0; }
 }
 
@@ -589,10 +589,10 @@ input, textarea, select {
 }
 
 /* Opt out of theme transition for animations/transforms */
-.station,
-.station *,
+.cert-node,
+.cert-node *,
 .progress-ring *,
-.path-map__track-line,
+.path-map__connection-line,
 .path-map__progress-fill,
 .dashboard__hero-line {
   transition-property: none;

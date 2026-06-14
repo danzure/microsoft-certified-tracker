@@ -3,11 +3,12 @@ import { ProgressProvider } from './context/ProgressContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
-import { useState, Suspense, lazy } from 'react';
+import { useState, Suspense, lazy, useEffect } from 'react';
 import './App.css';
 
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 const PathMap = lazy(() => import('./components/PathMap/PathMap'));
+const CareerPathBuilder = lazy(() => import('./components/CareerPathBuilder/CareerPathBuilder'));
 
 /**
  * Main application component.
@@ -19,6 +20,17 @@ function App() {
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
   const closeSidebar = () => setSidebarOpen(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        toggleSidebar();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <BrowserRouter>
@@ -42,6 +54,7 @@ function App() {
                 }>
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
+                    <Route path="/career-paths" element={<CareerPathBuilder />} />
                     <Route path="/path/:pathId" element={<PathMap />} />
                   </Routes>
                 </Suspense>

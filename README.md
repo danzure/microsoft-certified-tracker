@@ -4,13 +4,15 @@ Track your Microsoft certification progress across **9 certification paths** wit
 
 ## ✨ Features
 
-- **Metro Map Visualisation** — Each certification path is rendered as an interactive metro line with stations representing individual exams, connected by branches and prerequisite relationships.
+- **Path Map Visualisation** — Each certification path is rendered as an interactive map with nodes representing individual exams, connected by branches and prerequisite relationships.
+- **Career Path Builder** — Build your own custom certification journey using a drag-and-drop interface to plan your exams, or follow predefined role-based tracks.
+- **Keyboard Shortcuts** — Quickly navigate and manage exams with built-in keyboard accessibility.
 - **Progress Tracking** — Mark certifications as _Not Started_, _In Progress_, or _Completed_. Progress is persisted to `localStorage`.
 - **Dashboard Overview** — A central dashboard displaying overall stats, currently studying certs, and personalised recommendations for what to tackle next.
 - **Path Filtering** — Toggle certification paths on/off to focus only on the paths relevant to your career goals.
 - **Dark / Light Theme** — Fully themed UI with system preference detection and a manual toggle.
 - **Responsive Design** — Collapsible sidebar and adaptive layouts for desktop and mobile.
-- **Direct Links to Microsoft Learn** — Every certification station links directly to the official Microsoft Learn exam page.
+- **Direct Links to Microsoft Learn** — Every certification node links directly to the official Microsoft Learn exam page.
 
 ## 🗺️ Certification Paths
 
@@ -40,10 +42,11 @@ Track your Microsoft certification progress across **9 certification paths** wit
 ```
 src/
 ├── components/
+│   ├── CareerPathBuilder/ # Custom and role-based certification tracks
 │   ├── CertDetail/       # Certification detail panels
 │   ├── Dashboard/        # Main dashboard view
 │   ├── Layout/           # Header & Sidebar
-│   ├── MetroMap/         # Metro line & station visualisations
+│   ├── PathMap/          # Certification path & node visualisations
 │   └── common/           # Shared UI components (Badge, etc.)
 ├── context/
 │   ├── ProgressContext   # Certification progress state

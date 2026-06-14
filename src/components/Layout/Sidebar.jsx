@@ -57,6 +57,26 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
               </div>
             </NavLink>
 
+            <NavLink
+              to="/career-paths"
+              className={({ isActive }) => `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`}
+              onClick={() => {
+                if (window.innerWidth <= 768) {
+                  onClose();
+                }
+              }}
+              style={{ '--line-color': 'var(--colorBrandForeground1)' }}
+              title="Career Paths"
+            >
+              <div className="sidebar__link-indicator" />
+              <div className="sidebar__link-icon" title="Career Paths">
+                <Icons.TrendingUp size={20} />
+              </div>
+              <div className="sidebar__link-content">
+                <span className="sidebar__link-name">Career Paths</span>
+              </div>
+            </NavLink>
+
           </div>
           {Object.values(PILLARS).map((pillarName) => {
             const pillarPaths = certificationPaths.filter((p) => p.pillar === pillarName);
@@ -115,10 +135,9 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
             rel="noopener noreferrer"
             className="sidebar__poster-link"
           >
-            <Icons.ExternalLink size={14} />
+            <Icons.Microsoft size={16} />
             <span className="sidebar__poster-text">Official Certification Poster</span>
           </a>
-
         </div>
       </aside>
     </>

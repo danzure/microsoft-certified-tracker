@@ -18,13 +18,22 @@ const Dashboard = () => {
   const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored, isCertIgnored } = useProgressContext();
   const overall = useMemo(() => getOverallProgress(), [getOverallProgress]);
 
-  // Get recently in-progress items
   const inProgressCerts = useMemo(() => {
     return certificationPaths
       .filter(path => !isPathIgnored(path.id))
       .flatMap((path) =>
         path.certifications
           .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
+          .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
+      );
+  }, [isPathIgnored, isCertIgnored, getStatus]);
+
+  const needsRenewalCerts = useMemo(() => {
+    return certificationPaths
+      .filter(path => !isPathIgnored(path.id))
+      .flatMap((path) =>
+        path.certifications
+          .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.NEEDS_RENEWAL)
           .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
       );
   }, [isPathIgnored, isCertIgnored, getStatus]);
@@ -45,7 +54,7 @@ const Dashboard = () => {
 
       {/* Stats Row */}
       <div className="dashboard__stats">
-        <div className="dashboard__stat-card" style={{ animationDelay: '0ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '0ms', '--card-color': 'var(--colorBrandForeground1)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--total">
             <Icons.Award size={20} />
           </div>
@@ -54,7 +63,7 @@ const Dashboard = () => {
             <span className="dashboard__stat-label">Total Certifications</span>
           </div>
         </div>
-        <div className="dashboard__stat-card" style={{ animationDelay: '50ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '50ms', '--card-color': 'var(--status-completed)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--completed">
             <Icons.CheckCircle2 size={20} />
           </div>
@@ -63,7 +72,7 @@ const Dashboard = () => {
             <span className="dashboard__stat-label">Completed</span>
           </div>
         </div>
-        <div className="dashboard__stat-card" style={{ animationDelay: '100ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '100ms', '--card-color': 'var(--status-in-progress)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--progress">
             <Icons.Clock size={20} />
           </div>
@@ -72,7 +81,7 @@ const Dashboard = () => {
             <span className="dashboard__stat-label">In Progress</span>
           </div>
         </div>
-        <div className="dashboard__stat-card" style={{ animationDelay: '150ms' }}>
+        <div className="dashboard__stat-card" style={{ animationDelay: '150ms', '--card-color': 'var(--colorBrandForeground1)' }}>
           <div className="dashboard__stat-icon dashboard__stat-icon--percent">
             <Icons.TrendingUp size={20} />
           </div>
@@ -92,10 +101,41 @@ const Dashboard = () => {
       )}
 
       {/* Activity & Recommendations Strip */}
-      {inProgressCerts.length > 0 && (
+      {(inProgressCerts.length > 0 || needsRenewalCerts.length > 0) && (
         <div className="dashboard__activity-strip">
+          {needsRenewalCerts.length > 0 && (
+            <div className="dashboard__activity-panel" style={{ border: '1px solid rgba(255, 107, 107, 0.3)', background: 'rgba(255, 107, 107, 0.05)' }}>
+              <h2 className="dashboard__activity-title" style={{ color: '#ff6b6b' }}>
+                <Icons.AlertTriangle size={18} />
+                Needs Renewal
+                <span className="dashboard__activity-count" style={{ background: 'rgba(255, 107, 107, 0.2)', color: '#ff6b6b' }}>{needsRenewalCerts.length}</span>
+              </h2>
+              <div className="dashboard__activity-list">
+                {needsRenewalCerts.map((cert) => (
+                  <div
+                    key={cert.id}
+                    className="dashboard__activity-item"
+                    onClick={() => navigate(`/path/${cert.pathId}`)}
+                    style={{ '--card-color': cert.pathColor, borderLeft: '3px solid #ff6b6b' }}
+                  >
+                    <div className="dashboard__activity-item-icon" style={{ color: '#ff6b6b', background: 'rgba(255,107,107,0.1)' }}>
+                      <Icons.Award size={16} />
+                    </div>
+                    <div className="dashboard__activity-item-info">
+                      <span className="dashboard__activity-item-code">{cert.examCode}</span>
+                      <span className="dashboard__activity-item-name">{cert.name}</span>
+                    </div>
+                    <Badge color={cert.pathColor} small>{cert.pathName}</Badge>
+                    <Icons.ChevronRight size={16} className="dashboard__activity-item-chevron" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Currently Studying */}
-          <div className="dashboard__activity-panel">
+          {inProgressCerts.length > 0 && (
+            <div className="dashboard__activity-panel">
             <h2 className="dashboard__activity-title">
               <Icons.Clock size={18} />
               Currently Studying
@@ -122,8 +162,9 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+    )}
 
       {/* Path Cards */}
       <div className="dashboard__section">

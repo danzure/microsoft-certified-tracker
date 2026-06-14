@@ -2,7 +2,7 @@ name: Cleanup old workflow runs
 
 on:
   schedule:
-    - cron: '0 0 * * 0' # Runs weekly on Sunday at midnight
+    - cron: '0 4 * * 1' # Runs weekly on Sunday night (Monday 04:00 UTC)
   workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
 
 permissions:

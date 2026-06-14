@@ -27,6 +27,7 @@ import {
   LocationOffRegular,
   BranchForkRegular,
   ArrowSyncRegular,
+  ReOrderDotsVerticalRegular,
 } from '@fluentui/react-icons';
 
 // Microsoft Product Icons (custom SVGs for certification paths)
@@ -63,6 +64,7 @@ const withSize = (IconComponent) => {
 
 export const IconMap = {
   // ── Microsoft Product Icons (certification paths) ──
+  Microsoft: M365Icon,
   Cloud: AzureIcon,
   Brain: AzureAIIcon,
   Database: DataAnalyticsIcon,
@@ -105,4 +107,5 @@ export const IconMap = {
   Link: withSize(LinkRegular),
   MapPinOff: withSize(LocationOffRegular),
   RefreshCw: withSize(ArrowSyncRegular),
+  GripVertical: withSize(ReOrderDotsVerticalRegular),
 };

@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
-import { CERT_STATUS, certificationPaths } from '../data/certificationPaths';
+import { CERT_STATUS, certificationPaths, doesCertExpire } from '../data/certificationPaths';
 
 const STORAGE_KEY = 'ms-cert-tracker-progress';
 const IGNORED_STORAGE_KEY = 'ms-cert-tracker-ignored';
 const IGNORED_CERTS_STORAGE_KEY = 'ms-cert-tracker-ignored-certs';
 const DISMISSED_CERTS_KEY = 'ms-cert-tracker-dismissed-certs';
+const DATES_KEY = 'ms-cert-tracker-dates';
+const CUSTOM_PLAYLIST_KEY = 'ms-cert-tracker-custom-playlist';
 
 const loadData = (key, defaultValue) => {
   try {
@@ -34,6 +36,8 @@ export const useProgress = () => {
   const [ignoredPaths, setIgnoredPaths] = useState(() => loadData(IGNORED_STORAGE_KEY, []));
   const [ignoredCerts, setIgnoredCerts] = useState(() => loadData(IGNORED_CERTS_STORAGE_KEY, []));
   const [dismissedCerts, setDismissedCerts] = useState(() => loadData(DISMISSED_CERTS_KEY, []));
+  const [completionDates, setCompletionDates] = useState(() => loadData(DATES_KEY, {}));
+  const [customPlaylist, setCustomPlaylist] = useState(() => loadData(CUSTOM_PLAYLIST_KEY, []));
 
   useEffect(() => {
     saveData(STORAGE_KEY, progress);
@@ -51,12 +55,43 @@ export const useProgress = () => {
     saveData(DISMISSED_CERTS_KEY, dismissedCerts);
   }, [dismissedCerts]);
 
+  useEffect(() => {
+    saveData(DATES_KEY, completionDates);
+  }, [completionDates]);
+
+  useEffect(() => {
+    saveData(CUSTOM_PLAYLIST_KEY, customPlaylist);
+  }, [customPlaylist]);
+
   const getStatus = useCallback(
-    (certId) => progress[certId] || CERT_STATUS.NOT_STARTED,
-    [progress]
+    (certId) => {
+      const baseStatus = progress[certId] || CERT_STATUS.NOT_STARTED;
+      if (baseStatus === CERT_STATUS.COMPLETED) {
+        let certLevel = null;
+        for (const path of certificationPaths) {
+          const cert = path.certifications.find(c => c.id === certId);
+          if (cert) {
+            certLevel = cert.level;
+            break;
+          }
+        }
+        if (doesCertExpire(certLevel)) {
+          const completedDate = completionDates[certId];
+          if (completedDate) {
+            const oneYearAgo = new Date();
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+            if (new Date(completedDate) < oneYearAgo) {
+              return CERT_STATUS.NEEDS_RENEWAL;
+            }
+          }
+        }
+      }
+      return baseStatus;
+    },
+    [progress, completionDates]
   );
 
-  const setStatus = useCallback((certId, status) => {
+  const setStatus = useCallback((certId, status, dateStr = null) => {
     setProgress((prev) => {
       const next = { ...prev };
       if (status === CERT_STATUS.NOT_STARTED) {
@@ -66,19 +101,34 @@ export const useProgress = () => {
       }
       return next;
     });
+
+    if (status === CERT_STATUS.COMPLETED) {
+      setCompletionDates(prev => ({ ...prev, [certId]: dateStr || new Date().toISOString() }));
+    } else if (status === CERT_STATUS.NOT_STARTED) {
+      setCompletionDates(prev => {
+        const next = { ...prev };
+        delete next[certId];
+        return next;
+      });
+    }
+  }, []);
+
+  const setCompletionDate = useCallback((certId, dateStr) => {
+    setCompletionDates(prev => ({ ...prev, [certId]: dateStr }));
   }, []);
 
   const cycleStatus = useCallback(
     (certId) => {
-      const current = progress[certId] || CERT_STATUS.NOT_STARTED;
+      const current = getStatus(certId);
       const nextMap = {
         [CERT_STATUS.NOT_STARTED]: CERT_STATUS.IN_PROGRESS,
         [CERT_STATUS.IN_PROGRESS]: CERT_STATUS.COMPLETED,
         [CERT_STATUS.COMPLETED]: CERT_STATUS.NOT_STARTED,
+        [CERT_STATUS.NEEDS_RENEWAL]: CERT_STATUS.COMPLETED, // Cycle back to completed (renews)
       };
       setStatus(certId, nextMap[current]);
     },
-    [progress, setStatus]
+    [getStatus, setStatus]
   );
 
   const togglePathIgnored = useCallback((pathId) => {
@@ -119,10 +169,10 @@ export const useProgress = () => {
       const tracked = path.certifications.filter(c => !ignoredCerts.includes(c.id));
       const total = tracked.length;
       const completed = tracked.filter(
-        (c) => progress[c.id] === CERT_STATUS.COMPLETED
+        (c) => getStatus(c.id) === CERT_STATUS.COMPLETED || getStatus(c.id) === CERT_STATUS.NEEDS_RENEWAL
       ).length;
       const inProgress = tracked.filter(
-        (c) => progress[c.id] === CERT_STATUS.IN_PROGRESS
+        (c) => getStatus(c.id) === CERT_STATUS.IN_PROGRESS
       ).length;
 
       return {
@@ -132,7 +182,7 @@ export const useProgress = () => {
         percent: total > 0 ? Math.round((completed / total) * 100) : 0,
       };
     },
-    [progress, ignoredCerts]
+    [ignoredCerts, getStatus]
   );
 
   const getOverallProgress = useCallback(() => {
@@ -147,8 +197,9 @@ export const useProgress = () => {
         // Skip interchange duplicates and individually ignored certs
         if (!cert.isInterchange && !ignoredCerts.includes(cert.id)) {
           total++;
-          if (progress[cert.id] === CERT_STATUS.COMPLETED) completed++;
-          if (progress[cert.id] === CERT_STATUS.IN_PROGRESS) inProgress++;
+          const stat = getStatus(cert.id);
+          if (stat === CERT_STATUS.COMPLETED || stat === CERT_STATUS.NEEDS_RENEWAL) completed++;
+          if (stat === CERT_STATUS.IN_PROGRESS) inProgress++;
         }
       });
     });
@@ -159,7 +210,7 @@ export const useProgress = () => {
       inProgress,
       percent: total > 0 ? Math.round((completed / total) * 100) : 0,
     };
-  }, [progress, ignoredPaths, ignoredCerts]);
+  }, [ignoredPaths, ignoredCerts, getStatus]);
 
   const resetAll = useCallback(() => {
     setProgress({});
@@ -182,5 +233,9 @@ export const useProgress = () => {
     toggleCertDismissed,
     isCertDismissed,
     resetAll,
+    completionDates,
+    setCompletionDate,
+    customPlaylist,
+    setCustomPlaylist,
   };
 };

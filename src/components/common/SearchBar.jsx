@@ -1,6 +1,6 @@
 import { IconMap } from './IconMap';
 const { Search, X } = IconMap;
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { getAllCertifications } from '../../data/certificationPaths';
 import { useNavigate } from 'react-router-dom';
 import './SearchBar.css';
@@ -17,6 +17,17 @@ const SearchBar = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const allCerts = getAllCertifications();
 
@@ -55,6 +66,9 @@ const SearchBar = ({ onClose }) => {
           onFocus={() => query && setIsOpen(true)}
           id="search-certifications"
         />
+        {!query && (
+          <span className="search-bar__shortcut">Ctrl K</span>
+        )}
         {query && (
           <button className="search-bar__clear" onClick={() => { setQuery(''); setIsOpen(false); }}>
             <X size={14} />

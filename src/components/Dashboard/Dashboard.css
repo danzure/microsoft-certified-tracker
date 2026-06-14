@@ -50,20 +50,46 @@
 }
 
 .dashboard__stat-card {
-  background: var(--colorNeutralBackground1);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 16px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   animation: slideUp 500ms ease-out both;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.dashboard__stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color, var(--colorBrandForeground1)) 15%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 300ms ease;
+}
+
+.dashboard__stat-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--card-color, var(--colorBrandForeground1)) 50%, var(--border-subtle));
+}
+
+.dashboard__stat-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color, var(--colorBrandForeground1)) 25%, transparent) 0%, transparent 100%);
 }
 
 [data-theme="dark"] .dashboard__stat-card {
-  background: var(--colorNeutralBackground3);
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard__stat-icon {
@@ -165,27 +191,45 @@
 /* ─── Path Cards ─── */
 .dashboard__path-card {
   position: relative;
-  background: var(--colorNeutralBackground1);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid var(--border-subtle);
-  border-top: 3px solid var(--card-color);
-  border-radius: var(--radius-lg);
+  border-radius: 16px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all 300ms ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
   animation: slideUp 500ms ease-out both;
+  overflow: hidden;
+  z-index: 1;
 }
 
 [data-theme="dark"] .dashboard__path-card {
-  background: var(--colorNeutralBackground3);
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard__path-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 15%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 300ms ease;
 }
 
 .dashboard__path-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-subtle));
+}
+
+.dashboard__path-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 25%, transparent) 0%, transparent 100%);
 }
 
 .dashboard__path-card--ignored {
@@ -351,29 +395,48 @@
 
 /* ─── Activity Strip (Between Stats & Path Cards) ─── */
 .dashboard__activity-strip {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
-@media (min-width: 1024px) {
-  .dashboard__activity-strip {
-    grid-template-columns: 1fr 1fr;
-  }
+.dashboard__activity-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  animation: slideUp 500ms ease-out both;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.dashboard__activity-panel {
-  background: var(--colorNeutralBackground1);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-  animation: slideUp 500ms ease-out both;
+.dashboard__activity-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--colorBrandForeground1) 15%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 300ms ease;
+}
+
+.dashboard__activity-panel:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: color-mix(in srgb, var(--colorBrandForeground1) 50%, var(--border-subtle));
+}
+
+.dashboard__activity-panel:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--colorBrandForeground1) 25%, transparent) 0%, transparent 100%);
 }
 
 [data-theme="dark"] .dashboard__activity-panel {
-  background: var(--colorNeutralBackground3);
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard__activity-title {
@@ -400,9 +463,9 @@
 }
 
 .dashboard__activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
 }
 
 .dashboard__activity-item {
