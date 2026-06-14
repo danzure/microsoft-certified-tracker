@@ -15,7 +15,7 @@
   flex: 1;
   margin-left: var(--sidebar-width);
   height: calc(100vh - var(--header-height));
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   transition: margin-left var(--transition-base);
 }

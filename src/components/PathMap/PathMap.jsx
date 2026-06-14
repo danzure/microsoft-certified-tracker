@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getPathById, CERT_LEVELS, CERT_STATUS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
-import Station from './Station';
+import CertNode from './CertNode';
 
 import CertDetail from '../CertDetail/CertDetail';
 import ProgressRing from '../common/ProgressRing';
@@ -15,11 +15,12 @@ const CURVE_RADIUS = 24;
 
 /**
  * Core visualization component that renders a certification path as a connected map.
- * Dynamically constructs the visual tree layout, SVG connecting tracks, and stations
+ * Dynamically constructs the visual tree layout, SVG connecting tracks, and cert-nodes
  * based on the certifications and prerequisites defined in the path data.
  */
 const PathMap = () => {
   const { pathId } = useParams();
+  const navigate = useNavigate();
   const path = getPathById(pathId);
   const { getStatus, getPathProgress, isPathIgnored } = useProgressContext();
   const [selectedCert, setSelectedCert] = useState(null);
@@ -27,7 +28,7 @@ const PathMap = () => {
   const treeContainerRef = useRef(null);
   const gridRef = useRef(null);
   const forkSpacerRef = useRef(null);
-  const [trackPaths, setTrackPaths] = useState([]);
+  const [linePaths, setLinePaths] = useState([]);
 
   const branches = useMemo(() => path?.branches || [], [path?.branches]);
   const hasBranches = branches.length > 0 && path?.certifications.some(c => c.branch);
@@ -65,7 +66,7 @@ const PathMap = () => {
       .filter(g => g.certs.length > 0);
   }, [path, hasBranches]);
 
-  // ─── Build the visual connection list (edges between stations) ───
+  // ─── Build the visual connection list (edges between cert-nodes) ───
   const connectionList = useMemo(() => {
     if (!path) return [];
     const connections = [];
@@ -163,8 +164,8 @@ const PathMap = () => {
     return connections;
   }, [path, hasBranches, trunkFundamentals, trunkBottom, branchColumns, linearGroups]);
 
-  // ─── Measure all station node positions and draw SVG paths ───
-  const measureAndDrawTracks = useCallback(() => {
+  // ─── Measure all cert-node node positions and draw SVG paths ───
+  const measureAndDrawLines = useCallback(() => {
     const container = treeContainerRef.current;
     if (!container || !path) return;
 
@@ -175,9 +176,9 @@ const PathMap = () => {
     const offsetTop = containerRect.top + borderTop;
     const offsetLeft = containerRect.left + borderLeft;
 
-    // Measure the center of every station node
+    // Measure the center of every cert-node node
     const getNodeCenter = (certId) => {
-      const nodeEl = container.querySelector(`#station-${certId} .station__node-outer`);
+      const nodeEl = container.querySelector(`#cert-node-${certId} .cert-node__node-outer`);
       if (!nodeEl) return null;
       const r = nodeEl.getBoundingClientRect();
       return {
@@ -290,20 +291,20 @@ const PathMap = () => {
       paths.push({ id: `${conn.from}-${conn.to}`, d, state, type: conn.type });
     });
 
-    setTrackPaths(paths);
-  }, [connectionList, path, getStatus, setTrackPaths]);
+    setLinePaths(paths);
+  }, [connectionList, path, getStatus, setLinePaths]);
 
   useEffect(() => {
     const container = treeContainerRef.current;
     if (!container) return;
 
-    // Delay initial measurement to let station animations (400ms) settle
+    // Delay initial measurement to let cert-node animations (400ms) settle
     const timer = setTimeout(() => {
-      measureAndDrawTracks();
+      measureAndDrawLines();
     }, 500);
 
     const observer = new ResizeObserver(() => {
-      requestAnimationFrame(measureAndDrawTracks);
+      requestAnimationFrame(measureAndDrawLines);
     });
     observer.observe(container);
 
@@ -311,7 +312,17 @@ const PathMap = () => {
       clearTimeout(timer);
       observer.disconnect();
     };
-  }, [measureAndDrawTracks]);
+  }, [measureAndDrawLines]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && !selectedCert) {
+        navigate('/');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedCert, navigate]);
 
   // ─── Error state ───
   if (!path) {
@@ -325,13 +336,13 @@ const PathMap = () => {
   }
 
   // ─── Helpers ───
-  const renderStation = (cert, idx) => {
+  const renderCertNode = (cert, idx) => {
     const certStatus = getStatus(cert.id);
     const flatPrereqs = cert.prerequisites ? cert.prerequisites.flat() : [];
     const isPrereqCompleted = flatPrereqs.some(id => getStatus(id) === CERT_STATUS.COMPLETED);
     const isUnlocked = (flatPrereqs.length === 0 || isPrereqCompleted) && certStatus === CERT_STATUS.NOT_STARTED;
     return (
-      <Station
+      <CertNode
         key={cert.id}
         cert={cert}
         pathColor={path.color}
@@ -349,12 +360,12 @@ const PathMap = () => {
     .filter(g => g.certs.length > 0);
 
   // ─── Track SVG Overlay ───
-  const renderTrackSVG = () => {
-    if (trackPaths.length === 0) return null;
+  const renderLineSVG = () => {
+    if (linePaths.length === 0) return null;
 
     return (
       <svg
-        className="path-map__track-svg"
+        className="path-map__line-svg"
         width="100%"
         height="100%"
         style={{
@@ -368,7 +379,7 @@ const PathMap = () => {
       >
         {/* Background (default) tracks first */}
         <g opacity={0.12}>
-          {trackPaths.map(tp => (
+          {linePaths.map(tp => (
             <path
               key={`bg-${tp.id}`}
               d={tp.d}
@@ -382,7 +393,7 @@ const PathMap = () => {
         </g>
         {/* Unlocked overlay tracks */}
         <g opacity={0.4}>
-          {trackPaths
+          {linePaths
             .filter(tp => tp.state === 'unlocked')
             .map(tp => (
               <path
@@ -398,7 +409,7 @@ const PathMap = () => {
         </g>
         {/* Active overlay tracks */}
         <g opacity={1}>
-          {trackPaths
+          {linePaths
             .filter(tp => tp.state === 'active')
             .map(tp => (
               <path
@@ -460,17 +471,17 @@ const PathMap = () => {
           style={hasBranches ? { '--branch-count': branchColumns.length || 1 } : undefined}
         >
           {/* Single SVG overlay for ALL track lines */}
-          {renderTrackSVG()}
+          {renderLineSVG()}
 
           {hasBranches ? (
             <>
               {/* ── Trunk Top: Fundamentals ── */}
               {trunkFundamentals.length > 0 && (
                 <div className="path-map__trunk-top">
-                  <div className="path-map__trunk-stations">
+                  <div className="path-map__trunk-nodes">
                     {trunkFundamentals.map((cert, idx) => (
-                      <div key={cert.id} className="path-map__trunk-station-wrap">
-                        {renderStation(cert, idx)}
+                      <div key={cert.id} className="path-map__trunk-node-wrap">
+                        {renderCertNode(cert, idx)}
                       </div>
                     ))}
                   </div>
@@ -497,8 +508,8 @@ const PathMap = () => {
                           <span>{branch.name}</span>
                         </div>
                         {branch.allCerts.map((cert, idx) => (
-                          <div key={cert.id} className="path-map__branch-station">
-                            {renderStation(cert, idx)}
+                          <div key={cert.id} className="path-map__branch-node">
+                            {renderCertNode(cert, idx)}
                           </div>
                         ))}
                       </div>
@@ -517,10 +528,10 @@ const PathMap = () => {
                 <div className="path-map__trunk-bottom">
                   {trunkBottomGroups.map(group => (
                     <div key={group.level} className="path-map__trunk-level-group">
-                      <div className="path-map__trunk-stations">
+                      <div className="path-map__trunk-nodes">
                         {group.certs.map((cert, idx) => (
-                          <div key={cert.id} className="path-map__trunk-station-wrap">
-                            {renderStation(cert, idx)}
+                          <div key={cert.id} className="path-map__trunk-node-wrap">
+                            {renderCertNode(cert, idx)}
                           </div>
                         ))}
                       </div>
@@ -531,13 +542,13 @@ const PathMap = () => {
             </>
           ) : (
             /* ─── Linear Layout (no branches, e.g. DevOps) ─── */
-            <div className="path-map__stations">
+            <div className="path-map__cert-nodes">
               {linearGroups.map(group => (
                 <div key={group.level} className="path-map__level-group">
                   <div className="path-map__level-nodes">
                     {group.certs.map((cert, idx) => (
                       <div key={cert.id} className="path-map__node-wrapper path-map__node-wrapper--trunk">
-                        {renderStation(cert, idx)}
+                        {renderCertNode(cert, idx)}
                       </div>
                     ))}
                   </div>
