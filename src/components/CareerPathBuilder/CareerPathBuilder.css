@@ -80,17 +80,6 @@
   background: linear-gradient(135deg, color-mix(in srgb, var(--card-color) 35%, transparent) 0%, transparent 100%);
 }
 
-.cpb-role-card--active::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background-color: var(--card-color);
-  z-index: 2;
-  box-shadow: 0 0 8px var(--card-color);
-}
 
 .cpb-role-card-header {
   display: flex;
@@ -305,6 +294,129 @@
 .cpb-timeline-badge--needs-renewal {
   color: #ff6b6b;
   border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+/* Custom Playlist Styles */
+.cpb-custom-add-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.cpb-custom-select {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cpb-custom-select:focus {
+  border-color: var(--colorBrandForeground1);
+}
+
+.cpb-custom-add-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  background: var(--colorBrandForeground1);
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cpb-custom-add-btn:hover:not(:disabled) {
+  background: var(--colorBrandForeground2, color-mix(in srgb, var(--colorBrandForeground1) 80%, black));
+}
+
+.cpb-custom-add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cpb-custom-export-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--bg-secondary, rgba(0,0,0,0.05));
+  color: var(--text-primary);
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cpb-custom-export-btn:hover:not(:disabled) {
+  background: var(--bg-hover, rgba(0,0,0,0.1));
+}
+
+.cpb-custom-export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cpb-timeline-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-secondary);
+  background: var(--bg-glass);
+  border-radius: 16px;
+  border: 1px dashed var(--border-color);
+}
+
+.cpb-timeline-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cpb-timeline-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cpb-timeline-remove-btn:hover {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+}
+
+.cpb-timeline-drag-handle {
+  cursor: grab;
+}
+
+.cpb-timeline-drag-handle:active {
+  cursor: grabbing;
+}
+
+.cpb-timeline-drag-handle:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.cpb-timeline-step--sortable {
+  position: relative;
 }
 
 @media (max-width: 768px) {

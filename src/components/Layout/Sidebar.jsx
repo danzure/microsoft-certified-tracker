@@ -135,10 +135,9 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
             rel="noopener noreferrer"
             className="sidebar__poster-link"
           >
-            <Icons.ExternalLink size={14} />
+            <Icons.Microsoft size={16} />
             <span className="sidebar__poster-text">Official Certification Poster</span>
           </a>
-          <div className="sidebar__build-version">v1.5.0</div>
         </div>
       </aside>
     </>

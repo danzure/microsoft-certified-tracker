@@ -6,6 +6,7 @@ const IGNORED_STORAGE_KEY = 'ms-cert-tracker-ignored';
 const IGNORED_CERTS_STORAGE_KEY = 'ms-cert-tracker-ignored-certs';
 const DISMISSED_CERTS_KEY = 'ms-cert-tracker-dismissed-certs';
 const DATES_KEY = 'ms-cert-tracker-dates';
+const CUSTOM_PLAYLIST_KEY = 'ms-cert-tracker-custom-playlist';
 
 const loadData = (key, defaultValue) => {
   try {
@@ -36,6 +37,7 @@ export const useProgress = () => {
   const [ignoredCerts, setIgnoredCerts] = useState(() => loadData(IGNORED_CERTS_STORAGE_KEY, []));
   const [dismissedCerts, setDismissedCerts] = useState(() => loadData(DISMISSED_CERTS_KEY, []));
   const [completionDates, setCompletionDates] = useState(() => loadData(DATES_KEY, {}));
+  const [customPlaylist, setCustomPlaylist] = useState(() => loadData(CUSTOM_PLAYLIST_KEY, []));
 
   useEffect(() => {
     saveData(STORAGE_KEY, progress);
@@ -56,6 +58,10 @@ export const useProgress = () => {
   useEffect(() => {
     saveData(DATES_KEY, completionDates);
   }, [completionDates]);
+
+  useEffect(() => {
+    saveData(CUSTOM_PLAYLIST_KEY, customPlaylist);
+  }, [customPlaylist]);
 
   const getStatus = useCallback(
     (certId) => {
@@ -229,5 +235,7 @@ export const useProgress = () => {
     resetAll,
     completionDates,
     setCompletionDate,
+    customPlaylist,
+    setCustomPlaylist,
   };
 };
