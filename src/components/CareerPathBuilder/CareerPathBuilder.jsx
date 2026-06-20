@@ -10,6 +10,16 @@ import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, us
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import './CareerPathBuilder.css';
 
+/**
+ * CareerPathBuilder Component
+ * 
+ * Allows users to explore specialized certification paths tailored to desired job roles.
+ * Users can follow guided paths aligned with official career roles or build a custom 
+ * career track by dragging and dropping certifications.
+ * 
+ * @component
+ * @returns {JSX.Element} The CareerPathBuilder UI
+ */
 const CareerPathBuilder = () => {
   const navigate = useNavigate();
   const { getStatus, customPlaylist, setCustomPlaylist } = useProgressContext();

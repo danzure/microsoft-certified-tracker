@@ -17,6 +17,9 @@ const CURVE_RADIUS = 24;
  * Core visualization component that renders a certification path as a connected map.
  * Dynamically constructs the visual tree layout, SVG connecting tracks, and cert-nodes
  * based on the certifications and prerequisites defined in the path data.
+ * 
+ * @component
+ * @returns {JSX.Element} The visual map of certifications.
  */
 const PathMap = () => {
   const { pathId } = useParams();

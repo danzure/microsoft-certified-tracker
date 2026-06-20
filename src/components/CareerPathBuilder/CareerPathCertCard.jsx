@@ -6,6 +6,21 @@ import Badge from '../common/Badge';
 import { getBadgeUrl } from '../../utils/helpers';
 import '../PathMap/CertNode.css';
 
+/**
+ * CareerPathCertCard Component
+ * 
+ * Displays a summarized card for a certification within the CareerPathBuilder list view.
+ * It provides actions to toggle tracking status, add/remove from the custom playlist, 
+ * and navigate to Microsoft Learn.
+ * 
+ * @component
+ * @param {Object} props
+ * @param {Object} props.certInfo - The certification data to display.
+ * @param {Array<string>} props.customPlaylist - The array of certification IDs currently in the user's custom playlist.
+ * @param {Function} props.onAdd - Callback when the certification is added to the custom playlist.
+ * @param {Function} props.onRemove - Callback when the certification is removed from the custom playlist.
+ * @returns {JSX.Element}
+ */
 export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }) => {
   const navigate = useNavigate();
   const { getStatus, cycleStatus } = useProgressContext();

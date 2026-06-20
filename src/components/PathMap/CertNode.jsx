@@ -17,6 +17,7 @@ import './CertNode.css';
  * @param {Function} props.onSelect - Callback triggered when the cert-node is right-clicked or clicked for details
  * @param {number} props.index - Positional index for animation delay
  * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
+ * @param {boolean} props.isPathIgnored - Whether the parent path is excluded from tracking
  */
 const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }) => {
   const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();

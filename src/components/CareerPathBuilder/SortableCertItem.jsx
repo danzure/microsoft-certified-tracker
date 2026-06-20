@@ -2,6 +2,27 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { IconMap as Icons } from '../common/IconMap';
 
+/**
+ * SortableCertItem Component
+ * 
+ * A draggable list item used within the dnd-kit context to display a certification 
+ * in the custom career timeline. It supports drag-and-drop reordering, removal, 
+ * and displays current tracking status.
+ * 
+ * @component
+ * @param {Object} props
+ * @param {string} props.id - The unique identifier used by dnd-kit for sorting.
+ * @param {number} props.index - The 0-based index of this item in the list.
+ * @param {Object} props.certInfo - The certification data object.
+ * @param {string} props.status - The current tracking status of the certification.
+ * @param {string} props.statusText - The localized text label for the current status.
+ * @param {string} props.nodeClass - The CSS class applied to the timeline node based on status.
+ * @param {string} props.badgeClass - The CSS class applied to the status badge based on status.
+ * @param {React.ElementType} props.StatusIcon - The icon component to display for the current status.
+ * @param {Function} props.onNavigate - Callback to navigate to a path or details page.
+ * @param {Function} props.onRemove - Callback to remove this item from the custom timeline.
+ * @returns {JSX.Element}
+ */
 export const SortableCertItem = ({ id, index, certInfo, status, statusText, nodeClass, badgeClass, StatusIcon, onNavigate, onRemove }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
