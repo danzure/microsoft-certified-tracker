@@ -228,7 +228,6 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 200px;
   position: relative;
   overflow: hidden;
   z-index: 2;

@@ -92,7 +92,7 @@ export const ArchiveIcon = (props) => <ImageIcon src={archiveSvg} alt="Archive" 
 // ─── Career Path ──────────────────────────────────────────────────────────────
 export const CareerPathIcon = (props) => <ImageIcon src={careerPathSvg} alt="Career Path" {...props} />;
 
-// ─── Custom Playlist / Settings (Full Color) ──────────────────────────────────
+// ─── Custom Career / Settings (Full Color) ──────────────────────────────────
 export const SettingsColorIcon = ({ size = 20, className, style, ...props }) => (
   <Icon
     icon="fluent-color:settings-48"

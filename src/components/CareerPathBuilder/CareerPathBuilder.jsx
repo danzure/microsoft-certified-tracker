@@ -41,7 +41,7 @@ const CareerPathBuilder = () => {
   const sortedRoles = useMemo(() => {
     const customRole = {
       id: 'custom-playlist',
-      title: 'Custom Playlist',
+      title: 'Custom Career',
       description: 'Build your own custom certification track and drag to reorder.',
       icon: 'SettingsColor',
       color: 'var(--colorBrandForeground1)',
@@ -75,7 +75,7 @@ const CareerPathBuilder = () => {
   const handleExportPlaylist = () => {
     if (customPlaylist.length === 0) return;
     
-    let content = `# My Custom Certification Playlist\n\n`;
+    let content = `# My Custom Career\n\n`;
     customPlaylist.forEach((certId, index) => {
       const certInfo = allCerts.get(certId);
       if (certInfo) {
@@ -87,7 +87,7 @@ const CareerPathBuilder = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'custom-study-playlist.md';
+    a.download = 'custom-career.md';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -101,7 +101,7 @@ const CareerPathBuilder = () => {
           Career Paths
         </h1>
         <p className="cpb-subtitle">
-          Explore specialized certification paths tailored to your desired job role. Follow the guided paths aligned with Microsoft's official career roles, or build a completely custom study playlist to match your unique career goals.
+          Explore specialized certification paths tailored to your desired job role. Follow the guided paths aligned with Microsoft's official career roles, or build a completely custom career to match your unique career goals.
         </p>
       </div>
 
@@ -132,7 +132,7 @@ const CareerPathBuilder = () => {
       {selectedRole && (
         <div className="cpb-path-container">
           <h2 className="cpb-path-title">
-            {selectedRole.id === 'custom-playlist' ? 'Your Custom Playlist' : `Roadmap for ${selectedRole.title}`}
+            {selectedRole.id === 'custom-playlist' ? 'Your Custom Career' : `Roadmap for ${selectedRole.title}`}
           </h2>
           
           {selectedRole.id === 'custom-playlist' && (
@@ -160,7 +160,7 @@ const CareerPathBuilder = () => {
                 className="cpb-custom-export-btn"
                 onClick={handleExportPlaylist}
                 disabled={customPlaylist.length === 0}
-                title="Export Playlist"
+                title="Export Career"
               >
                 <Icons.ArchiveX size={18} />
                 Export
@@ -182,7 +182,7 @@ const CareerPathBuilder = () => {
                   {customPlaylist.length === 0 && (
                     <div className="cpb-timeline-empty">
                       <Icons.BookOpen size={32} />
-                      <p>Your custom playlist is empty. Add certifications above to get started.</p>
+                      <p>Your custom career is empty. Add certifications above to get started.</p>
                     </div>
                   )}
                   {customPlaylist.map((certId, index) => {

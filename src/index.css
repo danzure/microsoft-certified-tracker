@@ -107,28 +107,28 @@
 
   /* ── Path Map Colors ── */
   --line-azure: #0078d4;
-  --line-ai: #302ec9;
-  --line-data: #2aac94;
-  --line-security: #0177d7;
-  --line-m365: #f25022;
-  --line-power: #007a84;
+  --line-ai: #00bcf2;
+  --line-data: #e6b300;
+  --line-security: #008272;
+  --line-m365: #d83b01;
+  --line-power: #742774;
   --line-dynamics: #7252aa;
   --line-devops: #0078d4;
   --line-github: #24292f;
-  --line-agentic: #8c48ff;
+  --line-agentic: #e3008c;
   --line-retired: #94a3b8;
 
   /* Path Map Glow */
   --glow-azure: rgba(0, 120, 212, 0.12);
-  --glow-ai: rgba(48, 46, 201, 0.12);
-  --glow-data: rgba(42, 172, 148, 0.12);
-  --glow-security: rgba(1, 119, 215, 0.12);
-  --glow-m365: rgba(242, 80, 34, 0.12);
-  --glow-power: rgba(0, 122, 132, 0.12);
+  --glow-ai: rgba(0, 188, 242, 0.12);
+  --glow-data: rgba(230, 179, 0, 0.12);
+  --glow-security: rgba(0, 130, 114, 0.12);
+  --glow-m365: rgba(216, 59, 1, 0.12);
+  --glow-power: rgba(116, 39, 116, 0.12);
   --glow-dynamics: rgba(114, 82, 170, 0.12);
   --glow-devops: rgba(0, 120, 212, 0.12);
   --glow-github: rgba(36, 41, 47, 0.12);
-  --glow-agentic: rgba(140, 72, 255, 0.12);
+  --glow-agentic: rgba(227, 0, 140, 0.12);
   --glow-retired: rgba(148, 163, 184, 0.12);
 
   /* ── Status Colors ── */
@@ -288,11 +288,11 @@
 
   /* Path Map Colors (brighter for dark bg) */
   --line-azure: #479ef5;
-  --line-ai: #a7a6f7;
-  --line-data: #55ddb9;
-  --line-security: #538fff;
+  --line-ai: #00bcf2;
+  --line-data: #f2c811;
+  --line-security: #00b294;
   --line-m365: #ff715b;
-  --line-power: #3fbda9;
+  --line-power: #b482d2;
   --line-dynamics: #ae7fe2;
   --line-devops: #479ef5;
   --line-github: #ffffff;
@@ -301,11 +301,11 @@
 
   /* Glow */
   --glow-azure: rgba(71, 158, 245, 0.15);
-  --glow-ai: rgba(167, 166, 247, 0.15);
-  --glow-data: rgba(85, 221, 185, 0.15);
-  --glow-security: rgba(83, 143, 255, 0.15);
+  --glow-ai: rgba(0, 188, 242, 0.15);
+  --glow-data: rgba(242, 200, 17, 0.15);
+  --glow-security: rgba(0, 178, 148, 0.15);
   --glow-m365: rgba(255, 113, 91, 0.15);
-  --glow-power: rgba(63, 189, 169, 0.15);
+  --glow-power: rgba(180, 130, 210, 0.15);
   --glow-dynamics: rgba(174, 127, 226, 0.15);
   --glow-devops: rgba(71, 158, 245, 0.15);
   --glow-github: rgba(255, 255, 255, 0.15);
