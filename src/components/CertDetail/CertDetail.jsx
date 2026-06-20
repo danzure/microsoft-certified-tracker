@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { IconMap } from '../common/IconMap';
-const { X, ExternalLink, AlertTriangle, ArrowRightLeft, Calendar, Award, EyeOff, Eye } = IconMap;
+const { X, ExternalLink, AlertTriangle, Calendar, Award, EyeOff, Eye, Microsoft } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
 import { CERT_STATUS, getCertById, getCertificationsRequiring, doesCertExpire } from '../../data/certificationPaths';
 import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
@@ -101,12 +101,7 @@ const CertDetail = ({ cert, path, onClose }) => {
                   Retiring
                 </Badge>
               )}
-              {cert.isInterchange && (
-                <Badge variant="interchange">
-                  <ArrowRightLeft size={10} />
-                  Interchange
-                </Badge>
-              )}
+
               {cert.isBeta && (
                 <Badge variant="default">
                   Beta
@@ -333,8 +328,8 @@ const CertDetail = ({ cert, path, onClose }) => {
             rel="noopener noreferrer"
             className="cert-detail__learn-btn"
           >
-            <ExternalLink size={16} />
-            View on Microsoft Learn <span style={{fontSize: '10px', opacity: 0.6, marginLeft: '8px'}}>(Press Enter)</span>
+            <Microsoft size={16} />
+            View on Microsoft Learn
           </a>
         </div>
       </div>

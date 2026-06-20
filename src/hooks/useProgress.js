@@ -194,8 +194,8 @@ export const useProgress = () => {
       if (ignoredPaths.includes(path.id)) return; // Skip ignored paths
 
       path.certifications.forEach((cert) => {
-        // Skip interchange duplicates and individually ignored certs
-        if (!cert.isInterchange && !ignoredCerts.includes(cert.id)) {
+        // Skip shared duplicates and individually ignored certs
+        if (!cert.isShared && !ignoredCerts.includes(cert.id)) {
           total++;
           const stat = getStatus(cert.id);
           if (stat === CERT_STATUS.COMPLETED || stat === CERT_STATUS.NEEDS_RENEWAL) completed++;

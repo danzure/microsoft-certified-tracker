@@ -3,7 +3,7 @@ import { useProgressContext } from '../../context/ProgressContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import { IconMap } from '../common/IconMap';
-const { AlertTriangle, Check, ExternalLink, ArrowRightLeft, Link, ArchiveX, EyeOff, Eye } = IconMap;
+const { AlertTriangle, Check, ExternalLink, Link, ArchiveX, EyeOff, Eye, Microsoft } = IconMap;
 import './CertNode.css';
 
 /**
@@ -66,7 +66,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
 
   return (
     <div
-      className={`cert-node ${statusClass} ${cert.isInterchange ? 'cert-node--interchange' : ''} ${isUnlocked ? 'cert-node--unlocked' : ''} ${certIgnored ? 'cert-node--ignored' : ''}`}
+      className={`cert-node ${statusClass} ${isUnlocked ? 'cert-node--unlocked' : ''} ${certIgnored ? 'cert-node--ignored' : ''}`}
       style={{
         '--cert-node-color': pathColor,
         '--cert-node-index': index,
@@ -87,7 +87,6 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
             {status === CERT_STATUS.COMPLETED && <Check size={14} strokeWidth={3} />}
             {status === CERT_STATUS.NEEDS_RENEWAL && <AlertTriangle size={14} strokeWidth={2} />}
             {status === CERT_STATUS.IN_PROGRESS && <div className="cert-node__node-half" />}
-            {cert.isInterchange && status === CERT_STATUS.NOT_STARTED && <ArrowRightLeft size={10} />}
           </div>
         </div>
       </button>
@@ -144,12 +143,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
                 <ArchiveX size={9} />
                 Retired {formatDate(cert.retirementDate)}
               </Badge>
-            )}
-            {cert.isInterchange && (
-              <Badge variant="interchange" small>
-                <ArrowRightLeft size={9} />
-                Interchange
-              </Badge>
+
             )}
             {cert.isBeta && (
               <Badge variant="default" small>
@@ -179,7 +173,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
             className="cert-node__learn-link"
             onClick={(e) => e.stopPropagation()}
           >
-            <ExternalLink size={12} />
+            <Microsoft size={12} />
             Microsoft Learn
           </a>
           <button

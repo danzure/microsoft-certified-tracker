@@ -154,9 +154,7 @@
   --badge-inprogress-bg: rgba(193, 156, 0, 0.08);
   --badge-inprogress-fg: #986f0b;
   --badge-inprogress-border: rgba(193, 156, 0, 0.3);
-  --badge-interchange-bg: rgba(0, 0, 0, 0.04);
-  --badge-interchange-fg: var(--text-secondary);
-  --badge-interchange-border: var(--border-default);
+
 
   /* ── Fluent 2 Shadows (Light) ── */
   --shadow-2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
@@ -335,9 +333,7 @@
   --badge-inprogress-bg: rgba(251, 191, 36, 0.12);
   --badge-inprogress-fg: #fbbf24;
   --badge-inprogress-border: rgba(251, 191, 36, 0.3);
-  --badge-interchange-bg: rgba(255, 255, 255, 0.05);
-  --badge-interchange-fg: var(--text-secondary);
-  --badge-interchange-border: var(--border-default);
+
 
   /* Shadows (dark) */
   --shadow-2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);

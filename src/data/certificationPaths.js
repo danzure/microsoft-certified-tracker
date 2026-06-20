@@ -757,7 +757,7 @@ export const certificationPaths = [
       {
         id: 'ab-210',
         examCode: 'AB-210',
-        name: 'AI-Powered Sales Specialist',
+        name: 'Dynamics 365 Sales AI Consultant Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'sales',
         description: 'This certification validates your ability to design and implement AI‑enhanced sales solutions in Dynamics 365 Sales that support intelligent seller workflows across the lead‑to‑cash process.',
@@ -800,7 +800,7 @@ export const certificationPaths = [
       {
         id: 'ab-410',
         examCode: 'AB-410',
-        name: 'AI Agent Builder',
+        name: 'Intelligent Applications Builder Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'builder',
         description: 'This certification validates your ability to design, build, and implement AI-powered solutions using Microsoft Power Platform, leveraging Copilot, low-code tools, and integrated data experiences.',
@@ -813,7 +813,6 @@ export const certificationPaths = [
         'Integrating agents and Copilot features into canvas apps, model-driven apps, and Power Pages sites.',
         'Creating cloud flows and business logic.'
         ],
-        isBeta: true,
       },
       {
         id: 'ab-700',
@@ -1031,8 +1030,8 @@ export const certificationPaths = [
         'Describe Azure architecture and services (35–40%)',
         'Describe Azure management and governance (30–35%)'
         ],
-        isInterchange: true,
-        interchangeWith: 'azure-infrastructure',
+        isShared: true,
+        sharedWith: 'azure-infrastructure',
       },
       {
         id: 'az-104',
@@ -1051,8 +1050,8 @@ export const certificationPaths = [
         'Implement and manage virtual networking (15–20%)',
         'Monitor and maintain Azure resources (10–15%)'
         ],
-        isInterchange: true,
-        interchangeWith: 'azure-infrastructure',
+        isShared: true,
+        sharedWith: 'azure-infrastructure',
       },
       {
         id: 'az-400',

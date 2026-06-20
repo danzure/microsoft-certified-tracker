@@ -116,15 +116,6 @@
   border-color: var(--cert-node-color);
 }
 
-/* Interchange */
-.cert-node--interchange .cert-node__node-outer {
-  border-radius: var(--radius-md);
-}
-
-.cert-node--interchange .cert-node__node-inner {
-  border-radius: var(--radius-sm);
-  color: var(--text-tertiary);
-}
 
 /* CertNode Info Card — compact */
 .cert-node__info {
@@ -230,14 +221,21 @@
   align-items: center;
   gap: var(--space-1);
   font-size: var(--fs-caption2);
-  color: var(--colorBrandForeground1);
+  font-weight: var(--fw-semibold);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-2);
+  color: var(--text-secondary);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
 }
 
 .cert-node__learn-link:hover {
-  color: var(--colorBrandForeground2);
-  text-decoration: underline;
+  background: var(--bg-surface-hover);
+  border-color: var(--border-default);
+  color: var(--text-primary);
 }
 
 /* Status Cycle Button */

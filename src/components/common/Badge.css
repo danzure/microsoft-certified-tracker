@@ -53,12 +53,6 @@
   border-color: var(--badge-inprogress-border);
 }
 
-.badge--interchange {
-  background: var(--badge-interchange-bg);
-  color: var(--badge-interchange-fg);
-  border-color: var(--badge-interchange-border);
-  border-style: dashed;
-}
 
 .badge--small {
   padding: 1px var(--space-2);
