@@ -3,7 +3,7 @@ import { useProgressContext } from '../../context/ProgressContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import { IconMap } from '../common/IconMap';
-const { AlertTriangle, Check, ExternalLink, Link, ArchiveX, EyeOff, Eye, Microsoft } = IconMap;
+const { AlertTriangle, Link, ArchiveX, EyeOff, Eye, Microsoft } = IconMap;
 import './CertNode.css';
 
 /**
@@ -18,7 +18,7 @@ import './CertNode.css';
  * @param {number} props.index - Positional index for animation delay
  * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
  */
-const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored, hideNode }) => {
+const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }) => {
   const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);

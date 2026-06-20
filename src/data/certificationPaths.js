@@ -1438,16 +1438,4 @@ export const getCertificationsRequiring = (certId) => {
   });
 };
 
-// Helper to get branch info for a certification
-export const getBranchForCert = (path, cert) => {
-  if (!cert.branch || !path.branches) return null;
-  return path.branches.find((b) => b.id === cert.branch) || null;
-};
 
-// Level order for sorting
-export const LEVEL_ORDER = {
-  [CERT_LEVELS.FUNDAMENTALS]: 0,
-  [CERT_LEVELS.ASSOCIATE]: 1,
-  [CERT_LEVELS.EXPERT]: 2,
-  [CERT_LEVELS.SPECIALTY]: 3,
-};

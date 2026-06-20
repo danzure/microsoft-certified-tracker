@@ -1,7 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProgressContext } from '../../context/ProgressContext';
-import { CERT_STATUS, CERT_LEVELS } from '../../data/certificationPaths';
+import { CERT_STATUS } from '../../data/certificationPaths';
 import { IconMap as Icons } from '../common/IconMap';
 import Badge from '../common/Badge';
 import { getBadgeUrl } from '../../utils/helpers';

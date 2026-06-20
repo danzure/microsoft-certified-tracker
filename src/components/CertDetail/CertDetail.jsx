@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { IconMap } from '../common/IconMap';
-const { X, ExternalLink, AlertTriangle, Calendar, Award, EyeOff, Eye, Microsoft } = IconMap;
+const { X, AlertTriangle, Calendar, Award, EyeOff, Eye, Microsoft } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
 import { CERT_STATUS, getCertById, getCertificationsRequiring, doesCertExpire } from '../../data/certificationPaths';
 import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';

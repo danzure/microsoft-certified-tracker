@@ -190,9 +190,9 @@ const CareerPathBuilder = () => {
                     if (!certInfo) return null;
                     const status = getStatus(certId);
                     let nodeClass = '';
-                    let badgeClass = '';
+                    let badgeClass;
                     let StatusIcon = Icons.Circle;
-                    let statusText = 'Not Started';
+                    let statusText;
 
                     if (status === CERT_STATUS.COMPLETED) {
                       nodeClass = 'cpb-timeline-node--completed';
