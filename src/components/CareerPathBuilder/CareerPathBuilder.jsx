@@ -5,6 +5,7 @@ import { certificationPaths, CERT_STATUS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import { IconMap as Icons } from '../common/IconMap';
 import { SortableCertItem } from './SortableCertItem';
+import { CareerPathCertCard } from './CareerPathCertCard';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import './CareerPathBuilder.css';
@@ -97,10 +98,10 @@ const CareerPathBuilder = () => {
     <div className="career-path-builder">
       <div className="cpb-header">
         <h1 className="cpb-title">
-          Role-Based Certification Roadmaps
+          Career Paths
         </h1>
         <p className="cpb-subtitle">
-          Explore specialized certification tracks tailored to your desired job role. Follow the guided paths from fundamentals to expert, or build a completely custom study playlist to match your unique career goals.
+          Explore specialized certification paths tailored to your desired job role. Follow the guided paths aligned with Microsoft's official career roles, or build a completely custom study playlist to match your unique career goals.
         </p>
       </div>
 
@@ -232,69 +233,22 @@ const CareerPathBuilder = () => {
                 </SortableContext>
               </DndContext>
             ) : (
-              selectedRole.certs.map((certId, index) => {
-                const certInfo = allCerts.get(certId);
-                if (!certInfo) return null;
-
-                const status = getStatus(certId);
-                let nodeClass = '';
-                let badgeClass = '';
-                let StatusIcon = Icons.Circle;
-                let statusText = 'Not Started';
-
-                if (status === CERT_STATUS.COMPLETED) {
-                  nodeClass = 'cpb-timeline-node--completed';
-                  badgeClass = 'cpb-timeline-badge--completed';
-                  StatusIcon = Icons.CheckCircle2;
-                  statusText = 'Completed';
-                } else if (status === CERT_STATUS.NEEDS_RENEWAL) {
-                  nodeClass = 'cpb-timeline-node--needs-renewal';
-                  badgeClass = 'cpb-timeline-badge--needs-renewal';
-                  StatusIcon = Icons.AlertTriangle;
-                  statusText = 'Needs Renewal';
-                } else if (status === CERT_STATUS.IN_PROGRESS) {
-                  nodeClass = 'cpb-timeline-node--in-progress';
-                  badgeClass = 'cpb-timeline-badge--in-progress';
-                  StatusIcon = Icons.Clock;
-                  statusText = 'In Progress';
-                } else {
-                  badgeClass = 'cpb-timeline-badge--not-started';
-                  statusText = 'Not Started';
-                }
-
-                return (
-                  <div key={certId} className="cpb-timeline-step">
-                    <div className="cpb-timeline-indicator">
-                      <div className={`cpb-timeline-node ${nodeClass}`}>
-                        {status === CERT_STATUS.COMPLETED ? (
-                          <Icons.Check size={20} />
-                        ) : (
-                          <span>{index + 1}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div 
-                      className="cpb-timeline-card"
-                      style={{ '--card-color': certInfo.pathColor }}
-                      onClick={() => navigate(`/path/${certInfo.pathId}`)}
-                    >
-                      <div className="cpb-timeline-card-header">
-                        <div>
-                          <div className="cpb-timeline-cert-code">{certInfo.examCode}</div>
-                          <div className="cpb-timeline-cert-name">{certInfo.name}</div>
-                        </div>
-                        <div className={`cpb-timeline-badge ${badgeClass}`}>
-                          <StatusIcon size={12} />
-                          {statusText}
-                        </div>
-                      </div>
-                      <div className="cpb-timeline-cert-desc">
-                        {certInfo.description}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
+              <div className="cpb-cert-list">
+                {selectedRole.certs.map((certId) => {
+                  const certInfo = allCerts.get(certId);
+                  if (!certInfo) return null;
+                  return (
+                    <CareerPathCertCard 
+                      key={certId} 
+                      certInfo={certInfo} 
+                      roleTitle={selectedRole.title}
+                      customPlaylist={customPlaylist}
+                      onAdd={(id) => setCustomPlaylist([...customPlaylist, id])}
+                      onRemove={handleRemoveCert}
+                    />
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>

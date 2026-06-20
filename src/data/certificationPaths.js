@@ -40,12 +40,12 @@ export const certificationPaths = [
     icon: 'Cloud',
     description: 'Cloud administration, networking, and architecture for Azure infrastructure.',
     branches: [
-      { id: 'admin', name: 'Admin' },
-      { id: 'developer', name: 'Developer' },
-      { id: 'networking', name: 'Networking' },
-      { id: 'hybrid', name: 'Hybrid' },
-      { id: 'specialty-sap', name: 'SAP Specialty' },
-      { id: 'specialty-vdi', name: 'VDI Specialty' },
+      { id: 'admin', name: 'Admin', description: 'Core infrastructure administration' },
+      { id: 'developer', name: 'Developer', description: 'Cloud application development' },
+      { id: 'networking', name: 'Networking', description: 'Azure networking infrastructure' },
+      { id: 'hybrid', name: 'Hybrid', description: 'Hybrid and multi-cloud solutions' },
+      { id: 'specialty-sap', name: 'SAP Specialty', description: 'SAP workloads on Azure' },
+      { id: 'specialty-vdi', name: 'VDI Specialty', description: 'Virtual Desktop Infrastructure' },
     ],
     certifications: [
       {
@@ -168,9 +168,9 @@ export const certificationPaths = [
     icon: 'Brain',
     description: 'Build and deploy AI solutions, intelligent agents, and machine learning operations.',
     branches: [
-      { id: 'cloud-ai', name: 'Cloud AI' },
-      { id: 'apps-agents', name: 'Apps & Agents' },
-      { id: 'mlops', name: 'MLOps' },
+      { id: 'cloud-ai', name: 'Cloud AI', description: 'Cloud-based AI solutions' },
+      { id: 'apps-agents', name: 'Apps & Agents', description: 'Intelligent apps and AI agents' },
+      { id: 'mlops', name: 'MLOps', description: 'Machine learning operations' },
     ],
     certifications: [
       {
@@ -260,10 +260,10 @@ export const certificationPaths = [
     icon: 'Database',
     description: 'Design and implement data solutions, analytics pipelines, and database systems.',
     branches: [
-      { id: 'engineering', name: 'Engineering' },
-      { id: 'analytics', name: 'Analytics' },
-      { id: 'admin', name: 'Database Admin' },
-      { id: 'specialty-cosmos', name: 'Cosmos DB Specialty' },
+      { id: 'engineering', name: 'Engineering', description: 'Data integration and pipelines' },
+      { id: 'analytics', name: 'Analytics', description: 'Data modeling and visualization' },
+      { id: 'admin', name: 'Database Admin', description: 'Database management and security' },
+      { id: 'specialty-cosmos', name: 'Cosmos DB Specialty', description: 'NoSQL database solutions' },
     ],
     certifications: [
       {
@@ -403,11 +403,11 @@ export const certificationPaths = [
     icon: 'Shield',
     description: 'Secure cloud environments, manage identity, and protect AI systems.',
     branches: [
-      { id: 'cloud-security', name: 'Cloud Security' },
-      { id: 'operations', name: 'SecOps' },
-      { id: 'identity', name: 'Identity' },
-      { id: 'info-sec', name: 'Info Security' },
-      { id: 'business', name: 'Business' },
+      { id: 'cloud-security', name: 'Cloud Security', description: 'Cloud infrastructure protection' },
+      { id: 'operations', name: 'SecOps', description: 'Security operations and threat hunting' },
+      { id: 'identity', name: 'Identity', description: 'Identity and access management' },
+      { id: 'info-sec', name: 'Info Security', description: 'Information protection and compliance' },
+      { id: 'business', name: 'Business', description: 'Cybersecurity for business professionals' },
     ],
     certifications: [
       {
@@ -549,11 +549,11 @@ export const certificationPaths = [
     icon: 'Monitor',
     description: 'Administer, secure, and optimize Microsoft 365 and modern workplace solutions.',
     branches: [
-      { id: 'admin', name: 'Admin' },
-      { id: 'endpoint', name: 'Endpoint' },
-      { id: 'messaging', name: 'Messaging' },
-      { id: 'teams', name: 'Teams' },
-      { id: 'collab', name: 'Collaboration' },
+      { id: 'admin', name: 'Admin', description: 'Tenant administration and services' },
+      { id: 'endpoint', name: 'Endpoint', description: 'Device management and deployment' },
+      { id: 'messaging', name: 'Messaging', description: 'Exchange and messaging solutions' },
+      { id: 'teams', name: 'Teams', description: 'Collaboration and communication' },
+      { id: 'collab', name: 'Collaboration', description: 'Collaboration communications systems' },
     ],
     certifications: [
       {
@@ -641,10 +641,10 @@ export const certificationPaths = [
     icon: 'Zap',
     description: 'Build low-code applications, automate workflows, and analyze data with Power Platform.',
     branches: [
-      { id: 'functional', name: 'Functional' },
-      { id: 'developer', name: 'Developer' },
-      { id: 'analyst', name: 'Analyst' },
-      { id: 'rpa', name: 'RPA' },
+      { id: 'functional', name: 'Functional', description: 'Solution architecture and consulting' },
+      { id: 'developer', name: 'Developer', description: 'Custom extensions and integrations' },
+      { id: 'analyst', name: 'Analyst', description: 'Data analysis and visualization' },
+      { id: 'rpa', name: 'RPA', description: 'Robotic process automation' },
     ],
     certifications: [
       {
@@ -732,11 +732,9 @@ export const certificationPaths = [
     icon: 'Bot',
     description: 'Build and architect AI-powered business solutions with Copilot and autonomous agents.',
     branches: [
-      { id: 'sales', name: 'Sales' },
-      { id: 'contact-center', name: 'Contact Center' },
-      { id: 'builder', name: 'Agent Builder' },
-      { id: 'business', name: 'Business' },
-      { id: 'leadership', name: 'Leadership' },
+      { id: 'sales', name: 'Sales', description: 'AI solutions for sales processes' },
+      { id: 'contact-center', name: 'Contact Center', description: 'AI-powered contact centers' },
+      { id: 'builder', name: 'Agent Builder', description: 'Custom AI agent development' },
     ],
     certifications: [
       {
@@ -818,8 +816,8 @@ export const certificationPaths = [
         id: 'ab-700',
         examCode: 'AB-700',
         name: 'AI Business Professional',
-        level: CERT_LEVELS.ASSOCIATE,
-        branch: 'business',
+        level: CERT_LEVELS.FUNDAMENTALS,
+        isIndependent: true,
         description: 'Candidates for this Microsoft Certification should be adept at using generative AI productivity tools and core Microsoft 365 apps to enhance business outcomes and decision-making, without requiring coding or app development skills.',
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/ai-business-professional/?practice-assessment-type=certification',
@@ -835,8 +833,8 @@ export const certificationPaths = [
         id: 'ab-701',
         examCode: 'AB-701',
         name: 'AI Transformation Leader',
-        level: CERT_LEVELS.ASSOCIATE,
-        branch: 'leadership',
+        level: CERT_LEVELS.FUNDAMENTALS,
+        isIndependent: true,
         description: 'This Microsoft Certification is for business decision-makers who guide AI transformation and innovation with Microsoft 365 Copilot, Azure AI, and Microsoft Foundry, without requiring coding skills.',
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-gb/credentials/certifications/ai-transformation-leader/?practice-assessment-type=certification',
@@ -1352,6 +1350,59 @@ export const certificationPaths = [
         ],
         isIndependent: true,
       },
+
+      {
+        id: 'pl-100',
+        examCode: 'PL-100',
+        name: 'Power Platform App Maker Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'retired',
+        description: 'Build apps with low-code techniques to simplify, automate, and transform business tasks and processes.',
+        prerequisites: [],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-100/',
+        retirementDate: '2024-06-30',
+        skillsMeasured: [],
+        isIndependent: true,
+      },
+      {
+        id: 'dp-100',
+        examCode: 'DP-100',
+        name: 'Azure Data Scientist Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'retired',
+        description: 'Apply data science and machine learning to implement and run machine learning workloads on Azure.',
+        prerequisites: [],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-100/',
+        retirementDate: null,
+        skillsMeasured: [],
+        isIndependent: true,
+      },
+      {
+        id: 'az-500',
+        examCode: 'AZ-500',
+        name: 'Azure Security Engineer Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'retired',
+        description: 'Implement security controls and threat protection, manage identity and access, and protect data, applications, and networks.',
+        prerequisites: [],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-500/',
+        retirementDate: null,
+        skillsMeasured: [],
+        isIndependent: true,
+      },
+      {
+        id: 'mb-700',
+        examCode: 'MB-700',
+        name: 'Dynamics 365 Finance and Operations Apps Solution Architect Expert',
+        level: CERT_LEVELS.EXPERT,
+        branch: 'retired',
+        description: 'Advise stakeholders and translate business requirements into secure, scalable, and reliable solutions.',
+        prerequisites: [],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-700/',
+        retirementDate: null,
+        skillsMeasured: [],
+        isIndependent: true,
+      }
     ]
   }
 ];

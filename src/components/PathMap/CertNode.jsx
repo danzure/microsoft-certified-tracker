@@ -18,7 +18,7 @@ import './CertNode.css';
  * @param {number} props.index - Positional index for animation delay
  * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
  */
-const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }) => {
+const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored, hideNode }) => {
   const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
@@ -74,23 +74,6 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
       }}
       id={`cert-node-${cert.id}`}
     >
-      {/* CertNode Node (Circle) */}
-      <button
-        id={`cert-node-node-${cert.id}`}
-        className="cert-node__node"
-        onClick={handleOpenDetail}
-        aria-label={`${cert.examCode} - ${cert.name} - Click for details`}
-        title={`${statusLabel} — Click for details`}
-      >
-        <div className="cert-node__node-outer">
-          <div className="cert-node__node-inner">
-            {status === CERT_STATUS.COMPLETED && <Check size={14} strokeWidth={3} />}
-            {status === CERT_STATUS.NEEDS_RENEWAL && <AlertTriangle size={14} strokeWidth={2} />}
-            {status === CERT_STATUS.IN_PROGRESS && <div className="cert-node__node-half" />}
-          </div>
-        </div>
-      </button>
-
       {/* CertNode Info Card */}
       <div className="cert-node__info" onClick={handleOpenDetail}>
         {getBadgeUrl(cert.level, cert.id) && (

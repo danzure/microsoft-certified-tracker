@@ -28,6 +28,18 @@ import {
   BranchForkRegular,
   ArrowSyncRegular,
   ReOrderDotsVerticalRegular,
+  StarRegular,
+  ShieldRegular,
+  AddCircleRegular,
+  MedalRegular,
+  SettingsRegular,
+  DataBarVerticalRegular,
+  CodeRegular,
+  PeopleRegular,
+  KeyRegular,
+  DocumentCheckmarkRegular,
+  LayerRegular,
+  ShieldErrorRegular,
 } from '@fluentui/react-icons';
 
 // Microsoft Product Icons (custom SVGs for certification paths)
@@ -80,6 +92,7 @@ export const IconMap = {
 
   // ── UI Icons (Fluent UI) ──
   LayoutDashboard: DashboardIcon,
+  LayoutGrid: DashboardIcon,
   ExternalLink: withSize(OpenRegular),
   X: withSize(DismissRegular),
   Search: withSize(SearchRegular),
@@ -108,4 +121,19 @@ export const IconMap = {
   MapPinOff: withSize(LocationOffRegular),
   RefreshCw: withSize(ArrowSyncRegular),
   GripVertical: withSize(ReOrderDotsVerticalRegular),
+  Star: withSize(StarRegular),
+  ShieldIcon: withSize(ShieldRegular),
+  PlusCircle: withSize(AddCircleRegular),
+  Medal: withSize(MedalRegular),
+  
+  // New role icons
+  Settings: withSize(SettingsRegular),
+  BarChart2: withSize(DataBarVerticalRegular),
+  Code2: withSize(CodeRegular),
+  Users: withSize(PeopleRegular),
+  Key: withSize(KeyRegular),
+  FileCheck2: withSize(DocumentCheckmarkRegular),
+  Layers: withSize(LayerRegular),
+  ShieldAlert: withSize(ShieldErrorRegular),
+  LineChart: withSize(ArrowTrendingRegular),
 };

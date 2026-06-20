@@ -178,12 +178,14 @@ const PathMap = () => {
 
     // Measure the center of every cert-node node
     const getNodeCenter = (certId) => {
-      const nodeEl = container.querySelector(`#cert-node-${certId} .cert-node__node-outer`);
+      const nodeEl = container.querySelector(`#cert-node-${certId} .cert-node__info`);
       if (!nodeEl) return null;
       const r = nodeEl.getBoundingClientRect();
       return {
         x: r.left + r.width / 2 - offsetLeft,
         y: r.top + r.height / 2 - offsetTop,
+        topY: r.top - offsetTop,
+        bottomY: r.bottom - offsetTop,
       };
     };
 
@@ -210,6 +212,9 @@ const PathMap = () => {
         const fromPt = getNodeCenter(conn.from);
         const toPt = getNodeCenter(conn.to);
         if (!fromPt || !toPt) return;
+        
+        fromPt.y = fromPt.bottomY;
+        toPt.y = toPt.topY;
 
         if (!mergeMidYs[conn.to]) {
           mergeMidYs[conn.to] = { maxFromY: fromPt.y, toY: toPt.y };
@@ -223,6 +228,9 @@ const PathMap = () => {
       const fromPt = getNodeCenter(conn.from);
       const toPt = getNodeCenter(conn.to);
       if (!fromPt || !toPt) return;
+      
+      fromPt.y = fromPt.bottomY;
+      toPt.y = toPt.topY;
 
       let d;
       const dx = Math.abs(toPt.x - fromPt.x);
@@ -351,6 +359,7 @@ const PathMap = () => {
         isTrunk={!cert.branch}
         isUnlocked={isUnlocked}
         isPathIgnored={isPathIgnored(path.id)}
+        hideNode={path.id === 'retired-exams'}
       />
     );
   };
@@ -374,7 +383,7 @@ const PathMap = () => {
           left: 0,
           pointerEvents: 'none',
           overflow: 'visible',
-          zIndex: 5,
+          zIndex: 1,
         }}
       >
         {/* Background (default) tracks first */}
@@ -476,17 +485,28 @@ const PathMap = () => {
           {hasBranches ? (
             <>
               {/* ── Trunk Top: Fundamentals ── */}
-              {trunkFundamentals.length > 0 && (
-                <div className="path-map__trunk-top">
-                  <div className="path-map__trunk-nodes">
-                    {trunkFundamentals.map((cert, idx) => (
-                      <div key={cert.id} className="path-map__trunk-node-wrap">
-                        {renderCertNode(cert, idx)}
+              {trunkFundamentals.length > 0 && (() => {
+                const chainedFunds = trunkFundamentals.filter(c => !c.isIndependent);
+                const independentFunds = trunkFundamentals.filter(c => c.isIndependent);
+                const hasIndependent = independentFunds.length > 0;
+
+                return (
+                  <div className={`path-map__trunk-top${hasIndependent ? ' path-map__trunk-top--row' : ''}`}>
+                    <div className="path-map__trunk-nodes">
+                      {chainedFunds.map((cert, idx) => (
+                        <div key={cert.id} className="path-map__trunk-node-wrap">
+                          {renderCertNode(cert, idx)}
+                        </div>
+                      ))}
+                    </div>
+                    {hasIndependent && independentFunds.map((cert, idx) => (
+                      <div key={cert.id} className="path-map__trunk-node-wrap path-map__trunk-node-wrap--independent">
+                        {renderCertNode(cert, chainedFunds.length + idx)}
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* ── Spacer for fork zone ── */}
               {trunkFundamentals.length > 0 && (
@@ -498,20 +518,29 @@ const PathMap = () => {
                 <div
                   className="path-map__branches-grid"
                   ref={gridRef}
-                  style={{ gridTemplateColumns: `repeat(${branchColumns.length}, minmax(160px, 1fr))` }}
+                  style={{ gridTemplateColumns: path.id === 'retired-exams' ? '1fr' : `repeat(${branchColumns.length}, minmax(160px, 1fr))` }}
                 >
                   {branchColumns.map(branch => {
                     return (
-                      <div key={branch.id} className="path-map__branch-column" id={`branch-col-${branch.id}`}>
+                      <div key={branch.id} className="path-map__branch-column" id={`branch-col-${branch.id}`} style={path.id === 'retired-exams' ? { width: '100%' } : {}}>
                         <div className="path-map__branch-column-header">
-                          <Icons.GitBranch size={11} />
-                          <span>{branch.name}</span>
-                        </div>
-                        {branch.allCerts.map((cert, idx) => (
-                          <div key={cert.id} className="path-map__branch-node">
-                            {renderCertNode(cert, idx)}
+                          <div className="path-map__branch-column-header-title">
+                            <Icons.GitBranch size={14} />
+                            <span>{branch.name}</span>
                           </div>
-                        ))}
+                          {branch.description && (
+                            <div className="path-map__branch-column-header-desc">
+                              {branch.description}
+                            </div>
+                          )}
+                        </div>
+                        <div style={path.id === 'retired-exams' ? { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-4)', width: '100%', marginTop: 'var(--space-4)' } : { display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+                          {branch.allCerts.map((cert, idx) => (
+                            <div key={cert.id} className="path-map__branch-node">
+                              {renderCertNode(cert, idx)}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     );
                   })}
