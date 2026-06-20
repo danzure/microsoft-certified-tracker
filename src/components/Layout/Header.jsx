@@ -31,7 +31,7 @@ const Header = ({ onToggleSidebar }) => {
         <Link to="/" className="header__brand" id="brand-link">
           <span className="header__brand-prefix">atozazure</span>
           <span className="header__brand-divider hidden sm:inline">|</span>
-          <span className="header__brand-title hidden sm:inline">Certification Tracker</span>
+          <span className="header__brand-title hidden sm:inline">Certification Navigator</span>
         </Link>
       </div>
 

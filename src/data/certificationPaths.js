@@ -1083,9 +1083,9 @@ export const certificationPaths = [
     icon: 'GitHub',
     description: 'Automate software development workflows, pipeline optimization, and AI integrations with GitHub.',
     branches: [
-      { id: 'devops', name: 'DevOps' },
-      { id: 'security', name: 'Security' },
-      { id: 'ai', name: 'AI' },
+      { id: 'devops', name: 'DevOps', description: 'Automate software development workflows and pipeline optimization' },
+      { id: 'security', name: 'Security', description: 'Secure code, identify vulnerabilities, and manage security' },
+      { id: 'ai', name: 'AI', description: 'AI-assisted development and agentic workflows' },
     ],
     certifications: [
       {

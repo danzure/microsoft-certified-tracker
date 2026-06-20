@@ -26,7 +26,7 @@
 .dashboard__subtitle {
   font-size: 16px;
   color: var(--text-secondary);
-  max-width: 672px; /* ~max-w-2xl */
+  max-width: 960px; /* Half of dashboard max-width */
   line-height: 1.5;
 }
 

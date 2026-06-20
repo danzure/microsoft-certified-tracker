@@ -1,4 +1,4 @@
-# atozazure | Certification Tracker
+# atozazure | Certification Navigator
 
 Track your Microsoft certification progress across **9 certification paths** with an interactive metro-line map visualisation. Built with React and deployed to Azure Static Web Apps.
 
