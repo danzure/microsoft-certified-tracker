@@ -43,7 +43,7 @@ const CareerPathBuilder = () => {
       id: 'custom-playlist',
       title: 'Custom Playlist',
       description: 'Build your own custom certification track and drag to reorder.',
-      icon: 'LayoutDashboard',
+      icon: 'SettingsColor',
       color: 'var(--colorBrandForeground1)',
       certs: [],
     };

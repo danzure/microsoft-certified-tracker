@@ -525,7 +525,7 @@ const PathMap = () => {
                       <div key={branch.id} className="path-map__branch-column" id={`branch-col-${branch.id}`} style={path.id === 'retired-exams' ? { width: '100%' } : {}}>
                         <div className="path-map__branch-column-header">
                           <div className="path-map__branch-column-header-title">
-                            <Icons.GitBranch size={14} />
+                            {path.id !== 'retired-exams' && <Icons.GitBranch size={14} />}
                             <span>{branch.name}</span>
                           </div>
                           {branch.description && (
@@ -534,7 +534,7 @@ const PathMap = () => {
                             </div>
                           )}
                         </div>
-                        <div style={path.id === 'retired-exams' ? { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-4)', width: '100%', marginTop: 'var(--space-4)' } : { display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+                        <div style={path.id === 'retired-exams' ? { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 'var(--space-4)', width: '100%', marginTop: 'var(--space-4)' } : { display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
                           {branch.allCerts.map((cert, idx) => (
                             <div key={cert.id} className="path-map__branch-node">
                               {renderCertNode(cert, idx)}

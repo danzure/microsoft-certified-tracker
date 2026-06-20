@@ -59,9 +59,16 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored,
 
   const nextStatusLabel = {
     [CERT_STATUS.NOT_STARTED]: 'Start',
-    [CERT_STATUS.IN_PROGRESS]: 'Complete',
-    [CERT_STATUS.COMPLETED]: 'Reset',
+    [CERT_STATUS.IN_PROGRESS]: 'In Progress',
+    [CERT_STATUS.COMPLETED]: 'Passed',
     [CERT_STATUS.NEEDS_RENEWAL]: 'Renew',
+  }[status];
+
+  const StatusIcon = {
+    [CERT_STATUS.NOT_STARTED]: IconMap.Circle,
+    [CERT_STATUS.IN_PROGRESS]: IconMap.Clock,
+    [CERT_STATUS.COMPLETED]: IconMap.CheckCircle2,
+    [CERT_STATUS.NEEDS_RENEWAL]: IconMap.RefreshCw,
   }[status];
 
   return (
@@ -162,10 +169,10 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored,
           <button
             className={`cert-node__cycle-btn cert-node__cycle-btn--${status.replace('_', '-')}`}
             onClick={handleCycleStatus}
-            title={`${statusLabel} — Click to ${nextStatusLabel.toLowerCase()}`}
+            title={`${statusLabel} — Click to toggle status`}
             aria-label={`Change status: ${statusLabel}`}
           >
-            <IconMap.RefreshCw size={12} />
+            <StatusIcon size={12} />
             {nextStatusLabel}
           </button>
           <button

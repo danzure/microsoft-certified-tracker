@@ -70,7 +70,7 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
             >
               <div className="sidebar__link-indicator" />
               <div className="sidebar__link-icon" title="Career Paths">
-                <Icons.TrendingUp size={20} />
+                <Icons.CareerPath size={20} />
               </div>
               <div className="sidebar__link-content">
                 <span className="sidebar__link-name">Career Paths</span>

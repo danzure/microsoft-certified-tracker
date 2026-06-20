@@ -9,6 +9,7 @@ import dynamicsSvg from '../../assets/icons/dynamics.svg';
 import fabricSvg from '../../assets/icons/fabric.svg';
 import dashboardSvg from '../../assets/icons/dashboard.svg';
 import archiveSvg from '../../assets/icons/archive.svg';
+import careerPathSvg from '../../assets/icons/career-path.svg';
 
 // Base component for image-based icons
 const ImageIcon = ({ src, alt, size = 20, className, style, ...props }) => (
@@ -88,3 +89,17 @@ export const DashboardIcon = (props) => <ImageIcon src={dashboardSvg} alt="Dashb
 // ─── Retired / Archived ──────────────────────────────────────────────────────
 export const ArchiveIcon = (props) => <ImageIcon src={archiveSvg} alt="Archive" {...props} />;
 
+// ─── Career Path ──────────────────────────────────────────────────────────────
+export const CareerPathIcon = (props) => <ImageIcon src={careerPathSvg} alt="Career Path" {...props} />;
+
+// ─── Custom Playlist / Settings (Full Color) ──────────────────────────────────
+export const SettingsColorIcon = ({ size = 20, className, style, ...props }) => (
+  <Icon
+    icon="fluent-color:settings-48"
+    width={size}
+    height={size}
+    className={className}
+    style={style}
+    {...props}
+  />
+);

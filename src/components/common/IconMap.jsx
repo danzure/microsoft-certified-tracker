@@ -56,6 +56,8 @@ import {
   ArchiveIcon,
   DashboardIcon,
   AzureDevOpsIcon,
+  CareerPathIcon,
+  SettingsColorIcon,
 } from './ProductIcons';
 
 const withSize = (IconComponent) => {
@@ -89,6 +91,7 @@ export const IconMap = {
   AzureDevOps: AzureDevOpsIcon,
   GitBranch: withSize(BranchForkRegular),
   Archive: ArchiveIcon,
+  CareerPath: CareerPathIcon,
 
   // ── UI Icons (Fluent UI) ──
   LayoutDashboard: DashboardIcon,
@@ -136,4 +139,5 @@ export const IconMap = {
   Layers: withSize(LayerRegular),
   ShieldAlert: withSize(ShieldErrorRegular),
   LineChart: withSize(ArrowTrendingRegular),
+  SettingsColor: SettingsColorIcon,
 };

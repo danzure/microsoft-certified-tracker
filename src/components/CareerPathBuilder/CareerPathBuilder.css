@@ -428,6 +428,7 @@
 @media (max-width: 768px) {
   .career-path-builder {
     padding: 1rem;
+    padding-bottom: 3rem;
   }
   
   .cpb-path-container {

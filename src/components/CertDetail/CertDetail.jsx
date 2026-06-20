@@ -36,7 +36,7 @@ const CertDetail = ({ cert, path, onClose }) => {
   const statusOptions = [
     { value: CERT_STATUS.NOT_STARTED, label: 'Not Started', icon: '○', className: 'cert-detail__status-btn--not-started' },
     { value: CERT_STATUS.IN_PROGRESS, label: 'In Progress', icon: '◐', className: 'cert-detail__status-btn--in-progress' },
-    { value: CERT_STATUS.COMPLETED, label: 'Completed', icon: '✓', className: 'cert-detail__status-btn--completed' },
+    { value: CERT_STATUS.COMPLETED, label: 'Passed', icon: '✓', className: 'cert-detail__status-btn--completed' },
   ];
 
   const levelVariant = {
