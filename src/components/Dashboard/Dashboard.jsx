@@ -45,10 +45,10 @@ const Dashboard = () => {
       {/* Header Section */}
       <div className="dashboard__header">
         <h1 className="dashboard__title">
-          Certification Navigator
+          Certification Tracker
         </h1>
         <p className="dashboard__subtitle">
-          Navigate your Microsoft certification journey with ease. This tool is designed to help you track your progress across {certificationPaths.length} distinct technology paths, from Azure and AI to Security and Data. Whether you are aiming for a specific role or broadening your skill set, use this navigator to explore role-based career guides, manage your exam renewals, and visually map out your next steps for continuous professional growth.
+          Navigate your Microsoft certification journey with ease. This tool is designed to help you track your progress across {certificationPaths.length} distinct technology paths, from Azure and AI to Security and Data. Whether you are aiming for a specific role or broadening your skill set, use this tracker to explore role-based career guides, manage your exam renewals, and visually map out your next steps for continuous professional growth.
         </p>
       </div>
 

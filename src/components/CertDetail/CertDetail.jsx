@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import { IconMap } from '../common/IconMap';
 const { X, AlertTriangle, Calendar, Award, EyeOff, Eye, Microsoft } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
+import { useCurrency } from '../../context/CurrencyContext';
 import { CERT_STATUS, getCertById, getCertificationsRequiring, doesCertExpire } from '../../data/certificationPaths';
 import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
+import { getFormattedExamCost, CURRENCIES } from '../../utils/pricing';
 import Badge from '../common/Badge';
 import './CertDetail.css';
 
@@ -19,6 +21,7 @@ import './CertDetail.css';
  */
 const CertDetail = ({ cert, path, onClose }) => {
   const { getStatus, setStatus, toggleCertIgnored, isCertIgnored, isPathIgnored, completionDates, setCompletionDate } = useProgressContext();
+  const { currency, setCurrency } = useCurrency();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
   const isPathExcluded = isPathIgnored(path.id);
@@ -147,6 +150,26 @@ const CertDetail = ({ cert, path, onClose }) => {
                   <span className="cert-detail__description">Valid for 1 year. Requires a free online renewal assessment every 12 months to maintain active status.</span>
                 </>
               )}
+            </div>
+          </div>
+
+          <div className="cert-detail__section">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <h3 className="cert-detail__section-title" style={{ margin: 0 }}>Estimated Exam Cost</h3>
+              <select 
+                className="cert-detail__currency-select"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+                disabled={certIgnored}
+              >
+                {Object.entries(CURRENCIES).map(([code, data]) => (
+                  <option key={code} value={code}>{data.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className={`cert-detail__cost-display ${certIgnored ? 'cert-detail__cost-display--disabled' : ''}`}>
+              <span className="cert-detail__cost-amount">{getFormattedExamCost(cert.level, currency)}</span>
+              <span className="cert-detail__cost-note">Standard pricing. Exact cost may vary by specific location and applicable taxes.</span>
             </div>
           </div>
 

@@ -248,6 +248,53 @@
   outline: none;
 }
 
+/* Estimated Cost */
+.cert-detail__currency-select {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.cert-detail__currency-select:focus {
+  border-color: var(--detail-color, var(--colorBrandForeground1));
+}
+
+.cert-detail__cost-display {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  transition: opacity var(--transition-fast);
+}
+
+.cert-detail__cost-display--disabled {
+  opacity: 0.4;
+}
+
+.cert-detail__cost-amount {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.cert-detail__cost-note {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
 /* Prerequisites */
 .cert-detail__prereqs {
   display: flex;
