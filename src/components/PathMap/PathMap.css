@@ -344,18 +344,14 @@
 
 /* Mobile Adjustments */
 @media (max-width: 768px) {
-  .path-map__branches-grid {
-    grid-template-columns: 1fr !important; /* Stack vertically on small screens */
+  /* Removed 1fr overrides to allow horizontal scrolling of the tree on mobile */
+  .path-map__viewport {
+    scroll-snap-type: x mandatory;
+    scroll-padding: var(--space-4);
   }
 
-  .path-map__trunk-top--row {
-    grid-template-columns: 1fr;
-  }
-
-
-
-  .path-map__trunk-node-wrap {
-    width: 100%; /* Reset to full width since branches are stacked */
+  .path-map__branch-column, .path-map__trunk-node-wrap {
+    scroll-snap-align: center;
   }
 
   .path-map__header {

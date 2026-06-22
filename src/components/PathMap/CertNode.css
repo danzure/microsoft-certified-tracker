@@ -115,6 +115,13 @@
   border-color: var(--cert-node-color);
 }
 
+.cert-node--completed .cert-node__info {
+  border-color: color-mix(in srgb, var(--cert-node-color) 60%, transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--cert-node-color) 30%, transparent),
+              0 0 24px color-mix(in srgb, var(--cert-node-color) 15%, transparent),
+              0 0 48px color-mix(in srgb, var(--cert-node-color) 5%, transparent);
+}
+
 
 /* CertNode Info Card — compact */
 .cert-node__info {
@@ -373,7 +380,7 @@
 /* Mobile */
 @media (max-width: 768px) {
   .cert-node {
-    gap: var(--space-2);
+    gap: var(--space-1);
   }
 
   .cert-node__node-outer {
@@ -387,13 +394,24 @@
   }
 
   .cert-node__info {
-    padding: var(--space-2) 56px var(--space-2) var(--space-2);
+    height: 160px;
+    padding: var(--space-2) 42px var(--space-2) var(--space-2);
+  }
+
+  .cert-node__name {
+    font-size: 12px;
+  }
+
+  .cert-node__description {
+    font-size: 10px;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
   }
 
   .cert-node__badge-icon {
     top: var(--space-2);
     right: var(--space-2);
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
 }
