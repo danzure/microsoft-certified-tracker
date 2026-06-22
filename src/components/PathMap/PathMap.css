@@ -166,7 +166,7 @@
 .path-map__trunk-top--row {
   display: grid;
   /* Match the branch grid columns so edges align */
-  grid-template-columns: repeat(var(--branch-count, 3), minmax(160px, 1fr));
+  grid-template-columns: repeat(var(--branch-count, 3), minmax(280px, 1fr));
   align-items: start;
   gap: var(--space-6);
 }
@@ -184,7 +184,7 @@
   position: relative;
   /* Match the width of a single branch column so the nodes perfectly align with the center column (if odd number of columns) */
   width: calc((100% - ((var(--branch-count) - 1) * var(--space-6))) / var(--branch-count));
-  min-width: 160px;
+  min-width: 280px;
 }
 
 /* ─── Fork & Merge Spacers ─── */

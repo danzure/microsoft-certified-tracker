@@ -521,7 +521,7 @@ const PathMap = () => {
                 <div
                   className="path-map__branches-grid"
                   ref={gridRef}
-                  style={{ gridTemplateColumns: path.id === 'retired-exams' ? '1fr' : `repeat(${branchColumns.length}, minmax(160px, 1fr))` }}
+                  style={{ gridTemplateColumns: path.id === 'retired-exams' ? '1fr' : `repeat(${branchColumns.length}, minmax(280px, 1fr))` }}
                 >
                   {branchColumns.map(branch => {
                     return (

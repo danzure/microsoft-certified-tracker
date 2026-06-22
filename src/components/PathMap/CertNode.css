@@ -377,41 +377,4 @@
   border-style: dashed;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .cert-node {
-    gap: var(--space-1);
-  }
 
-  .cert-node__node-outer {
-    width: 24px;
-    height: 24px;
-  }
-
-  .cert-node__node-inner {
-    width: 12px;
-    height: 12px;
-  }
-
-  .cert-node__info {
-    height: 160px;
-    padding: var(--space-2) 42px var(--space-2) var(--space-2);
-  }
-
-  .cert-node__name {
-    font-size: 12px;
-  }
-
-  .cert-node__description {
-    font-size: 10px;
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-  }
-
-  .cert-node__badge-icon {
-    top: var(--space-2);
-    right: var(--space-2);
-    width: 32px;
-    height: 32px;
-  }
-}
