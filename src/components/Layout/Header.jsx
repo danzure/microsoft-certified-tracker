@@ -28,11 +28,11 @@ const Header = ({ onToggleSidebar }) => {
         >
           <Menu size={20} />
         </button>
-        <Link to="/" className="header__brand" id="brand-link">
-          <span className="header__brand-prefix">atozazure</span>
+        <div className="header__brand" id="brand-link">
+          <a href="https://atozazure.com" className="header__brand-prefix hover-opacity" style={{ textDecoration: 'none' }}>atozazure</a>
           <span className="header__brand-divider hidden sm:inline">|</span>
-          <span className="header__brand-title hidden sm:inline">Certification Tracker</span>
-        </Link>
+          <Link to="/" className="header__brand-title hidden sm:inline hover-opacity" style={{ textDecoration: 'none' }}>Certification Tracker</Link>
+        </div>
       </div>
 
       <div className="header__center">
