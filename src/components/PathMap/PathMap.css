@@ -148,7 +148,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-8);
   padding-bottom: var(--space-4);
 }
 
@@ -160,31 +160,39 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-6);
 }
 /* Row layout when independent fundamentals exist alongside chained ones */
 .path-map__trunk-top--row {
-  display: grid;
-  /* Match the branch grid columns so edges align */
-  grid-template-columns: repeat(var(--branch-count, 3), minmax(280px, 1fr));
-  align-items: start;
-  gap: var(--space-6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .path-map__trunk-top--row .path-map__trunk-nodes {
-  align-items: center;
+  align-self: center;
+}
+
+.path-map__trunk-independent-nodes {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 320px;
 }
 
 .path-map__trunk-top--row .path-map__trunk-node-wrap {
-  width: 100%;
+  width: 320px;
 }
 
 
 .path-map__trunk-node-wrap {
   position: relative;
   /* Match the width of a single branch column so the nodes perfectly align with the center column (if odd number of columns) */
-  width: calc((100% - ((var(--branch-count) - 1) * var(--space-6))) / var(--branch-count));
-  min-width: 280px;
+  width: 320px;
 }
 
 /* ─── Fork & Merge Spacers ─── */
@@ -203,10 +211,11 @@
 
 .path-map__branches-grid {
   display: grid;
-  column-gap: var(--space-6);
-  row-gap: var(--space-4);
+  column-gap: var(--space-8);
+  row-gap: var(--space-6);
   /* Explicit rows for subgrid to attach to */
   grid-template-rows: min-content 1fr;
+  justify-content: center;
 }
 
 .path-map__branch-column {
@@ -214,7 +223,7 @@
   display: grid;
   grid-template-rows: subgrid;
   grid-row: span 2;
-  row-gap: var(--space-6);
+  row-gap: var(--space-8);
 }
 
 .path-map__branch-column-header {
@@ -290,7 +299,7 @@
   gap: var(--space-8);
   position: relative;
   z-index: 3;
-  max-width: 480px;
+  width: 320px;
   margin: 0 auto;
 }
 
@@ -303,7 +312,7 @@
 .path-map__level-nodes {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-6);
 }
 
 .path-map__node-wrapper {

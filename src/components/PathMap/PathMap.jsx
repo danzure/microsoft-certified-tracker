@@ -502,11 +502,15 @@ const PathMap = () => {
                         </div>
                       ))}
                     </div>
-                    {hasIndependent && independentFunds.map((cert, idx) => (
-                      <div key={cert.id} className="path-map__trunk-node-wrap path-map__trunk-node-wrap--independent">
-                        {renderCertNode(cert, chainedFunds.length + idx)}
+                    {hasIndependent && (
+                      <div className="path-map__trunk-independent-nodes">
+                        {independentFunds.map((cert, idx) => (
+                          <div key={cert.id} className="path-map__trunk-node-wrap path-map__trunk-node-wrap--independent">
+                            {renderCertNode(cert, chainedFunds.length + idx)}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    )}
                   </div>
                 );
               })()}
@@ -521,7 +525,7 @@ const PathMap = () => {
                 <div
                   className="path-map__branches-grid"
                   ref={gridRef}
-                  style={{ gridTemplateColumns: path.id === 'retired-exams' ? '1fr' : `repeat(${branchColumns.length}, minmax(280px, 1fr))` }}
+                  style={{ gridTemplateColumns: path.id === 'retired-exams' ? 'repeat(2, 1fr)' : `repeat(${branchColumns.length}, 320px)` }}
                 >
                   {branchColumns.map(branch => {
                     return (
@@ -537,7 +541,7 @@ const PathMap = () => {
                             </div>
                           )}
                         </div>
-                        <div style={path.id === 'retired-exams' ? { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 'var(--space-4)', width: '100%', marginTop: 'var(--space-4)' } : { display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+                        <div style={path.id === 'retired-exams' ? { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 320px)', gap: 'var(--space-8)', width: '100%', alignContent: 'start', justifyContent: 'center' } : { display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
                           {branch.allCerts.map((cert, idx) => (
                             <div key={cert.id} className="path-map__branch-node">
                               {renderCertNode(cert, idx)}

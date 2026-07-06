@@ -128,8 +128,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 172px;
-  padding: var(--space-2) 64px var(--space-2) var(--space-3);
+  height: 156px;
+  padding: var(--space-3) 56px var(--space-3) var(--space-3);
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
@@ -208,9 +208,9 @@
   margin-top: var(--space-1);
   margin-bottom: var(--space-2);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  line-clamp: 3;
+  line-clamp: 2;
   overflow: hidden;
 }
 
