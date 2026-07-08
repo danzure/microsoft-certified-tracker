@@ -77,14 +77,14 @@
 
 .header__brand-prefix {
   font-weight: 600;
-  font-size: 16px;
-  letter-spacing: -0.025em;
+  font-size: 18px;
+  letter-spacing: -0.25px;
   color: #ffffff;
   flex-shrink: 0;
 }
 
 .header__brand-divider {
-  font-size: 13px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.4);
   margin: 0 4px;
 }
@@ -92,7 +92,7 @@
 .header__brand-title {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.8);
-  letter-spacing: 0.025em;
+  letter-spacing: 0.25px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
