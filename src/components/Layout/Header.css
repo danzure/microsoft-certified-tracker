@@ -84,13 +84,13 @@
 }
 
 .header__brand-divider {
-  font-size: 12px;
+  font-size: var(--fs-body1, 14px);
   color: rgba(255, 255, 255, 0.4);
   margin: 0 4px;
 }
 
 .header__brand-title {
-  font-size: 12px;
+  font-size: var(--fs-body1, 14px);
   color: rgba(255, 255, 255, 0.8);
   letter-spacing: 0.25px;
   white-space: nowrap;
