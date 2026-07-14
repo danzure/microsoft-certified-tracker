@@ -50,6 +50,17 @@ const Dashboard = () => {
         <p className="dashboard__subtitle">
           Navigate your Microsoft certification journey with ease. This tool is designed to help you track your progress across {certificationPaths.length} distinct technology paths, from Azure and AI to Security and Data. Whether you are aiming for a specific role or broadening your skill set, use this tracker to explore role-based career guides, manage your exam renewals, and visually map out your next steps for continuous professional growth.
         </p>
+        <div className="dashboard__update-link">
+          <a 
+            href="https://techcommunity.microsoft.com/category/skills-hub/blog/skills-hub-blog" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="dashboard__update-btn"
+          >
+            <Icons.ExternalLink size={16} />
+            Microsoft Skills & Certifications Updates
+          </a>
+        </div>
       </div>
 
       {/* Stats Row */}

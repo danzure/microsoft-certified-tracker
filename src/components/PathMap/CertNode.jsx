@@ -138,7 +138,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
             )}
             {cert.isBeta && (
               <Badge variant="default" small>
-                Beta
+                {typeof cert.isBeta === 'string' ? cert.isBeta : 'Beta'}
               </Badge>
             )}
             {cert.isComingSoon && (

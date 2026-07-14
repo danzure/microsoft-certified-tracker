@@ -83,6 +83,24 @@ export const certificationPaths = [
         ],
       },
       {
+        id: 'az-802',
+        examCode: 'AZ-802',
+        name: 'Windows Server Administrator Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'admin',
+        description: 'Configure and manage Windows Server on-premises, hybrid, and IaaS workloads.',
+        prerequisites: [],
+        recommendedPrereqs: ['az-900'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-802/',
+        retirementDate: null,
+        isBeta: 'Beta from July 2026',
+        skillsMeasured: [
+        'Deploy, manage, and maintain Windows Server',
+        'Implement and manage Windows Server high availability',
+        'Secure Windows Server environments'
+        ],
+      },
+      {
         id: 'az-700',
         examCode: 'AZ-700',
         name: 'Azure Network Engineer Associate',
@@ -245,7 +263,23 @@ export const certificationPaths = [
         'Infrastructure as code (IaC) practices with Bicep and Azure CLI.'
         ],
       },
-
+      {
+        id: 'ai-500',
+        examCode: 'AI-500',
+        name: 'Multi-Agent AI Solutions Expert',
+        level: CERT_LEVELS.EXPERT,
+        branch: 'apps-agents',
+        description: 'Orchestrate complex, multi-agent AI systems and agentic architectures.',
+        prerequisites: ['ai-103'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-500/',
+        retirementDate: null,
+        isBeta: 'Beta from July 2026',
+        skillsMeasured: [
+        'Design multi-agent AI architectures',
+        'Implement multi-agent interactions and communication',
+        'Optimize and deploy agentic solutions'
+        ],
+      },
     ],
   },
   {
@@ -565,12 +599,30 @@ export const certificationPaths = [
         prerequisites: [['md-102', 'ms-700', 'sc-300', 'sc-401']],
         recommendedPrereqs: ['ab-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ms-102/',
-        retirementDate: null,
+        retirementDate: '2026-10-31',
         skillsMeasured: [
         'Deploy and manage a Microsoft 365 tenant (25–30%)',
         'Implement and manage Microsoft Entra identity and access (25–30%)',
         'Manage security and threats by using Microsoft Defender XDR (30–35%)',
         'Manage compliance by using Microsoft Purview (10–15%)'
+        ],
+      },
+      {
+        id: 'ab-650',
+        examCode: 'AB-650',
+        name: 'AI Services Administrator Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'admin',
+        description: 'Manage and secure AI services within Microsoft 365, including Copilot and related data sources.',
+        prerequisites: [],
+        recommendedPrereqs: ['ab-900'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ab-650/',
+        retirementDate: null,
+        isBeta: 'Beta from July 2026',
+        skillsMeasured: [
+        'Implement and manage Copilot in Microsoft 365',
+        'Secure AI data and services',
+        'Monitor and troubleshoot AI adoption and performance'
         ],
       },
       {
@@ -735,6 +787,7 @@ export const certificationPaths = [
       { id: 'sales', name: 'Sales', description: 'AI solutions for sales processes' },
       { id: 'contact-center', name: 'Contact Center', description: 'AI-powered contact centers' },
       { id: 'builder', name: 'Agent Builder', description: 'Custom AI agent development' },
+      { id: 'supply-chain', name: 'Supply Chain', description: 'AI solutions for supply chain' },
     ],
     certifications: [
       {
@@ -934,7 +987,7 @@ export const certificationPaths = [
         description: 'Design and configure Dynamics 365 Supply chain Management and related tools.',
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-330/',
-        retirementDate: null,
+        retirementDate: '2026-12-31',
         skillsMeasured: [
         'Implement product information management (25–30%)',
         'Implement inventory and asset management (20–25%)',
@@ -1282,7 +1335,7 @@ export const certificationPaths = [
         examCode: 'PL-500',
         name: 'Power Automate RPA Developer Associate',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'retiring',
+        branch: 'retired',
         description: 'Demonstrate how to improve and automate workflows with Microsoft Power Automate RPA developer.',
         prerequisites: [],
         recommendedPrereqs: ['pl-900'],
@@ -1373,7 +1426,7 @@ export const certificationPaths = [
         description: 'Apply data science and machine learning to implement and run machine learning workloads on Azure.',
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-100/',
-        retirementDate: null,
+        retirementDate: '2026-06-30',
         skillsMeasured: [],
         isIndependent: true,
       },
@@ -1386,7 +1439,7 @@ export const certificationPaths = [
         description: 'Implement security controls and threat protection, manage identity and access, and protect data, applications, and networks.',
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-500/',
-        retirementDate: null,
+        retirementDate: '2026-08-31',
         skillsMeasured: [],
         isIndependent: true,
       },
@@ -1399,7 +1452,7 @@ export const certificationPaths = [
         description: 'Advise stakeholders and translate business requirements into secure, scalable, and reliable solutions.',
         prerequisites: [],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/mb-700/',
-        retirementDate: null,
+        retirementDate: '2026-06-30',
         skillsMeasured: [],
         isIndependent: true,
       }

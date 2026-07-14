@@ -107,7 +107,7 @@ const CertDetail = ({ cert, path, onClose }) => {
 
               {cert.isBeta && (
                 <Badge variant="default">
-                  Beta
+                  {typeof cert.isBeta === 'string' ? cert.isBeta : 'Beta'}
                 </Badge>
               )}
               {cert.isComingSoon && (
