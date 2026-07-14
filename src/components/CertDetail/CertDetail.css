@@ -322,32 +322,37 @@
   align-items: flex-start;
   gap: 4px;
   padding: 16px;
-  background: var(--colorNeutralBackground1);
-  border: 1px solid var(--colorNeutralStroke1);
+  background: var(--bg-glass, var(--colorNeutralBackground1));
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--border-subtle, var(--border-color));
   border-radius: 16px;
-  box-shadow: var(--shadow-2);
-  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   overflow: hidden;
   z-index: 1;
 }
 
-.cert-detail__prereq::before {
+.cert-detail__prereq::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--prereq-color, var(--detail-color));
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--prereq-color, var(--detail-color)) 10%, transparent) 0%, transparent 100%);
   opacity: 0.8;
-  z-index: 1;
+  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
 .cert-detail__prereq:hover {
-  border-color: color-mix(in srgb, var(--prereq-color, var(--detail-color)) 40%, var(--colorNeutralStroke1));
-  box-shadow: var(--shadow-8);
   transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  border-color: color-mix(in srgb, var(--prereq-color, var(--detail-color)) 50%, var(--border-subtle, var(--border-color)));
+}
+
+.cert-detail__prereq:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--prereq-color, var(--detail-color)) 20%, transparent) 0%, transparent 100%);
 }
 
 .cert-detail__prereq-code {

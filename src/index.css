@@ -106,30 +106,30 @@
   --colorBrandStroke1: #0f6cbd;
 
   /* ── Path Map Colors ── */
-  --line-azure: #0078d4;
-  --line-ai: #00bcf2;
-  --line-data: #e6b300;
-  --line-security: #008272;
-  --line-m365: #d83b01;
+  --line-azure: #0078D4;
+  --line-ai: #1E3A8A;
+  --line-data: #118D57;
+  --line-security: #dc2626;
+  --line-m365: #ea580c;
   --line-power: #742774;
-  --line-dynamics: #7252aa;
-  --line-devops: #0078d4;
-  --line-github: #24292f;
-  --line-agentic: #e3008c;
-  --line-retired: #94a3b8;
+  --line-dynamics: #4B0082;
+  --line-devops: #005EAD;
+  --line-github: #24292F;
+  --line-agentic: #e11d48;
+  --line-retired: #6B7280;
 
   /* Path Map Glow */
-  --glow-azure: rgba(0, 120, 212, 0.12);
-  --glow-ai: rgba(0, 188, 242, 0.12);
-  --glow-data: rgba(230, 179, 0, 0.12);
-  --glow-security: rgba(0, 130, 114, 0.12);
-  --glow-m365: rgba(216, 59, 1, 0.12);
-  --glow-power: rgba(116, 39, 116, 0.12);
-  --glow-dynamics: rgba(114, 82, 170, 0.12);
-  --glow-devops: rgba(0, 120, 212, 0.12);
-  --glow-github: rgba(36, 41, 47, 0.12);
-  --glow-agentic: rgba(227, 0, 140, 0.12);
-  --glow-retired: rgba(148, 163, 184, 0.12);
+  --glow-azure: color-mix(in srgb, var(--line-azure) 12%, transparent);
+  --glow-ai: color-mix(in srgb, var(--line-ai) 12%, transparent);
+  --glow-data: color-mix(in srgb, var(--line-data) 12%, transparent);
+  --glow-security: color-mix(in srgb, var(--line-security) 12%, transparent);
+  --glow-m365: color-mix(in srgb, var(--line-m365) 12%, transparent);
+  --glow-power: color-mix(in srgb, var(--line-power) 12%, transparent);
+  --glow-dynamics: color-mix(in srgb, var(--line-dynamics) 12%, transparent);
+  --glow-devops: color-mix(in srgb, var(--line-devops) 12%, transparent);
+  --glow-github: color-mix(in srgb, var(--line-github) 12%, transparent);
+  --glow-agentic: color-mix(in srgb, var(--line-agentic) 12%, transparent);
+  --glow-retired: color-mix(in srgb, var(--line-retired) 12%, transparent);
 
   /* ── Status Colors ── */
   --status-not-started: var(--colorNeutralForeground3);
@@ -287,30 +287,30 @@
   --colorBrandStroke1: #479ef5;
 
   /* Path Map Colors (brighter for dark bg) */
-  --line-azure: #479ef5;
-  --line-ai: #00bcf2;
-  --line-data: #f2c811;
-  --line-security: #00b294;
-  --line-m365: #ff715b;
-  --line-power: #b482d2;
-  --line-dynamics: #ae7fe2;
-  --line-devops: #479ef5;
-  --line-github: #ffffff;
-  --line-agentic: #f8adfa;
-  --line-retired: #cbd5e1;
+  --line-azure: #2899F5;
+  --line-ai: #3B82F6;
+  --line-data: #20B376;
+  --line-security: #ef4444;
+  --line-m365: #fb923c;
+  --line-power: #A54EA5;
+  --line-dynamics: #818CF8;
+  --line-devops: #2899F5;
+  --line-github: #F0F6FC;
+  --line-agentic: #fb7185;
+  --line-retired: #9CA3AF;
 
   /* Glow */
-  --glow-azure: rgba(71, 158, 245, 0.15);
-  --glow-ai: rgba(0, 188, 242, 0.15);
-  --glow-data: rgba(242, 200, 17, 0.15);
-  --glow-security: rgba(0, 178, 148, 0.15);
-  --glow-m365: rgba(255, 113, 91, 0.15);
-  --glow-power: rgba(180, 130, 210, 0.15);
-  --glow-dynamics: rgba(174, 127, 226, 0.15);
-  --glow-devops: rgba(71, 158, 245, 0.15);
-  --glow-github: rgba(255, 255, 255, 0.15);
-  --glow-agentic: rgba(248, 173, 250, 0.15);
-  --glow-retired: rgba(203, 213, 225, 0.15);
+  --glow-azure: color-mix(in srgb, var(--line-azure) 15%, transparent);
+  --glow-ai: color-mix(in srgb, var(--line-ai) 15%, transparent);
+  --glow-data: color-mix(in srgb, var(--line-data) 15%, transparent);
+  --glow-security: color-mix(in srgb, var(--line-security) 15%, transparent);
+  --glow-m365: color-mix(in srgb, var(--line-m365) 15%, transparent);
+  --glow-power: color-mix(in srgb, var(--line-power) 15%, transparent);
+  --glow-dynamics: color-mix(in srgb, var(--line-dynamics) 15%, transparent);
+  --glow-devops: color-mix(in srgb, var(--line-devops) 15%, transparent);
+  --glow-github: color-mix(in srgb, var(--line-github) 15%, transparent);
+  --glow-agentic: color-mix(in srgb, var(--line-agentic) 15%, transparent);
+  --glow-retired: color-mix(in srgb, var(--line-retired) 15%, transparent);
 
   /* Status */
   --status-not-started: var(--colorNeutralForeground3);

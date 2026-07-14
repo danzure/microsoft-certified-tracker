@@ -123,34 +123,50 @@
 }
 
 
-/* CertNode Info Card — matches dashboard__path-card */
+/* CertNode Info Card — unified design */
 .cert-node__info {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background: var(--colorNeutralBackground1);
-  border: 1px solid color-mix(in srgb, var(--cert-node-color) 30%, var(--colorNeutralStroke1));
+  background: var(--bg-glass, var(--colorNeutralBackground1));
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid color-mix(in srgb, var(--cert-node-color) 30%, var(--border-subtle, var(--colorNeutralStroke1)));
   border-radius: 16px;
-  box-shadow: 0 0 16px color-mix(in srgb, var(--cert-node-color) 20%, transparent), var(--shadow-2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 0 16px color-mix(in srgb, var(--cert-node-color) 10%, transparent);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   min-width: 0;
   position: relative;
   overflow: hidden;
   z-index: 6;
 }
 
+.cert-node__info::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cert-node-color) 15%, transparent) 0%, transparent 100%);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
 .cert-node__info:hover {
-  border-color: color-mix(in srgb, var(--cert-node-color) 50%, var(--colorNeutralStroke1));
-  box-shadow: 0 4px 24px color-mix(in srgb, var(--cert-node-color) 30%, transparent), var(--shadow-8);
   transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 24px color-mix(in srgb, var(--cert-node-color) 20%, transparent);
+  border-color: color-mix(in srgb, var(--cert-node-color) 50%, var(--border-subtle, var(--colorNeutralStroke1)));
+}
+
+.cert-node__info:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cert-node-color) 25%, transparent) 0%, transparent 100%);
 }
 
 .cert-node__info:focus-visible {
   outline: 2px solid var(--cert-node-color);
   outline-offset: 2px;
-  border-color: color-mix(in srgb, var(--cert-node-color) 40%, var(--colorNeutralStroke1));
 }
 
 .cert-node__info-header {

@@ -34,17 +34,17 @@
 }
 
 .cpb-role-card {
-  background: var(--bg-glass);
+  background: var(--bg-glass, var(--colorNeutralBackground1));
   backdrop-filter: blur(16px) saturate(1.2);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid var(--border-subtle, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--card-color) 30%, var(--border-subtle, var(--colorNeutralStroke1)));
   border-radius: 16px;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 0 16px color-mix(in srgb, var(--card-color) 10%, transparent);
   z-index: 1;
 }
 
@@ -60,8 +60,8 @@
 
 .cpb-role-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-subtle, var(--border-color)));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 24px color-mix(in srgb, var(--card-color) 20%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-subtle, var(--colorNeutralStroke1)));
 }
 
 .cpb-role-card:hover::after {
@@ -71,7 +71,7 @@
 
 .cpb-role-card--active {
   border-color: var(--card-color);
-  box-shadow: 0 0 0 1px var(--card-color), 0 12px 28px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0 0 1px var(--card-color), 0 12px 28px rgba(0, 0, 0, 0.12), 0 0 24px color-mix(in srgb, var(--card-color) 30%, transparent);
   transform: translateY(-4px);
 }
 
@@ -91,13 +91,13 @@
 
 .cpb-role-icon {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
+  background: color-mix(in srgb, var(--card-color) 10%, var(--colorNeutralBackground3, var(--bg-secondary)));
   color: var(--card-color);
 }
 
@@ -210,23 +210,18 @@
 
 .cpb-timeline-card {
   flex: 1;
-  background: var(--bg-glass);
+  background: var(--bg-glass, var(--colorNeutralBackground1));
   backdrop-filter: blur(16px) saturate(1.2);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid var(--border-subtle, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--card-color) 30%, var(--border-subtle, var(--colorNeutralStroke1)));
   border-radius: 16px;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 0 16px color-mix(in srgb, var(--card-color) 10%, transparent);
   z-index: 1;
-}
-
-.cpb-timeline-card:focus-visible {
-  outline: 2px solid var(--colorBrandForeground1);
-  outline-offset: 2px;
 }
 
 .cpb-timeline-card::after {
@@ -241,8 +236,8 @@
 
 .cpb-timeline-card:hover {
   transform: translateX(4px) translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-subtle, var(--border-color)));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 24px color-mix(in srgb, var(--card-color) 20%, transparent);
+  border-color: color-mix(in srgb, var(--card-color) 50%, var(--border-subtle, var(--colorNeutralStroke1)));
 }
 
 .cpb-timeline-card:hover::after {

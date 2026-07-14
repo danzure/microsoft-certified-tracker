@@ -183,9 +183,9 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
                 }
               }}
               title={certIgnored ? "Include in tracking" : "Exclude from tracking"}
+              aria-label={certIgnored ? "Include in tracking" : "Exclude from tracking"}
             >
               {certIgnored ? <Plus size={16} /> : <Minus size={16} />}
-              <span className="sr-only">{certIgnored ? "Include" : "Exclude"}</span>
             </button>
           )}
         </div>

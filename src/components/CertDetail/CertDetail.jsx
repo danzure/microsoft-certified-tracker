@@ -34,7 +34,7 @@ const CertDetail = ({ cert, path, onClose }) => {
   const retiring = isRetiring(cert);
   const isRetiredExam = retiring || isRetired(cert);
   const isPathExcluded = isPathIgnored(path.id);
-  const certIgnored = !isRetiredExam && (isCertIgnored(cert.id) || isPathExcluded);
+  const certIgnored = !isRetiredExam && isCertIgnored(cert.id);
 
   const completionDateStr = completionDates?.[cert.id];
   const expires = doesCertExpire(cert.level);
@@ -59,14 +59,14 @@ const CertDetail = ({ cert, path, onClose }) => {
 
       if (e.key === 'Escape') {
         onClose();
-      } else if (e.key.toLowerCase() === 'e' && !isPathExcluded && !isRetiredExam) {
+      } else if (e.key.toLowerCase() === 'e' && !isRetiredExam) {
         toggleCertIgnored(cert.id);
         if (certIgnored) {
           addToast(`${cert.examCode} added to tracked learning`);
         } else {
           addToast(`${cert.examCode} removed from tracked learning`);
         }
-      } else if (e.key.toLowerCase() === 's' && !certIgnored) {
+      } else if (e.key.toLowerCase() === 's') {
         const statuses = [CERT_STATUS.NOT_STARTED, CERT_STATUS.IN_PROGRESS, CERT_STATUS.COMPLETED];
         const currentIndex = statuses.indexOf(status);
         const nextIndex = (currentIndex + 1) % statuses.length;
@@ -178,7 +178,7 @@ const CertDetail = ({ cert, path, onClose }) => {
                 ))}
               </select>
             </div>
-            <div className={`cert-detail__cost-display ${certIgnored ? 'cert-detail__cost-display--disabled' : ''}`}>
+            <div className={`cert-detail__cost-display`}>
               <span className="cert-detail__cost-amount">{getFormattedExamCost(cert.level, currency)}</span>
               <span className="cert-detail__cost-note">Standard pricing. Exact cost may vary by specific location and applicable taxes.</span>
             </div>
@@ -297,7 +297,6 @@ const CertDetail = ({ cert, path, onClose }) => {
               <button
               className={`cert-detail__ignore-btn ${certIgnored ? 'cert-detail__ignore-btn--active' : ''}`}
               onClick={() => {
-                if (isPathExcluded) return;
                 toggleCertIgnored(cert.id);
                 if (certIgnored) {
                   addToast(`${cert.examCode} added to tracked learning`);
@@ -305,21 +304,14 @@ const CertDetail = ({ cert, path, onClose }) => {
                   addToast(`${cert.examCode} removed from tracked learning`);
                 }
               }}
-              disabled={isPathExcluded}
-              style={{ cursor: isPathExcluded ? 'not-allowed' : 'pointer', opacity: isPathExcluded ? 0.8 : 1 }}
             >
               {certIgnored ? <Plus size={16} /> : <Minus size={16} />}
-              <span>{isPathExcluded ? 'Path Excluded' : (certIgnored ? 'Not tracked' : 'Tracked')}</span>
-              {!isPathExcluded && (
-                <span className={`cert-detail__ignore-toggle ${certIgnored ? 'cert-detail__ignore-toggle--off' : ''}`}>
-                  <span className="cert-detail__ignore-toggle-thumb" />
-                </span>
-              )}
+              <span>{certIgnored ? 'Not tracked' : 'Tracked'}</span>
             </button>
             {certIgnored && (
               <p className="cert-detail__ignore-hint">
                 {isPathExcluded 
-                  ? `The entire ${path.shortName} path is excluded from tracking.`
+                  ? `The ${path.shortName} path is excluded, but you can track this certification individually.`
                   : "This certification won't count towards your overall or path progress until tracked."}
               </p>
             )}
@@ -330,7 +322,7 @@ const CertDetail = ({ cert, path, onClose }) => {
             <h3 className="cert-detail__section-title">
               Your Status <span style={{fontSize: '10px', fontWeight: 'normal', opacity: 0.6, marginLeft: '6px'}}>(Press S to cycle)</span>
             </h3>
-            <div className={`cert-detail__status-options ${certIgnored ? 'cert-detail__status-options--disabled' : ''}`}>
+            <div className={`cert-detail__status-options`}>
               {statusOptions.map((opt) => (
                 <button
                   key={opt.value}
