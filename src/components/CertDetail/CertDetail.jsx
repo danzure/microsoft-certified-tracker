@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { IconMap } from '../common/IconMap';
-const { X, AlertTriangle, Calendar, Award, EyeOff, Eye, Microsoft } = IconMap;
+const { X, AlertTriangle, Calendar, Award, Plus, Minus, Microsoft } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
 import { useCurrency } from '../../context/CurrencyContext';
 import { useToast } from '../../context/ToastContext';
@@ -20,6 +20,12 @@ import './CertDetail.css';
  * @param {Object} props.path - The parent path data object
  * @param {Function} props.onClose - Callback to close the detail panel
  */
+const statusOptions = [
+  { value: CERT_STATUS.NOT_STARTED, label: 'Not Started', icon: '○', className: 'cert-detail__status-btn--not-started' },
+  { value: CERT_STATUS.IN_PROGRESS, label: 'In Progress', icon: '◐', className: 'cert-detail__status-btn--in-progress' },
+  { value: CERT_STATUS.COMPLETED, label: 'Passed', icon: '✓', className: 'cert-detail__status-btn--completed' },
+];
+
 const CertDetail = ({ cert, path, onClose }) => {
   const { getStatus, setStatus, toggleCertIgnored, isCertIgnored, isPathIgnored, completionDates, setCompletionDate } = useProgressContext();
   const { currency, setCurrency } = useCurrency();
@@ -39,12 +45,6 @@ const CertDetail = ({ cert, path, onClose }) => {
     expiryDate.setFullYear(expiryDate.getFullYear() + 1);
   }
 
-  const statusOptions = [
-    { value: CERT_STATUS.NOT_STARTED, label: 'Not Started', icon: '○', className: 'cert-detail__status-btn--not-started' },
-    { value: CERT_STATUS.IN_PROGRESS, label: 'In Progress', icon: '◐', className: 'cert-detail__status-btn--in-progress' },
-    { value: CERT_STATUS.COMPLETED, label: 'Passed', icon: '✓', className: 'cert-detail__status-btn--completed' },
-  ];
-
   const levelVariant = {
     Fundamentals: 'fundamentals',
     Associate: 'associate',
@@ -61,6 +61,11 @@ const CertDetail = ({ cert, path, onClose }) => {
         onClose();
       } else if (e.key.toLowerCase() === 'e' && !isPathExcluded && !isRetiredExam) {
         toggleCertIgnored(cert.id);
+        if (certIgnored) {
+          addToast(`${cert.examCode} added to tracked learning`);
+        } else {
+          addToast(`${cert.examCode} removed from tracked learning`);
+        }
       } else if (e.key.toLowerCase() === 's' && !certIgnored) {
         const statuses = [CERT_STATUS.NOT_STARTED, CERT_STATUS.IN_PROGRESS, CERT_STATUS.COMPLETED];
         const currentIndex = statuses.indexOf(status);
@@ -76,7 +81,7 @@ const CertDetail = ({ cert, path, onClose }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose, cert.id, cert.learnUrl, status, certIgnored, isPathExcluded, toggleCertIgnored, setStatus]);
+  }, [onClose, cert.id, cert.learnUrl, cert.examCode, status, certIgnored, isPathExcluded, isRetiredExam, toggleCertIgnored, setStatus, addToast]);
 
   return (
     <>
@@ -291,12 +296,20 @@ const CertDetail = ({ cert, path, onClose }) => {
               </h3>
               <button
               className={`cert-detail__ignore-btn ${certIgnored ? 'cert-detail__ignore-btn--active' : ''}`}
-              onClick={() => isPathExcluded ? null : toggleCertIgnored(cert.id)}
+              onClick={() => {
+                if (isPathExcluded) return;
+                toggleCertIgnored(cert.id);
+                if (certIgnored) {
+                  addToast(`${cert.examCode} added to tracked learning`);
+                } else {
+                  addToast(`${cert.examCode} removed from tracked learning`);
+                }
+              }}
               disabled={isPathExcluded}
               style={{ cursor: isPathExcluded ? 'not-allowed' : 'pointer', opacity: isPathExcluded ? 0.8 : 1 }}
             >
-              {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
-              <span>{isPathExcluded ? 'Path Excluded' : (certIgnored ? 'Excluded from tracking' : 'Included in tracking')}</span>
+              {certIgnored ? <Plus size={16} /> : <Minus size={16} />}
+              <span>{isPathExcluded ? 'Path Excluded' : (certIgnored ? 'Not tracked' : 'Tracked')}</span>
               {!isPathExcluded && (
                 <span className={`cert-detail__ignore-toggle ${certIgnored ? 'cert-detail__ignore-toggle--off' : ''}`}>
                   <span className="cert-detail__ignore-toggle-thumb" />
@@ -307,7 +320,7 @@ const CertDetail = ({ cert, path, onClose }) => {
               <p className="cert-detail__ignore-hint">
                 {isPathExcluded 
                   ? `The entire ${path.shortName} path is excluded from tracking.`
-                  : "This certification won't count towards your overall or path progress."}
+                  : "This certification won't count towards your overall or path progress until tracked."}
               </p>
             )}
           </div>

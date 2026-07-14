@@ -32,17 +32,12 @@ const SearchBar = ({ onClose }) => {
   }, []);
 
   useEffect(() => {
-    if (!query.trim()) {
-      setDebouncedQuery('');
-      setIsSearching(false);
-      return;
-    }
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSearching(true);
     const timer = setTimeout(() => {
-      setDebouncedQuery(query);
+      setDebouncedQuery(query.trim() ? query : '');
       setIsSearching(false);
-    }, 300); // 300ms debounce
+    }, query.trim() ? 300 : 0);
 
     return () => clearTimeout(timer);
   }, [query]);

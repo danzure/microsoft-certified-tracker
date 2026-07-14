@@ -130,9 +130,9 @@
   flex-direction: column;
   padding: 16px;
   background: var(--colorNeutralBackground1);
-  border: 1px solid var(--colorNeutralStroke1);
+  border: 1px solid color-mix(in srgb, var(--cert-node-color) 30%, var(--colorNeutralStroke1));
   border-radius: 16px;
-  box-shadow: var(--shadow-2);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--cert-node-color) 20%, transparent), var(--shadow-2);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   min-width: 0;
@@ -141,21 +141,9 @@
   z-index: 6;
 }
 
-.cert-node__info::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--cert-node-color);
-  opacity: 0.8;
-  z-index: 1;
-}
-
 .cert-node__info:hover {
-  border-color: color-mix(in srgb, var(--cert-node-color) 40%, var(--colorNeutralStroke1));
-  box-shadow: var(--shadow-8);
+  border-color: color-mix(in srgb, var(--cert-node-color) 50%, var(--colorNeutralStroke1));
+  box-shadow: 0 4px 24px color-mix(in srgb, var(--cert-node-color) 30%, transparent), var(--shadow-8);
   transform: translateY(-4px);
 }
 
@@ -371,22 +359,28 @@
 }
 
 /* Ignored/Excluded */
-.cert-node--ignored {
-  opacity: 0.45;
-  transition: opacity var(--transition-fast);
-}
-
-.cert-node--ignored:hover {
-  opacity: 0.7;
-}
-
 .cert-node--ignored .cert-node__node-outer {
-  border-style: dashed;
-  border-color: var(--text-disabled);
+  border-color: var(--colorNeutralStroke2);
 }
 
 .cert-node--ignored .cert-node__info {
-  border-style: dashed;
+  border-color: var(--colorNeutralStroke1);
+  box-shadow: var(--shadow-2);
+}
+
+.cert-node--ignored .cert-node__info:hover {
+  border-color: color-mix(in srgb, var(--colorNeutralForeground3) 20%, var(--colorNeutralStroke1));
+  box-shadow: var(--shadow-4);
+  transform: translateY(-2px);
+}
+
+.cert-node--ignored .cert-node__icon {
+  background: var(--colorNeutralBackground3);
+  color: var(--colorNeutralForeground3);
+}
+
+.cert-node--ignored .cert-node__exam-code {
+  color: var(--colorNeutralForeground2);
 }
 
 

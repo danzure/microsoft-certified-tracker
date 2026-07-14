@@ -1,9 +1,10 @@
 import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
+import { useToast } from '../../context/ToastContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import { IconMap } from '../common/IconMap';
-const { AlertTriangle, Link, ArchiveX, EyeOff, Eye, Microsoft } = IconMap;
+const { AlertTriangle, Link, ArchiveX, Plus, Minus, Microsoft } = IconMap;
 import './CertNode.css';
 
 /**
@@ -19,13 +20,14 @@ import './CertNode.css';
  * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
  * @param {boolean} props.isPathIgnored - Whether the parent path is excluded from tracking
  */
-const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored }) => {
+const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
   const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
+  const { addToast } = useToast();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
   const retired = isRetired(cert);
   const isRetiredExam = retiring || retired;
-  const certIgnored = !isRetiredExam && (isCertIgnored(cert.id) || isPathIgnored);
+  const certIgnored = !isRetiredExam && isCertIgnored(cert.id);
 
   const statusClass = {
     [CERT_STATUS.NOT_STARTED]: 'cert-node--not-started',
@@ -173,14 +175,16 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                if (!isPathIgnored) {
-                  toggleCertIgnored(cert.id);
+                toggleCertIgnored(cert.id);
+                if (certIgnored) {
+                  addToast(`${cert.examCode} added to tracked learning`);
+                } else {
+                  addToast(`${cert.examCode} removed from tracked learning`);
                 }
               }}
-              disabled={isPathIgnored}
-              title={isPathIgnored ? "Path is excluded" : (certIgnored ? "Include in tracking" : "Exclude from tracking")}
+              title={certIgnored ? "Include in tracking" : "Exclude from tracking"}
             >
-              {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
+              {certIgnored ? <Plus size={16} /> : <Minus size={16} />}
               <span className="sr-only">{certIgnored ? "Include" : "Exclude"}</span>
             </button>
           )}

@@ -4,7 +4,7 @@ import { isRetiring, isRetired } from '../utils/helpers';
 
 const STORAGE_KEY = 'ms-cert-tracker-progress';
 const IGNORED_STORAGE_KEY = 'ms-cert-tracker-ignored';
-const IGNORED_CERTS_STORAGE_KEY = 'ms-cert-tracker-ignored-certs';
+const TRACKED_CERTS_STORAGE_KEY = 'ms-cert-tracker-tracked-certs';
 const DISMISSED_CERTS_KEY = 'ms-cert-tracker-dismissed-certs';
 const DATES_KEY = 'ms-cert-tracker-dates';
 const CUSTOM_PLAYLIST_KEY = 'ms-cert-tracker-custom-playlist';
@@ -45,7 +45,7 @@ export const useProgress = () => {
     }
     return [];
   });
-  const [ignoredCerts, setIgnoredCerts] = useState(() => loadData(IGNORED_CERTS_STORAGE_KEY, []));
+  const [trackedCerts, setTrackedCerts] = useState(() => loadData(TRACKED_CERTS_STORAGE_KEY, []));
   const [dismissedCerts, setDismissedCerts] = useState(() => loadData(DISMISSED_CERTS_KEY, []));
   const [completionDates, setCompletionDates] = useState(() => loadData(DATES_KEY, {}));
   const [customPlaylist, setCustomPlaylist] = useState(() => loadData(CUSTOM_PLAYLIST_KEY, []));
@@ -59,8 +59,8 @@ export const useProgress = () => {
   }, [trackedPaths]);
 
   useEffect(() => {
-    saveData(IGNORED_CERTS_STORAGE_KEY, ignoredCerts);
-  }, [ignoredCerts]);
+    saveData(TRACKED_CERTS_STORAGE_KEY, trackedCerts);
+  }, [trackedCerts]);
 
   useEffect(() => {
     saveData(DISMISSED_CERTS_KEY, dismissedCerts);
@@ -143,24 +143,60 @@ export const useProgress = () => {
   );
 
   const togglePathIgnored = useCallback((pathId) => {
-    setTrackedPaths((prev) => 
-      prev.includes(pathId) ? prev.filter(id => id !== pathId) : [...prev, pathId]
-    );
-  }, []);
+    const isCurrentlyTracked = trackedPaths.includes(pathId);
+    
+    if (isCurrentlyTracked) {
+      setTrackedPaths((prev) => prev.filter(id => id !== pathId));
+      
+      // Untrack all certs within this path, unless they belong to another currently tracked path
+      const path = certificationPaths.find(p => p.id === pathId);
+      if (path) {
+        const certIds = path.certifications.map(c => c.id);
+        setTrackedCerts(prevCerts => prevCerts.filter(id => {
+          if (certIds.includes(id)) {
+            const otherTrackedPaths = trackedPaths.filter(pId => pId !== pathId);
+            const isShared = otherTrackedPaths.some(pId => {
+              const otherPath = certificationPaths.find(p => p.id === pId);
+              return otherPath?.certifications.some(c => c.id === id);
+            });
+            return isShared;
+          }
+          return true;
+        }));
+      }
+    } else {
+      setTrackedPaths((prev) => [...prev, pathId]);
+      
+      // Automatically track all certs within this path
+      const path = certificationPaths.find(p => p.id === pathId);
+      if (path) {
+        const certIds = path.certifications.map(c => c.id);
+        setTrackedCerts(prevCerts => {
+          const nextCerts = [...prevCerts];
+          certIds.forEach(id => {
+            if (!nextCerts.includes(id)) {
+              nextCerts.push(id);
+            }
+          });
+          return nextCerts;
+        });
+      }
+    }
+  }, [trackedPaths]);
 
   const isPathIgnored = useCallback((pathId) => {
     return !trackedPaths.includes(pathId);
   }, [trackedPaths]);
 
   const toggleCertIgnored = useCallback((certId) => {
-    setIgnoredCerts((prev) =>
+    setTrackedCerts((prev) =>
       prev.includes(certId) ? prev.filter(id => id !== certId) : [...prev, certId]
     );
   }, []);
 
   const isCertIgnored = useCallback((certId) => {
-    return ignoredCerts.includes(certId);
-  }, [ignoredCerts]);
+    return !trackedCerts.includes(certId);
+  }, [trackedCerts]);
 
   const toggleCertDismissed = useCallback((certId) => {
     setDismissedCerts((prev) =>
@@ -178,7 +214,7 @@ export const useProgress = () => {
       if (!path) return { total: 0, completed: 0, inProgress: 0, percent: 0 };
 
       const tracked = path.certifications.filter(c => {
-        if (ignoredCerts.includes(c.id)) return false;
+        if (!trackedCerts.includes(c.id)) return false;
         
         const stat = getStatus(c.id);
         const hasProgress = stat === CERT_STATUS.COMPLETED || stat === CERT_STATUS.NEEDS_RENEWAL || stat === CERT_STATUS.IN_PROGRESS;
@@ -203,20 +239,23 @@ export const useProgress = () => {
         percent: total > 0 ? Math.round((completed / total) * 100) : 0,
       };
     },
-    [ignoredCerts, getStatus]
+    [trackedCerts, getStatus]
   );
 
   const getOverallProgress = useCallback(() => {
     let total = 0;
     let completed = 0;
     let inProgress = 0;
+    const processedCerts = new Set();
 
     certificationPaths.forEach((path) => {
       if (!trackedPaths.includes(path.id)) return; // Skip ignored paths
 
       path.certifications.forEach((cert) => {
-        // Skip shared duplicates and individually ignored certs
-        if (!cert.isShared && !ignoredCerts.includes(cert.id)) {
+        // Skip duplicates and individually ignored certs
+        if (!processedCerts.has(cert.id) && trackedCerts.includes(cert.id)) {
+          processedCerts.add(cert.id);
+          
           const stat = getStatus(cert.id);
           const hasProgress = stat === CERT_STATUS.COMPLETED || stat === CERT_STATUS.NEEDS_RENEWAL || stat === CERT_STATUS.IN_PROGRESS;
           
@@ -237,7 +276,7 @@ export const useProgress = () => {
       inProgress,
       percent: total > 0 ? Math.round((completed / total) * 100) : 0,
     };
-  }, [trackedPaths, ignoredCerts, getStatus]);
+  }, [trackedPaths, trackedCerts, getStatus]);
 
   const resetAll = useCallback(() => {
     setProgress({});
@@ -246,7 +285,7 @@ export const useProgress = () => {
   return {
     progress,
     trackedPaths,
-    ignoredCerts,
+    trackedCerts,
     dismissedCerts,
     getStatus,
     setStatus,

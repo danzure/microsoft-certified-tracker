@@ -70,30 +70,40 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
         '--cert-node-color': certInfo.pathColor || 'var(--colorBrandForeground1)', 
         height: 'auto', 
         minHeight: '172px', 
-        margin: 0,
-        paddingRight: 'var(--space-3)'
+        margin: 0
       }}
     >
-      {getBadgeUrl(certInfo.level, certInfo.id) && (
-        <img 
-          src={getBadgeUrl(certInfo.level, certInfo.id)} 
-          alt={`${certInfo.level} Badge`} 
-          className="cert-node__badge-icon" 
-          loading="lazy"
-        />
-      )}
-      <div className="cert-node__info-header" style={{ paddingRight: '48px' }}>
-        <span className="cert-node__exam-code">{certInfo.examCode}</span>
-        <div className="cert-node__badges">
-          <Badge variant={levelVariant} small>{certInfo.level}</Badge>
+      <div className="cert-node__info-header">
+        <div className="cert-node__icon-title">
+          <div className="cert-node__icon">
+            {getBadgeUrl(certInfo.level, certInfo.id) ? (
+              <img 
+                src={getBadgeUrl(certInfo.level, certInfo.id)} 
+                alt={`${certInfo.level} Badge`} 
+                className="cert-node__badge-image" 
+                loading="lazy"
+              />
+            ) : (
+              <Icons.Award size={20} />
+            )}
+          </div>
+          <div className="cert-node__title-group">
+            <div className="cert-node__badge-stats">
+              <span className="cert-node__exam-code">{certInfo.examCode}</span>
+              <Badge variant={levelVariant} small>{certInfo.level}</Badge>
+            </div>
+            <h3 className="cert-node__name">
+              {certInfo.name.startsWith('Microsoft') ? certInfo.name : `Microsoft Certified: ${certInfo.name}`}
+            </h3>
+          </div>
         </div>
       </div>
-      <h3 className="cert-node__name" style={{ paddingRight: '48px' }}>
-        {certInfo.name.startsWith('Microsoft') ? certInfo.name : `Microsoft Certified: ${certInfo.name}`}
-      </h3>
-      <p className="cert-node__description">
-        {certInfo.description}
-      </p>
+      
+      <div className="cert-node__info-body">
+        <p className="cert-node__description">
+          {certInfo.description}
+        </p>
+      </div>
 
       <div className="cert-node__actions">
         <a

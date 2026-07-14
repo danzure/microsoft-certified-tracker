@@ -40,6 +40,9 @@ import {
   DocumentCheckmarkRegular,
   LayerRegular,
   ShieldErrorRegular,
+  MapRegular,
+  AddRegular,
+  SubtractRegular,
 } from '@fluentui/react-icons';
 
 // Microsoft Product Icons (custom SVGs for certification paths)
@@ -123,11 +126,14 @@ export const IconMap = {
   Link: withSize(LinkRegular),
   MapPinOff: withSize(LocationOffRegular),
   RefreshCw: withSize(ArrowSyncRegular),
+  Compass: withSize(MapRegular),
   GripVertical: withSize(ReOrderDotsVerticalRegular),
   Star: withSize(StarRegular),
   ShieldIcon: withSize(ShieldRegular),
   PlusCircle: withSize(AddCircleRegular),
   Medal: withSize(MedalRegular),
+  Plus: withSize(AddRegular),
+  Minus: withSize(SubtractRegular),
   
   // New role icons
   Settings: withSize(SettingsRegular),

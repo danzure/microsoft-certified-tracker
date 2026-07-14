@@ -19,27 +19,59 @@ const Dashboard = () => {
   const overall = useMemo(() => getOverallProgress(), [getOverallProgress]);
 
   const inProgressCerts = useMemo(() => {
-    return certificationPaths
-      .filter(path => !isPathIgnored(path.id))
-      .flatMap((path) =>
-        path.certifications
-          .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.IN_PROGRESS)
-          .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
-      );
-  }, [isPathIgnored, isCertIgnored, getStatus]);
+    const certs = [];
+    const seen = new Set();
+    certificationPaths.forEach(path => {
+      path.certifications.forEach(cert => {
+        if (!isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.IN_PROGRESS && !seen.has(cert.id)) {
+          certs.push({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id });
+          seen.add(cert.id);
+        }
+      });
+    });
+    return certs;
+  }, [isCertIgnored, getStatus]);
 
   const needsRenewalCerts = useMemo(() => {
-    return certificationPaths
-      .filter(path => !isPathIgnored(path.id))
-      .flatMap((path) =>
-        path.certifications
-          .filter((cert) => !isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.NEEDS_RENEWAL)
-          .map((cert) => ({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id }))
-      );
-  }, [isPathIgnored, isCertIgnored, getStatus]);
+    const certs = [];
+    const seen = new Set();
+    certificationPaths.forEach(path => {
+      path.certifications.forEach(cert => {
+        if (!isCertIgnored(cert.id) && getStatus(cert.id) === CERT_STATUS.NEEDS_RENEWAL && !seen.has(cert.id)) {
+          certs.push({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id });
+          seen.add(cert.id);
+        }
+      });
+    });
+    return certs;
+  }, [isCertIgnored, getStatus]);
 
   const trackedPaths = useMemo(() => certificationPaths.filter(p => !isPathIgnored(p.id)), [isPathIgnored]);
   const ignoredPaths = useMemo(() => certificationPaths.filter(p => isPathIgnored(p.id)), [isPathIgnored]);
+
+  const individuallyTrackedCerts = useMemo(() => {
+    const certs = [];
+    const seen = new Set();
+    
+    // First, find all cert IDs that belong to a currently tracked path
+    const certsInTrackedPaths = new Set();
+    certificationPaths.forEach(path => {
+      if (!isPathIgnored(path.id)) {
+        path.certifications.forEach(c => certsInTrackedPaths.add(c.id));
+      }
+    });
+
+    certificationPaths.forEach(path => {
+      path.certifications.forEach(cert => {
+        // Must be tracked, NOT in a tracked path, and NOT seen yet
+        if (!isCertIgnored(cert.id) && !certsInTrackedPaths.has(cert.id) && !seen.has(cert.id)) {
+          certs.push({ ...cert, pathName: path.shortName, pathColor: path.color, pathId: path.id });
+          seen.add(cert.id);
+        }
+      });
+    });
+    return certs;
+  }, [isPathIgnored, isCertIgnored]);
   
   const activeIgnoredPaths = useMemo(() => ignoredPaths.filter(p => p.pillar !== PILLARS.RETIRED), [ignoredPaths]);
   const retiredIgnoredPaths = useMemo(() => ignoredPaths.filter(p => p.pillar === PILLARS.RETIRED), [ignoredPaths]);
@@ -86,7 +118,7 @@ const Dashboard = () => {
               }}
               title={isIgnored ? "Add to tracked paths" : "Remove from tracked paths"}
             >
-              {isIgnored ? <Icons.Eye size={16} /> : <Icons.EyeOff size={16} />}
+              {isIgnored ? <Icons.Plus size={16} /> : <Icons.Minus size={16} />}
               <span className="sr-only">{isIgnored ? "Track" : "Remove"}</span>
             </button>
           )}
@@ -242,21 +274,51 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* My Tracked Paths */}
+      {/* My Tracked Learning */}
       <div className="dashboard__section">
         <div className="dashboard__section-header">
-          <h2 className="dashboard__section-title">My Tracked Paths</h2>
+          <h2 className="dashboard__section-title">My Tracked Learning</h2>
         </div>
         
-        {trackedPaths.length === 0 ? (
+        {trackedPaths.length === 0 && individuallyTrackedCerts.length === 0 ? (
           <div className="dashboard__empty-state">
             <Icons.TrendingUp size={24} />
-            <p>You aren't tracking any paths yet. Explore the catalog below to start your journey.</p>
+            <p>You aren't tracking any paths or individual exams yet. Explore the catalog below to start your journey.</p>
           </div>
         ) : (
-          <div className="dashboard__paths-grid">
-            {trackedPaths.map((path, idx) => renderPathCard(path, false, idx))}
-          </div>
+          <>
+            {trackedPaths.length > 0 && (
+              <div className="dashboard__paths-grid">
+                {trackedPaths.map((path, idx) => renderPathCard(path, false, idx))}
+              </div>
+            )}
+            
+            {individuallyTrackedCerts.length > 0 && (
+              <div style={{ marginTop: trackedPaths.length > 0 ? '24px' : '0' }}>
+                <h3 className="dashboard__pillar-title" style={{ fontSize: '16px', marginBottom: '16px' }}>Individually Tracked Exams</h3>
+                <div className="dashboard__activity-list">
+                  {individuallyTrackedCerts.map((cert) => (
+                    <div
+                      key={cert.id}
+                      className="dashboard__activity-item"
+                      onClick={() => navigate(`/path/${cert.pathId}`)}
+                      style={{ '--cert-color': cert.pathColor }}
+                    >
+                      <div className="dashboard__activity-item-icon">
+                        <Icons.Award size={16} />
+                      </div>
+                      <div className="dashboard__activity-item-content">
+                        <span className="dashboard__activity-item-code">{cert.examCode}</span>
+                        <span className="dashboard__activity-item-name">{cert.name}</span>
+                      </div>
+                      <Badge color={cert.pathColor} small>{cert.pathName}</Badge>
+                      <Icons.ChevronRight size={16} className="dashboard__activity-item-chevron" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -267,7 +329,7 @@ const Dashboard = () => {
             <div className="dashboard__catalog-group">
               <div className="dashboard__section-header">
                 <h2 className="dashboard__section-title">Explore Catalog</h2>
-                <p className="dashboard__section-desc">Discover new certification paths to add to your tracked list.</p>
+                <p className="dashboard__section-desc">Discover new certification paths, or pick and choose individual exams to add to your tracked learning.</p>
               </div>
               
               <div className="dashboard__paths-grid">
