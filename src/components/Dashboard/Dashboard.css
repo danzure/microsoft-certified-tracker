@@ -32,6 +32,9 @@
 
 .dashboard__update-link {
   margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .dashboard__update-btn {

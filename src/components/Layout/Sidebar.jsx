@@ -128,17 +128,6 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
             );
           })}
         </nav>
-        <div className="sidebar__footer">
-          <a
-            href="https://arch-center.azureedge.net/Credentials/Certification-Poster_en-us.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sidebar__poster-link"
-          >
-            <Icons.Microsoft size={16} />
-            <span className="sidebar__poster-text">Official Certification Poster</span>
-          </a>
-        </div>
       </aside>
     </>
   );

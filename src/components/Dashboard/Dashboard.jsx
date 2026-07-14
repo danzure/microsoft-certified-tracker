@@ -60,6 +60,15 @@ const Dashboard = () => {
             <Icons.ExternalLink size={16} />
             Microsoft Skills & Certifications Updates
           </a>
+          <a
+            href="https://arch-center.azureedge.net/Credentials/Certification-Poster_en-us.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="dashboard__update-btn"
+          >
+            <Icons.Microsoft size={16} />
+            Official Certification Poster
+          </a>
         </div>
       </div>
 
