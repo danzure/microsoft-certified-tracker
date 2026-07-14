@@ -217,8 +217,8 @@ const CertDetail = ({ cert, path, onClose }) => {
                           const prePath = preCertData?.path;
                           if (!preCert) return null;
                           return (
-                            <div key={subId} className="cert-detail__prereq">
-                              <span className="cert-detail__prereq-code" style={{ color: prePath?.color || path.color }}>{preCert.examCode}</span>
+                            <div key={subId} className="cert-detail__prereq" style={{ '--prereq-color': prePath?.color || path.color }}>
+                              <span className="cert-detail__prereq-code">{preCert.examCode}</span>
                               <span className="cert-detail__prereq-name">{preCert.name}</span>
                             </div>
                           );
@@ -232,8 +232,8 @@ const CertDetail = ({ cert, path, onClose }) => {
                   const prePath = preCertData?.path;
                   if (!preCert) return null;
                   return (
-                    <div key={preItem} className="cert-detail__prereq">
-                      <span className="cert-detail__prereq-code" style={{ color: prePath?.color || path.color }}>{preCert.examCode}</span>
+                    <div key={preItem} className="cert-detail__prereq" style={{ '--prereq-color': prePath?.color || path.color }}>
+                      <span className="cert-detail__prereq-code">{preCert.examCode}</span>
                       <span className="cert-detail__prereq-name">{preCert.name}</span>
                     </div>
                   );
@@ -252,8 +252,8 @@ const CertDetail = ({ cert, path, onClose }) => {
                   const prePath = preCertData?.path;
                   if (!preCert) return null;
                   return (
-                    <div key={preId} className="cert-detail__prereq">
-                      <span className="cert-detail__prereq-code" style={{ color: prePath?.color || path.color }}>{preCert.examCode}</span>
+                    <div key={preId} className="cert-detail__prereq" style={{ '--prereq-color': prePath?.color || path.color }}>
+                      <span className="cert-detail__prereq-code">{preCert.examCode}</span>
                       <span className="cert-detail__prereq-name">{preCert.name}</span>
                     </div>
                   );
@@ -268,8 +268,8 @@ const CertDetail = ({ cert, path, onClose }) => {
               <div className="cert-detail__prereqs">
                 {prerequisiteFor.map((preCert) => {
                   return (
-                    <div key={preCert.id} className="cert-detail__prereq">
-                      <span className="cert-detail__prereq-code" style={{ color: preCert.pathColor || path.color }}>{preCert.examCode}</span>
+                    <div key={preCert.id} className="cert-detail__prereq" style={{ '--prereq-color': preCert.pathColor || path.color }}>
+                      <span className="cert-detail__prereq-code">{preCert.examCode}</span>
                       <span className="cert-detail__prereq-name">{preCert.name}</span>
                     </div>
                   );

@@ -84,98 +84,79 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
     >
       {/* CertNode Info Card */}
       <div className="cert-node__info" onClick={handleOpenDetail}>
-        {getBadgeUrl(cert.level, cert.id) && (
-          <img 
-            src={getBadgeUrl(cert.level, cert.id)} 
-            alt={`${cert.level} Badge`} 
-            className="cert-node__badge-icon" 
-            loading="lazy"
-          />
-        )}
         <div className="cert-node__info-header">
-          <span className="cert-node__exam-code">{cert.examCode}</span>
-          <div className="cert-node__badges">
-            <Badge variant={levelVariant} small>{cert.level}</Badge>
-            
-            {cert.level === CERT_LEVELS.FUNDAMENTALS && (
-              <Badge variant="default" small>Optional</Badge>
-            )}
-            
-            {/* Prerequisite Tags */}
-            {cert.prerequisites?.length > 0 && (
-              cert.prerequisites.map((prereqItem, index) => {
-                if (Array.isArray(prereqItem)) {
-                  return (
-                    <Badge key={`prereq-group-${index}`} variant="default" small>
-                      <Link size={9} />
-                      Requires 1 of {prereqItem.length}
-                    </Badge>
-                  );
-                }
-                const prereqCert = getCertById(prereqItem)?.cert;
-                if (!prereqCert) return null;
-                return (
-                  <Badge key={`prereq-${prereqItem}`} variant={prereqCert.level.toLowerCase()} small>
-                    <Link size={9} />
-                    Requires {prereqCert.examCode}
+          <div className="cert-node__icon-title">
+            <div className="cert-node__icon">
+              {getBadgeUrl(cert.level, cert.id) ? (
+                <img 
+                  src={getBadgeUrl(cert.level, cert.id)} 
+                  alt={`${cert.level} Badge`} 
+                  className="cert-node__badge-image" 
+                  loading="lazy"
+                />
+              ) : (
+                <IconMap.Award size={20} />
+              )}
+            </div>
+            <div className="cert-node__title-group">
+              <div className="cert-node__badge-stats">
+                <span className="cert-node__exam-code">{cert.examCode}</span>
+                <Badge variant={levelVariant} small>{cert.level}</Badge>
+                
+                {cert.level === CERT_LEVELS.FUNDAMENTALS && (
+                  <Badge variant="default" small>Optional</Badge>
+                )}
+                
+                {/* Prerequisite Tags */}
+                {cert.prerequisites?.length > 0 && (
+                  cert.prerequisites.map((prereqItem, index) => {
+                    if (Array.isArray(prereqItem)) {
+                      return (
+                        <Badge key={`prereq-group-${index}`} variant="default" small>
+                          <Link size={9} />
+                          1 of {prereqItem.length}
+                        </Badge>
+                      );
+                    }
+                    const prereqCert = getCertById(prereqItem)?.cert;
+                    if (!prereqCert) return null;
+                    return (
+                      <Badge key={`prereq-${prereqItem}`} variant={prereqCert.level.toLowerCase()} small>
+                        <Link size={9} />
+                        Req. {prereqCert.examCode}
+                      </Badge>
+                    );
+                  })
+                )}
+
+                {retiring && (
+                  <Badge variant="retiring" small>
+                    <AlertTriangle size={9} />
+                    Retiring {formatDate(cert.retirementDate)}
                   </Badge>
-                );
-              })
-            )}
+                )}
+                {retired && (
+                  <Badge variant="retiring" small outline>
+                    <ArchiveX size={9} />
+                    Retired {formatDate(cert.retirementDate)}
+                  </Badge>
 
-            {retiring && (
-              <Badge variant="retiring" small>
-                <AlertTriangle size={9} />
-                Retiring {formatDate(cert.retirementDate)}
-              </Badge>
-            )}
-            {retired && (
-              <Badge variant="retiring" small outline>
-                <ArchiveX size={9} />
-                Retired {formatDate(cert.retirementDate)}
-              </Badge>
-
-            )}
-            {cert.isBeta && (
-              <Badge variant="default" small>
-                {typeof cert.isBeta === 'string' ? cert.isBeta : 'Beta'}
-              </Badge>
-            )}
-            {cert.isComingSoon && (
-              <Badge variant="default" small>
-                Coming soon
-              </Badge>
-            )}
-            {certIgnored && (
-              <Badge variant="retiring" small>
-                <EyeOff size={9} />
-                Excluded
-              </Badge>
-            )}
+                )}
+                {cert.isBeta && (
+                  <Badge variant="default" small>
+                    Beta
+                  </Badge>
+                )}
+                {cert.isComingSoon && (
+                  <Badge variant="default" small>
+                    Coming soon
+                  </Badge>
+                )}
+              </div>
+              <h3 className="cert-node__name">{cert.name}</h3>
+            </div>
           </div>
-        </div>
-        <h3 className="cert-node__name">{cert.name}</h3>
-        <p className="cert-node__description">{cert.description}</p>
-        <div className="cert-node__actions">
-          <a
-            href={cert.learnUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cert-node__learn-link"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Microsoft size={12} />
-            Microsoft Learn
-          </a>
-          <button
-            className={`cert-node__cycle-btn cert-node__cycle-btn--${status.replace('_', '-')}`}
-            onClick={handleCycleStatus}
-            title={`${statusLabel} — Click to toggle status`}
-            aria-label={`Change status: ${statusLabel}`}
-          >
-            <StatusIcon size={12} />
-            {nextStatusLabel}
-          </button>
+          
           <button
             className={`cert-node__fast-untrack-btn ${certIgnored ? 'cert-node__fast-untrack-btn--active' : ''}`}
             onClick={(e) => {
@@ -188,8 +169,37 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
             disabled={isPathIgnored}
             title={isPathIgnored ? "Path is excluded" : (certIgnored ? "Include in tracking" : "Exclude from tracking")}
           >
-            {certIgnored ? <EyeOff size={14} /> : <Eye size={14} />}
+            {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
+            <span className="sr-only">{certIgnored ? "Include" : "Exclude"}</span>
           </button>
+        </div>
+        
+        <div className="cert-node__info-body">
+          <p className="cert-node__description">{cert.description}</p>
+        </div>
+        
+        <div className="cert-node__info-footer">
+          <div className="cert-node__actions">
+            <a
+              href={cert.learnUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cert-node__learn-link"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Microsoft size={12} />
+              Microsoft Learn
+            </a>
+            <button
+              className={`cert-node__cycle-btn cert-node__cycle-btn--${status.replace('_', '-')}`}
+              onClick={handleCycleStatus}
+              title={`${statusLabel} — Click to toggle status`}
+              aria-label={`Change status: ${statusLabel}`}
+            >
+              <StatusIcon size={12} />
+              {nextStatusLabel}
+            </button>
+          </div>
         </div>
       </div>
     </div>

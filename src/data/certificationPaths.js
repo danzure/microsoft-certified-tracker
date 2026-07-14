@@ -87,7 +87,7 @@ export const certificationPaths = [
         examCode: 'AZ-802',
         name: 'Windows Server Administrator Associate',
         level: CERT_LEVELS.ASSOCIATE,
-        branch: 'admin',
+        branch: 'hybrid',
         description: 'Configure and manage Windows Server on-premises, hybrid, and IaaS workloads.',
         prerequisites: [],
         recommendedPrereqs: ['az-900'],

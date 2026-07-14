@@ -123,60 +123,85 @@
 }
 
 
-/* CertNode Info Card — compact */
+/* CertNode Info Card — matches dashboard__path-card */
 .cert-node__info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 156px;
-  padding: var(--space-3) 56px var(--space-3) var(--space-3);
-  background: var(--bg-surface-1);
-  border: 1px solid var(--border-subtle);
+  padding: 16px;
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke1);
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-2);
   cursor: pointer;
-  transition: all 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   min-width: 0;
   position: relative;
   overflow: hidden;
   z-index: 6;
 }
 
-.cert-node__info::after {
+.cert-node__info::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--cert-node-color) 15%, transparent) 0%, transparent 100%);
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--cert-node-color);
   opacity: 0.8;
-  z-index: -1;
-  transition: opacity 300ms ease;
+  z-index: 1;
 }
 
 .cert-node__info:hover {
-  border-color: color-mix(in srgb, var(--cert-node-color) 50%, var(--border-subtle));
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.cert-node__info:hover::after {
-  opacity: 1;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--cert-node-color) 25%, transparent) 0%, transparent 100%);
-}
-
-.cert-node__badge-icon {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  opacity: 0.9;
+  border-color: color-mix(in srgb, var(--cert-node-color) 40%, var(--colorNeutralStroke1));
+  box-shadow: var(--shadow-8);
+  transform: translateY(-4px);
 }
 
 .cert-node__info-header {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.cert-node__icon-title {
+  display: flex;
   align-items: center;
-  gap: var(--space-2);
-  margin-bottom: 2px;
+  gap: 12px;
+}
+
+.cert-node__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--cert-node-color) 10%, var(--colorNeutralBackground3));
+  color: var(--cert-node-color);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cert-node__badge-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cert-node__title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.cert-node__badge-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -187,26 +212,27 @@
   color: var(--cert-node-color);
 }
 
-.cert-node__badges {
-  display: flex;
-  gap: var(--space-1);
-  flex-wrap: wrap;
+.cert-node__name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+  line-height: 1.2;
+  margin: 0;
 }
 
-.cert-node__name {
-  font-size: var(--fs-body2, 13px);
-  font-weight: var(--fw-semibold);
-  color: var(--text-primary);
-  margin-bottom: 0;
-  line-height: var(--lh-tight);
+.cert-node__info-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .cert-node__description {
-  font-size: var(--fs-caption2, 11px);
-  color: var(--text-secondary);
-  line-height: var(--lh-relaxed);
-  margin-top: var(--space-1);
-  margin-bottom: var(--space-2);
+  font-size: 13px;
+  color: var(--colorNeutralForeground2);
+  line-height: 1.4;
+  margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -214,10 +240,15 @@
   overflow: hidden;
 }
 
+.cert-node__info-footer {
+  margin-top: auto;
+  display: flex;
+}
+
 .cert-node__actions {
   display: flex;
   gap: var(--space-3);
-  margin-top: auto;
+  width: 100%;
 }
 
 .cert-node__learn-link {
@@ -296,65 +327,40 @@
 }
 
 .cert-node__fast-untrack-btn {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   background: transparent;
-  color: var(--text-tertiary);
+  color: var(--colorNeutralForeground3);
   border: none;
   cursor: pointer;
-  transition: background var(--duration-fast) var(--curve-easy-ease),
-              color var(--duration-fast) var(--curve-easy-ease),
-              opacity var(--transition-fast);
-  opacity: 0;
+  transition: all 0.2s ease;
   z-index: 2;
-}
-
-.cert-node:hover .cert-node__fast-untrack-btn {
-  opacity: 1;
 }
 
 .cert-node__fast-untrack-btn:hover:not(:disabled) {
   background: var(--colorSubtleBackgroundHover);
-  color: var(--text-primary);
+  color: var(--colorNeutralForeground1);
 }
 
 .cert-node__fast-untrack-btn:active:not(:disabled) {
   background: var(--colorSubtleBackgroundActive);
-  color: var(--text-primary);
-}
-
-.cert-node__fast-untrack-btn:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 1px;
-  opacity: 1;
+  color: var(--colorNeutralForeground1);
 }
 
 .cert-node__fast-untrack-btn--active {
-  opacity: 1;
-  color: var(--status-retiring);
-  background: var(--badge-retiring-bg);
+  color: var(--colorNeutralForeground2);
 }
 
 .cert-node__fast-untrack-btn--active:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--status-retiring) 14%, transparent);
-}
-
-.cert-node__fast-untrack-btn--active:active:not(:disabled) {
-  background: color-mix(in srgb, var(--status-retiring) 20%, transparent);
+  background: var(--colorSubtleBackgroundHover);
 }
 
 .cert-node__fast-untrack-btn:disabled {
   cursor: not-allowed;
-}
-
-.cert-node:hover .cert-node__fast-untrack-btn:disabled {
   opacity: 0.5;
 }
 
