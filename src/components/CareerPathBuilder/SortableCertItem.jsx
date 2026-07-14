@@ -47,6 +47,12 @@ export const SortableCertItem = ({ id, index, certInfo, status, statusText, node
       <div 
         className="cpb-timeline-card"
         style={{ '--card-color': certInfo.pathColor }}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onNavigate(`/path/${certInfo.pathId}`);
+          }
+        }}
       >
         <div className="cpb-timeline-card-header">
           <div>

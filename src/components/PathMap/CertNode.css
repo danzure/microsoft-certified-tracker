@@ -159,6 +159,12 @@
   transform: translateY(-4px);
 }
 
+.cert-node__info:focus-visible {
+  outline: 2px solid var(--cert-node-color);
+  outline-offset: 2px;
+  border-color: color-mix(in srgb, var(--cert-node-color) 40%, var(--colorNeutralStroke1));
+}
+
 .cert-node__info-header {
   display: flex;
   justify-content: space-between;

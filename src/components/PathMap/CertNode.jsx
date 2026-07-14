@@ -24,7 +24,8 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
   const retired = isRetired(cert);
-  const certIgnored = isCertIgnored(cert.id) || isPathIgnored;
+  const isRetiredExam = retiring || retired;
+  const certIgnored = !isRetiredExam && (isCertIgnored(cert.id) || isPathIgnored);
 
   const statusClass = {
     [CERT_STATUS.NOT_STARTED]: 'cert-node--not-started',
@@ -83,7 +84,16 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
       id={`cert-node-${cert.id}`}
     >
       {/* CertNode Info Card */}
-      <div className="cert-node__info" onClick={handleOpenDetail}>
+      <div 
+        className="cert-node__info" 
+        onClick={handleOpenDetail}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleOpenDetail(e);
+          }
+        }}
+      >
         <div className="cert-node__info-header">
           <div className="cert-node__icon-title">
             <div className="cert-node__icon">
@@ -157,21 +167,23 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked, isPathIgnored 
             </div>
           </div>
           
-          <button
-            className={`cert-node__fast-untrack-btn ${certIgnored ? 'cert-node__fast-untrack-btn--active' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (!isPathIgnored) {
-                toggleCertIgnored(cert.id);
-              }
-            }}
-            disabled={isPathIgnored}
-            title={isPathIgnored ? "Path is excluded" : (certIgnored ? "Include in tracking" : "Exclude from tracking")}
-          >
-            {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
-            <span className="sr-only">{certIgnored ? "Include" : "Exclude"}</span>
-          </button>
+          {!isRetiredExam && (
+            <button
+              className={`cert-node__fast-untrack-btn ${certIgnored ? 'cert-node__fast-untrack-btn--active' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isPathIgnored) {
+                  toggleCertIgnored(cert.id);
+                }
+              }}
+              disabled={isPathIgnored}
+              title={isPathIgnored ? "Path is excluded" : (certIgnored ? "Include in tracking" : "Exclude from tracking")}
+            >
+              {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
+              <span className="sr-only">{certIgnored ? "Include" : "Exclude"}</span>
+            </button>
+          )}
         </div>
         
         <div className="cert-node__info-body">

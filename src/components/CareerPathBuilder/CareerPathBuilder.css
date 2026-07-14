@@ -224,6 +224,11 @@
   z-index: 1;
 }
 
+.cpb-timeline-card:focus-visible {
+  outline: 2px solid var(--colorBrandForeground1);
+  outline-offset: 2px;
+}
+
 .cpb-timeline-card::after {
   content: '';
   position: absolute;
@@ -381,6 +386,39 @@
   background: var(--bg-glass);
   border-radius: 16px;
   border: 1px dashed var(--border-color);
+}
+
+.cpb-timeline-empty--enhanced {
+  background: var(--bg-card);
+  border: 2px dashed var(--border-subtle, var(--border-color));
+  padding: 4rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cpb-timeline-empty-icon-wrapper {
+  color: var(--colorBrandForeground1);
+  background: color-mix(in srgb, var(--colorBrandForeground1) 10%, transparent);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.cpb-timeline-empty-title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.cpb-timeline-empty-desc {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 .cpb-timeline-card-actions {

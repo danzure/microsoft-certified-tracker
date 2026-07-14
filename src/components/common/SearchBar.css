@@ -67,6 +67,17 @@
   border: 1px solid var(--border-subtle);
 }
 
+.search-bar__spinner {
+  color: var(--text-tertiary);
+  animation: spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .search-bar__dropdown {
   position: absolute;
   top: calc(100% + var(--space-1));

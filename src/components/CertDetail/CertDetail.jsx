@@ -3,8 +3,9 @@ import { IconMap } from '../common/IconMap';
 const { X, AlertTriangle, Calendar, Award, EyeOff, Eye, Microsoft } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
 import { useCurrency } from '../../context/CurrencyContext';
+import { useToast } from '../../context/ToastContext';
 import { CERT_STATUS, getCertById, getCertificationsRequiring, doesCertExpire } from '../../data/certificationPaths';
-import { isRetiring, formatDate, getBadgeUrl } from '../../utils/helpers';
+import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import { getFormattedExamCost, CURRENCIES } from '../../utils/pricing';
 import Badge from '../common/Badge';
 import './CertDetail.css';
@@ -22,10 +23,12 @@ import './CertDetail.css';
 const CertDetail = ({ cert, path, onClose }) => {
   const { getStatus, setStatus, toggleCertIgnored, isCertIgnored, isPathIgnored, completionDates, setCompletionDate } = useProgressContext();
   const { currency, setCurrency } = useCurrency();
+  const { addToast } = useToast();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
+  const isRetiredExam = retiring || isRetired(cert);
   const isPathExcluded = isPathIgnored(path.id);
-  const certIgnored = isCertIgnored(cert.id) || isPathExcluded;
+  const certIgnored = !isRetiredExam && (isCertIgnored(cert.id) || isPathExcluded);
 
   const completionDateStr = completionDates?.[cert.id];
   const expires = doesCertExpire(cert.level);
@@ -56,13 +59,17 @@ const CertDetail = ({ cert, path, onClose }) => {
 
       if (e.key === 'Escape') {
         onClose();
-      } else if (e.key.toLowerCase() === 'e' && !isPathExcluded) {
+      } else if (e.key.toLowerCase() === 'e' && !isPathExcluded && !isRetiredExam) {
         toggleCertIgnored(cert.id);
       } else if (e.key.toLowerCase() === 's' && !certIgnored) {
         const statuses = [CERT_STATUS.NOT_STARTED, CERT_STATUS.IN_PROGRESS, CERT_STATUS.COMPLETED];
         const currentIndex = statuses.indexOf(status);
         const nextIndex = (currentIndex + 1) % statuses.length;
-        setStatus(cert.id, statuses[nextIndex]);
+        const newStatus = statuses[nextIndex];
+        setStatus(cert.id, newStatus);
+        
+        const statusLabel = statusOptions.find(opt => opt.value === newStatus)?.label || newStatus;
+        addToast(`${cert.examCode} marked as ${statusLabel}`);
       } else if (e.key === 'Enter') {
         window.open(cert.learnUrl, '_blank', 'noopener,noreferrer');
       }
@@ -160,7 +167,6 @@ const CertDetail = ({ cert, path, onClose }) => {
                 className="cert-detail__currency-select"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                disabled={certIgnored}
               >
                 {Object.entries(CURRENCIES).map(([code, data]) => (
                   <option key={code} value={code}>{data.label}</option>
@@ -278,11 +284,12 @@ const CertDetail = ({ cert, path, onClose }) => {
             </div>
           )}
 
-          <div className="cert-detail__section">
-            <h3 className="cert-detail__section-title">
-              Tracking <span style={{fontSize: '10px', fontWeight: 'normal', opacity: 0.6, marginLeft: '6px'}}>(Press E)</span>
-            </h3>
-            <button
+          {!isRetiredExam && (
+            <div className="cert-detail__section">
+              <h3 className="cert-detail__section-title">
+                Tracking <span style={{fontSize: '10px', fontWeight: 'normal', opacity: 0.6, marginLeft: '6px'}}>(Press E)</span>
+              </h3>
+              <button
               className={`cert-detail__ignore-btn ${certIgnored ? 'cert-detail__ignore-btn--active' : ''}`}
               onClick={() => isPathExcluded ? null : toggleCertIgnored(cert.id)}
               disabled={isPathExcluded}
@@ -304,6 +311,7 @@ const CertDetail = ({ cert, path, onClose }) => {
               </p>
             )}
           </div>
+          )}
 
           <div className="cert-detail__section">
             <h3 className="cert-detail__section-title">
@@ -314,8 +322,10 @@ const CertDetail = ({ cert, path, onClose }) => {
                 <button
                   key={opt.value}
                   className={`cert-detail__status-btn ${opt.className} ${(status === opt.value || (status === CERT_STATUS.NEEDS_RENEWAL && opt.value === CERT_STATUS.COMPLETED)) ? 'cert-detail__status-btn--active' : ''}`}
-                  onClick={() => setStatus(cert.id, opt.value)}
-                  disabled={certIgnored}
+                  onClick={() => {
+                    setStatus(cert.id, opt.value);
+                    addToast(`${cert.examCode} marked as ${opt.label}`);
+                  }}
                 >
                   <span className="cert-detail__status-icon">{opt.icon}</span>
                   {opt.label}
@@ -334,7 +344,6 @@ const CertDetail = ({ cert, path, onClose }) => {
                       setCompletionDate(cert.id, new Date(e.target.value).toISOString());
                     }
                   }}
-                  disabled={certIgnored}
                 />
                 {expiryDate && (
                   <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '6px' }}>

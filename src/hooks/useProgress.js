@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { CERT_STATUS, certificationPaths, doesCertExpire } from '../data/certificationPaths';
+import { isRetiring, isRetired } from '../utils/helpers';
 
 const STORAGE_KEY = 'ms-cert-tracker-progress';
 const IGNORED_STORAGE_KEY = 'ms-cert-tracker-ignored';
@@ -176,7 +177,17 @@ export const useProgress = () => {
       const path = certificationPaths.find((p) => p.id === pathId);
       if (!path) return { total: 0, completed: 0, inProgress: 0, percent: 0 };
 
-      const tracked = path.certifications.filter(c => !ignoredCerts.includes(c.id));
+      const tracked = path.certifications.filter(c => {
+        if (ignoredCerts.includes(c.id)) return false;
+        
+        const stat = getStatus(c.id);
+        const hasProgress = stat === CERT_STATUS.COMPLETED || stat === CERT_STATUS.NEEDS_RENEWAL || stat === CERT_STATUS.IN_PROGRESS;
+        if ((isRetiring(c) || isRetired(c)) && !hasProgress) {
+          return false;
+        }
+        
+        return true;
+      });
       const total = tracked.length;
       const completed = tracked.filter(
         (c) => getStatus(c.id) === CERT_STATUS.COMPLETED || getStatus(c.id) === CERT_STATUS.NEEDS_RENEWAL
@@ -206,8 +217,14 @@ export const useProgress = () => {
       path.certifications.forEach((cert) => {
         // Skip shared duplicates and individually ignored certs
         if (!cert.isShared && !ignoredCerts.includes(cert.id)) {
-          total++;
           const stat = getStatus(cert.id);
+          const hasProgress = stat === CERT_STATUS.COMPLETED || stat === CERT_STATUS.NEEDS_RENEWAL || stat === CERT_STATUS.IN_PROGRESS;
+          
+          if ((isRetiring(cert) || isRetired(cert)) && !hasProgress) {
+            return;
+          }
+
+          total++;
           if (stat === CERT_STATUS.COMPLETED || stat === CERT_STATUS.NEEDS_RENEWAL) completed++;
           if (stat === CERT_STATUS.IN_PROGRESS) inProgress++;
         }

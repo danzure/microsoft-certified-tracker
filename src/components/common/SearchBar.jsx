@@ -14,6 +14,8 @@ import './SearchBar.css';
  */
 const SearchBar = ({ onClose }) => {
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -29,9 +31,25 @@ const SearchBar = ({ onClose }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    if (!query.trim()) {
+      setDebouncedQuery('');
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+      setIsSearching(false);
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
   const allCerts = getAllCertifications();
 
-  const q = query.toLowerCase().trim();
+  const q = debouncedQuery.toLowerCase().trim();
   const results = q.length > 0 
     ? allCerts.filter(
         (c) =>
@@ -45,6 +63,7 @@ const SearchBar = ({ onClose }) => {
   const handleSelect = (cert) => {
     navigate(`/path/${cert.pathId}`);
     setQuery('');
+    setDebouncedQuery('');
     setIsOpen(false);
     onClose?.();
   };
@@ -69,8 +88,11 @@ const SearchBar = ({ onClose }) => {
         {!query && (
           <span className="search-bar__shortcut">Ctrl K</span>
         )}
-        {query && (
-          <button className="search-bar__clear" onClick={() => { setQuery(''); setIsOpen(false); }}>
+        {query && isSearching && (
+          <IconMap.RefreshCw size={14} className="search-bar__spinner" />
+        )}
+        {query && !isSearching && (
+          <button className="search-bar__clear" onClick={() => { setQuery(''); setDebouncedQuery(''); setIsOpen(false); }}>
             <X size={14} />
           </button>
         )}

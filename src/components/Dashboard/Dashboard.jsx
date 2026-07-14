@@ -67,7 +67,7 @@ const Dashboard = () => {
             <div className="dashboard__path-title-group">
               <div className="dashboard__path-badge-stats">
                 <Badge color={path.color} small>{path.pillar}</Badge>
-                {!isIgnored && (
+                {!isIgnored && path.id !== 'retired-exams' && (
                   <div className="dashboard__path-stats-mini">
                     <span title="Completed"><Icons.CheckCircle2 size={12} /> {prog.completed}</span>
                     <span title="In Progress"><Icons.Clock size={12} /> {prog.inProgress}</span>
@@ -77,24 +77,26 @@ const Dashboard = () => {
               <h2 className="dashboard__path-name">{path.shortName}</h2>
             </div>
           </div>
-          <button
-            className={`dashboard__path-toggle-btn ${isIgnored ? 'dashboard__path-toggle-btn--add' : 'dashboard__path-toggle-btn--remove'}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              togglePathIgnored(path.id);
-            }}
-            title={isIgnored ? "Add to tracked paths" : "Remove from tracked paths"}
-          >
-            {isIgnored ? <Icons.Eye size={16} /> : <Icons.EyeOff size={16} />}
-            <span className="sr-only">{isIgnored ? "Track" : "Remove"}</span>
-          </button>
+          {path.id !== 'retired-exams' && (
+            <button
+              className={`dashboard__path-toggle-btn ${isIgnored ? 'dashboard__path-toggle-btn--add' : 'dashboard__path-toggle-btn--remove'}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePathIgnored(path.id);
+              }}
+              title={isIgnored ? "Add to tracked paths" : "Remove from tracked paths"}
+            >
+              {isIgnored ? <Icons.Eye size={16} /> : <Icons.EyeOff size={16} />}
+              <span className="sr-only">{isIgnored ? "Track" : "Remove"}</span>
+            </button>
+          )}
         </div>
         
         <div className="dashboard__path-card-body">
           <p className="dashboard__path-desc">{path.description}</p>
         </div>
         
-        {!isIgnored && (
+        {!isIgnored && path.id !== 'retired-exams' && (
           <div className="dashboard__path-progress-container">
             <div 
               className="dashboard__path-progress-fill"

@@ -190,9 +190,14 @@ const CareerPathBuilder = () => {
                   strategy={verticalListSortingStrategy}
                 >
                   {customPlaylist.length === 0 && (
-                    <div className="cpb-timeline-empty">
-                      <Icons.BookOpen size={32} />
-                      <p>Your custom career is empty. Add certifications above to get started.</p>
+                    <div className="cpb-timeline-empty cpb-timeline-empty--enhanced">
+                      <div className="cpb-timeline-empty-icon-wrapper">
+                        <Icons.Compass size={48} />
+                      </div>
+                      <h3 className="cpb-timeline-empty-title">Your Path is Empty</h3>
+                      <p className="cpb-timeline-empty-desc">
+                        Use the dropdown above to select a certification and click <strong>Add</strong> to start building your custom career track. You can drag and drop items here to reorder them once added.
+                      </p>
                     </div>
                   )}
                   {customPlaylist.map((certId, index) => {

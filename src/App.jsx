@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProgressProvider } from './context/ProgressContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { CurrencyProvider } from './context/CurrencyContext';
+import { ToastProvider } from './context/ToastContext';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import { useState, Suspense, lazy, useEffect } from 'react';
@@ -38,9 +39,10 @@ function App() {
       <ThemeProvider>
         <CurrencyProvider>
           <ProgressProvider>
-            <div className="app">
-              <Header onToggleSidebar={toggleSidebar} />
-            <div className={`app__body ${sidebarOpen ? '' : 'app__body--collapsed'}`}>
+            <ToastProvider>
+              <div className="app">
+                <Header onToggleSidebar={toggleSidebar} />
+              <div className={`app__body ${sidebarOpen ? '' : 'app__body--collapsed'}`}>
               <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} onToggle={toggleSidebar} />
               <main className="app__content" id="main-content">
                 <Suspense fallback={
@@ -63,7 +65,8 @@ function App() {
               </main>
             </div>
           </div>
-        </ProgressProvider>
+            </ToastProvider>
+          </ProgressProvider>
         </CurrencyProvider>
       </ThemeProvider>
     </BrowserRouter>

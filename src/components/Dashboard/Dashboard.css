@@ -267,6 +267,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .dashboard__activity-item-code {
@@ -283,10 +284,17 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
+}
+
+.dashboard__activity-item .badge {
+  flex-shrink: 0;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dashboard__activity-item-chevron {
+  flex-shrink: 0;
   color: var(--colorNeutralForeground3);
   transition: transform 0.2s ease;
 }
