@@ -1,13 +1,5 @@
 export const careerRoles = [
   {
-    id: 'administrator',
-    title: 'Administrator',
-    description: 'Implement, manage, and monitor identity, governance, storage, compute, and virtual networks in a cloud environment.',
-    icon: 'Cloud',
-    color: 'var(--line-azure)',
-    certs: ['az-104', 'ms-102', 'md-102', 'ms-700', 'dp-300', 'sc-300']
-  },
-  {
     id: 'ai-engineer',
     title: 'AI Engineer',
     description: 'Build, manage, and deploy AI solutions that leverage cognitive services, machine learning, and knowledge mining.',
@@ -16,20 +8,36 @@ export const careerRoles = [
     certs: ['ai-103', 'ai-200', 'ab-250']
   },
   {
-    id: 'app-maker',
-    title: 'App Maker',
-    description: 'Build custom business applications and automate workflows with low-code techniques to simplify and transform tasks.',
-    icon: 'Zap',
-    color: 'var(--line-power)',
-    certs: ['pl-100']
+    id: 'administrator',
+    title: 'Administrator',
+    description: 'Implement, manage, and monitor identity, governance, storage, compute, and virtual networks in a cloud environment.',
+    icon: 'Cloud',
+    color: 'var(--line-azure)',
+    certs: ['az-104', 'ms-102', 'md-102', 'ms-700', 'dp-300', 'sc-300']
   },
   {
-    id: 'business-user',
-    title: 'Business User',
-    description: 'Use Microsoft applications to increase efficiency, productivity, and collaboration in your daily business tasks.',
-    icon: 'Microsoft',
-    color: 'var(--line-m365)',
-    certs: ['sc-730']
+    id: 'developer',
+    title: 'Developer',
+    description: 'Design, build, test, and maintain cloud applications and services to solve technical and business challenges.',
+    icon: 'Cloud',
+    color: 'var(--line-azure)',
+    certs: ['az-204', 'pl-400', 'dp-420']
+  },
+  {
+    id: 'devops-engineer',
+    title: 'DevOps Engineer',
+    description: 'Combine people, process, and technologies to continuously deliver valuable products and services that meet end user needs.',
+    icon: 'AzureDevOps',
+    color: 'var(--line-azure)',
+    certs: ['az-400']
+  },
+  {
+    id: 'solutions-architect',
+    title: 'Solutions Architect',
+    description: 'Advise stakeholders and translate business requirements into secure, scalable, and reliable cloud solutions.',
+    icon: 'Cloud',
+    color: 'var(--line-azure)',
+    certs: ['az-305', 'pl-600', 'sc-100', 'mb-700']
   },
   {
     id: 'data-analyst',
@@ -56,20 +64,20 @@ export const careerRoles = [
     certs: ['dp-100']
   },
   {
-    id: 'developer',
-    title: 'Developer',
-    description: 'Design, build, test, and maintain cloud applications and services to solve technical and business challenges.',
-    icon: 'Cloud',
-    color: 'var(--line-azure)',
-    certs: ['az-204', 'pl-400', 'dp-420']
+    id: 'business-user',
+    title: 'Business User',
+    description: 'Use Microsoft applications to increase efficiency, productivity, and collaboration in your daily business tasks.',
+    icon: 'Microsoft',
+    color: 'var(--line-m365)',
+    certs: ['sc-730']
   },
   {
-    id: 'devops-engineer',
-    title: 'DevOps Engineer',
-    description: 'Combine people, process, and technologies to continuously deliver valuable products and services that meet end user needs.',
-    icon: 'AzureDevOps',
-    color: 'var(--line-azure)',
-    certs: ['az-400']
+    id: 'app-maker',
+    title: 'App Maker',
+    description: 'Build custom business applications and automate workflows with low-code techniques to simplify and transform tasks.',
+    icon: 'Zap',
+    color: 'var(--line-power)',
+    certs: ['pl-100']
   },
   {
     id: 'functional-consultant',
@@ -110,13 +118,5 @@ export const careerRoles = [
     icon: 'Shield',
     color: 'var(--line-security)',
     certs: ['sc-200']
-  },
-  {
-    id: 'solutions-architect',
-    title: 'Solutions Architect',
-    description: 'Advise stakeholders and translate business requirements into secure, scalable, and reliable cloud solutions.',
-    icon: 'Cloud',
-    color: 'var(--line-azure)',
-    certs: ['az-305', 'pl-600', 'sc-100', 'mb-700']
   }
 ];
