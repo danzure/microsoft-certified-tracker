@@ -522,17 +522,16 @@ const PathMap = () => {
 
               {/* ── Branch Columns ── */}
               <div className="path-map__branches-scroll">
-                <div
-                  className="path-map__branches-grid"
-                  ref={gridRef}
-                  style={{ gridTemplateColumns: path.id === 'retired-exams' ? 'repeat(2, 1fr)' : `repeat(${branchColumns.length}, 320px)` }}
-                >
-                  {branchColumns.map(branch => {
-                    return (
-                      <div key={branch.id} className="path-map__branch-column" id={`branch-col-${branch.id}`} style={path.id === 'retired-exams' ? { width: '100%' } : {}}>
+                {path.id === 'retired-exams' ? (
+                  <div
+                    className="path-map__branches-grid"
+                    ref={gridRef}
+                    style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}
+                  >
+                    {branchColumns.map(branch => (
+                      <div key={branch.id} className="path-map__branch-column" id={`branch-col-${branch.id}`} style={{ width: '100%' }}>
                         <div className="path-map__branch-column-header">
                           <div className="path-map__branch-column-header-title">
-                            {path.id !== 'retired-exams' && <Icons.GitBranch size={14} />}
                             <span>{branch.name}</span>
                           </div>
                           {branch.description && (
@@ -541,7 +540,7 @@ const PathMap = () => {
                             </div>
                           )}
                         </div>
-                        <div style={path.id === 'retired-exams' ? { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 320px)', gap: 'var(--space-8)', width: '100%', alignContent: 'start', justifyContent: 'center' } : { display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 320px)', gap: 'var(--space-8)', width: '100%', alignContent: 'start', justifyContent: 'center' }}>
                           {branch.allCerts.map((cert, idx) => (
                             <div key={cert.id} className="path-map__branch-node">
                               {renderCertNode(cert, idx)}
@@ -549,9 +548,46 @@ const PathMap = () => {
                           ))}
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div
+                    className="path-map__branches-grid"
+                    ref={gridRef}
+                    style={{ gridTemplateColumns: `repeat(${branchColumns.length}, 320px)` }}
+                  >
+                    {/* Headers mapped to the first row */}
+                    {branchColumns.map((branch, colIdx) => (
+                      <div 
+                        key={`header-${branch.id}`} 
+                        className="path-map__branch-column-header"
+                        style={{ gridColumn: colIdx + 1, gridRow: 1 }}
+                      >
+                        <div className="path-map__branch-column-header-title">
+                          <Icons.GitBranch size={14} />
+                          <span>{branch.name}</span>
+                        </div>
+                        {branch.description && (
+                          <div className="path-map__branch-column-header-desc">
+                            {branch.description}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {/* Nodes mapped to subsequent rows */}
+                    {branchColumns.flatMap((branch, colIdx) => 
+                      branch.allCerts.map((cert, rowIdx) => (
+                        <div 
+                          key={cert.id} 
+                          className="path-map__branch-node"
+                          style={{ gridColumn: colIdx + 1, gridRow: rowIdx + 2 }}
+                        >
+                          {renderCertNode(cert, rowIdx)}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* ── Spacer for merge zone ── */}

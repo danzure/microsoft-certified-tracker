@@ -88,16 +88,20 @@ export const certificationPaths = [
         name: 'Windows Server Administrator Associate',
         level: CERT_LEVELS.ASSOCIATE,
         branch: 'hybrid',
-        description: 'Configure and manage Windows Server on-premises, hybrid, and IaaS workloads.',
+        description: 'Deploy, implement, manage, secure, and troubleshoot Windows Server across on-premises, cloud, and hybrid environments.',
         prerequisites: [],
         recommendedPrereqs: ['az-900'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-802/',
         retirementDate: null,
         isBeta: 'Beta from July 2026',
         skillsMeasured: [
-        'Deploy, manage, and maintain Windows Server',
-        'Implement and manage Windows Server high availability',
-        'Secure Windows Server environments'
+        'Deploy and manage Active Directory Domain Services (AD DS)',
+        'Manage Windows Server instances and workloads in a hybrid environment',
+        'Manage virtual machines (VMs)',
+        'Implement and manage an on-premises and hybrid networking infrastructure',
+        'Manage storage and file services',
+        'Secure Windows Server infrastructure',
+        'Monitor and troubleshoot Windows Server environments'
         ],
       },
       {
@@ -269,15 +273,17 @@ export const certificationPaths = [
         name: 'Multi-Agent AI Solutions Expert',
         level: CERT_LEVELS.EXPERT,
         branch: 'apps-agents',
-        description: 'Orchestrate complex, multi-agent AI systems and agentic architectures.',
+        description: 'Design, build, orchestrate, govern, and optimize scalable, production-ready multi-agent AI solutions and workflows.',
         prerequisites: ['ai-103'],
         learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-500/',
         retirementDate: null,
         isBeta: 'Beta from July 2026',
         skillsMeasured: [
-        'Design multi-agent AI architectures',
-        'Implement multi-agent interactions and communication',
-        'Optimize and deploy agentic solutions'
+        'Design logical architecture for multi-agent solutions',
+        'Build and integrate tool ecosystems',
+        'Implement multi-agent orchestration',
+        'Evaluate, optimize, and monitor multi-agent solutions',
+        'Secure, govern, and deploy multi-agent solutions'
         ],
       },
     ],

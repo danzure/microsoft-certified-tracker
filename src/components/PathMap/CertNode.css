@@ -4,6 +4,7 @@
   gap: var(--space-3);
   position: relative;
   width: 100%;
+  height: 100%;
 }
 
 /* CertNode Node */
@@ -141,6 +142,7 @@
   position: relative;
   overflow: hidden;
   z-index: 6;
+  height: 100%;
 }
 
 .cert-node__info::after {
@@ -268,7 +270,7 @@
   font-size: var(--fs-caption2);
   font-weight: var(--fw-semibold);
   padding: 3px 8px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   background: var(--bg-surface-2);
   color: var(--text-secondary);
@@ -291,7 +293,7 @@
   font-size: var(--fs-caption2);
   font-weight: var(--fw-semibold);
   padding: 3px 8px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   background: var(--bg-surface-2);
   color: var(--text-secondary);

@@ -286,6 +286,7 @@
   position: relative;
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
 /* ─── Linear Layout (e.g. DevOps) ─── */
@@ -355,7 +356,7 @@
     scroll-padding: var(--space-4);
   }
 
-  .path-map__branch-column, .path-map__trunk-node-wrap {
+  .path-map__branch-column-header, .path-map__trunk-node-wrap {
     scroll-snap-align: center;
   }
 

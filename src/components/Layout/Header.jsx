@@ -41,13 +41,24 @@ const Header = ({ onToggleSidebar }) => {
 
       <div className="header__right">
         <div className="header__theme-group" role="group" aria-label="Theme preference">
+          {/* Sliding Indicator */}
+          <div 
+            className="header__theme-indicator"
+            style={{ 
+              left: themePref === 'light' ? '3px' : themePref === 'system' ? '35px' : '67px'
+            }} 
+          />
+
           <button
             onClick={() => setTheme('light')}
             className={`header__theme-btn ${themePref === 'light' ? 'header__theme-btn--active' : ''}`}
             aria-label="Light mode"
             title="Light mode"
           >
-            <Sun size={16} />
+            <Sun 
+              size={16} 
+              className={`header__theme-icon ${themePref === 'light' ? 'header__theme-icon--rotate-0' : 'header__theme-icon--rotate-neg90'}`} 
+            />
           </button>
           <button
             onClick={() => setTheme('system')}
@@ -55,7 +66,10 @@ const Header = ({ onToggleSidebar }) => {
             aria-label="System mode"
             title="System mode"
           >
-            <Desktop size={16} />
+            <Desktop 
+              size={16} 
+              className={`header__theme-icon ${themePref === 'system' ? 'header__theme-icon--scale-100' : 'header__theme-icon--scale-90'}`} 
+            />
           </button>
           <button
             onClick={() => setTheme('dark')}
@@ -63,7 +77,10 @@ const Header = ({ onToggleSidebar }) => {
             aria-label="Dark mode"
             title="Dark mode"
           >
-            <Moon size={16} />
+            <Moon 
+              size={16} 
+              className={`header__theme-icon ${themePref === 'dark' ? 'header__theme-icon--rotate-0' : 'header__theme-icon--rotate-90'}`} 
+            />
           </button>
         </div>
       </div>
