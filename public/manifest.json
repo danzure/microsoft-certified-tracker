@@ -1,0 +1,16 @@
+{
+  "name": "atozazure Certification Tracker",
+  "short_name": "atozazure",
+  "description": "A certification roadmap and tracking tool to plan, visualize, and manage your Microsoft and Azure learning journeys.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
