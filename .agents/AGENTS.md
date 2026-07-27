@@ -4,7 +4,10 @@
 
 Whenever you are asked to commit and sync changes, you **must** automatically bump the version in `package.json` before creating the commit. **Exception:** Do not bump the version in `package.json` if you are only updating non-application files (e.g., `README.md`, documentation, `.agents/AGENTS.md`).
 
-1. Increment the patch version (or minor/major if instructed otherwise) in `package.json`.
+1. Evaluate the significance of your changes and increment the version accordingly:
+   - **Patch**: For small bug fixes, minor tweaks, or routine data updates.
+   - **Minor**: For significant new features, substantial UI changes, or logic updates.
+   - **Major**: For complete architectural overhauls or major breaking changes.
 2. Stage `package.json` along with the other modified files.
 3. Proceed with the commit and push/sync process.
 
@@ -78,3 +81,11 @@ Always use the variables defined in `src/index.css` to ensure consistent theming
 - **Official Assets**: Always use official Microsoft certification badge images when representing certifications (e.g., Azure Fundamentals, Azure Administrator Associate).
 - **Badge Verification Step**: Before adding or updating a certification badge, you **must** verify that it is the most current, accurate representation of the badge as provided by Microsoft. Check the official Microsoft Learn documentation or training portal to ensure the badge design, title, and visual status are completely up-to-date and accurate.
 - **Link Verification Step**: When adding Microsoft Learn links to exam or certification pages, you **must** perform a verification step to ensure the link is correct, active, and successfully resolves to the intended Microsoft page without broken redirects.
+- **Highlighting New Certifications**: When a new certification is added to the application, you **must** add a "New" badge (using `<Badge variant="new">New</Badge>`) to highlight it. Furthermore, when certification updates are applied, you must actively scan the codebase for any certifications that previously had the "New" badge applied and remove it from them. This ensures that only the absolute most recent certifications are highlighted as "New".
+- **Badge Placement Strategy**: On certification overview cards, specific badges must be placed in specific locations to maintain a clean hierarchy:
+  - **Header (Next to Exam Code)**: Only display state-based informational badges such as "Beta", "Retiring", "Retired", "Optional", or "Coming soon".
+  - **Footer (Bottom of Card)**: Display structural and requirement badges, such as the Certification Level (e.g., "Expert") and any Prerequisite requirements (e.g., "Prereq: AZ-104"). Do not place prerequisite badges in the header.
+
+### 12. Fixed-Height Node Overflow Prevention
+- **Line Clamping & Dynamic Text**: When building or modifying UI components that sit inside strict, fixed-dimension layout nodes (such as React Flow nodes sized by Dagre), you must ensure that variable-length text (like long certification titles or descriptions) does not push footer content out of bounds or cause clipping.
+- **Validation Constraints**: If you increase line limits (e.g., via `-webkit-line-clamp`), always mathematically or visually validate that the worst-case scenario (e.g., a 3-line title combined with maximum description lines) will comfortably fit within the fixed height (e.g., `210px`) without overflowing. Keep clamps conservative if the parent height cannot scale automatically.

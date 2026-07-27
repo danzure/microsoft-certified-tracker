@@ -96,7 +96,7 @@ const CertNode = ({ data }) => {
       >
         <div className="cert-node__info-header">
           <div className="cert-node__icon-title">
-            <div className="cert-node__icon">
+            <div className={`cert-node__icon ${getBadgeUrl(cert.level, cert.id) ? 'cert-node__icon--image' : ''}`}>
               {getBadgeUrl(cert.level, cert.id) ? (
                 <img 
                   src={getBadgeUrl(cert.level, cert.id)} 
@@ -111,32 +111,8 @@ const CertNode = ({ data }) => {
             <div className="cert-node__title-group">
               <div className="cert-node__badge-stats">
                 <span className="cert-node__exam-code">{cert.examCode}</span>
-                <Badge variant={levelVariant} small>{cert.level}</Badge>
-                
                 {cert.level === CERT_LEVELS.FUNDAMENTALS && (
                   <Badge variant="default" small>Optional</Badge>
-                )}
-                
-                {/* Prerequisite Tags */}
-                {cert.prerequisites?.length > 0 && (
-                  cert.prerequisites.map((prereqItem, index) => {
-                    if (Array.isArray(prereqItem)) {
-                      return (
-                        <Badge key={`prereq-group-${index}`} variant="default" small>
-                          <Link size={9} />
-                          1 of {prereqItem.length}
-                        </Badge>
-                      );
-                    }
-                    const prereqCert = getCertById(prereqItem)?.cert;
-                    if (!prereqCert) return null;
-                    return (
-                      <Badge key={`prereq-${prereqItem}`} variant={prereqCert.level.toLowerCase()} small>
-                        <Link size={9} />
-                        Req. {prereqCert.examCode}
-                      </Badge>
-                    );
-                  })
                 )}
 
                 {retiring && (
@@ -153,7 +129,7 @@ const CertNode = ({ data }) => {
 
                 )}
                 {cert.isBeta && (
-                  <Badge variant="default" small>
+                  <Badge variant="beta" small>
                     Beta
                   </Badge>
                 )}
@@ -193,17 +169,31 @@ const CertNode = ({ data }) => {
         </div>
         
         <div className="cert-node__info-footer">
-          <div className="cert-node__actions">
-            <a
-              href={cert.learnUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cert-node__learn-link"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Microsoft size={12} />
-              Microsoft Learn
-            </a>
+          <div className="cert-node__actions" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <Badge variant={levelVariant} small>{cert.level}</Badge>
+              {/* Prerequisite Tags */}
+              {cert.prerequisites?.length > 0 && (
+                cert.prerequisites.map((prereqItem, index) => {
+                  if (Array.isArray(prereqItem)) {
+                    return (
+                      <Badge key={`prereq-group-${index}`} variant="default" small>
+                        <Link size={9} />
+                        1 of {prereqItem.length}
+                      </Badge>
+                    );
+                  }
+                  const prereqCert = getCertById(prereqItem)?.cert;
+                  if (!prereqCert) return null;
+                  return (
+                    <Badge key={`prereq-${prereqItem}`} variant={prereqCert.level.toLowerCase()} small>
+                      <Link size={9} />
+                      Prereq: {prereqCert.examCode}
+                    </Badge>
+                  );
+                })
+              )}
+            </div>
             <button
               className={`cert-node__cycle-btn cert-node__cycle-btn--${status.replace('_', '-')}`}
               onClick={handleCycleStatus}

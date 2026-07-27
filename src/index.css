@@ -156,6 +156,12 @@
   --badge-inprogress-bg: rgba(193, 156, 0, 0.08);
   --badge-inprogress-fg: #986f0b;
   --badge-inprogress-border: rgba(193, 156, 0, 0.3);
+  --badge-new-bg: rgba(225, 29, 72, 0.08);
+  --badge-new-fg: #e11d48;
+  --badge-new-border: rgba(225, 29, 72, 0.3);
+  --badge-beta-bg: rgba(13, 148, 136, 0.08);
+  --badge-beta-fg: #0d9488;
+  --badge-beta-border: rgba(13, 148, 136, 0.3);
 
 
   /* ── Fluent 2 Shadows (Light) ── */
@@ -337,6 +343,12 @@
   --badge-inprogress-bg: rgba(251, 191, 36, 0.12);
   --badge-inprogress-fg: #fbbf24;
   --badge-inprogress-border: rgba(251, 191, 36, 0.3);
+  --badge-new-bg: rgba(251, 113, 133, 0.12);
+  --badge-new-fg: #fb7185;
+  --badge-new-border: rgba(251, 113, 133, 0.3);
+  --badge-beta-bg: rgba(45, 212, 191, 0.12);
+  --badge-beta-fg: #2dd4bf;
+  --badge-beta-border: rgba(45, 212, 191, 0.3);
 
 
   /* Shadows (dark) */
