@@ -741,22 +741,6 @@ export const certificationPaths = [
         ],
       },
       {
-        id: 'pl-600',
-        examCode: 'PL-600',
-        name: 'Power Platform Solution Architect Expert',
-        level: CERT_LEVELS.EXPERT,
-        branch: 'functional',
-        description: 'Design and architect complex business solutions using the Power Platform.',
-        prerequisites: ['pl-200'],
-        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-600/',
-        retirementDate: null,
-        skillsMeasured: [
-        'Perform solution envisioning and requirement analysis (45–50%)',
-        'Architect a solution (35–40%)',
-        'Implement the solution (15–20%)'
-        ],
-      },
-      {
         id: 'pl-400',
         examCode: 'PL-400',
         name: 'Power Platform Developer Associate',
@@ -796,6 +780,41 @@ export const certificationPaths = [
       { id: 'supply-chain', name: 'Supply Chain', description: 'AI solutions for supply chain' },
     ],
     certifications: [
+      {
+        id: 'ab-620',
+        examCode: 'AB-620',
+        name: 'AI Agent Builder Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'builder',
+        description: 'Design, build, and deploy custom AI agents using Microsoft Copilot Studio and Power Platform.',
+        prerequisites: [],
+        recommendedPrereqs: ['ab-900'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
+        retirementDate: null,
+        skillsMeasured: [
+        'Design an AI agent solution',
+        'Build and configure AI agents',
+        'Manage and deploy AI agents'
+        ],
+      },
+      {
+        id: 'ab-330',
+        examCode: 'AB-330',
+        name: 'Supply Chain Management AI Consultant Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'supply-chain',
+        description: 'Design and implement AI-enhanced supply chain management solutions in Dynamics 365.',
+        prerequisites: [],
+        recommendedPrereqs: ['ab-900'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/',
+        retirementDate: null,
+        isBeta: 'Beta from Nov 2026',
+        skillsMeasured: [
+        'Configure Dynamics 365 Supply Chain core features',
+        'Implement AI-powered supply chain insights',
+        'Deploy and monitor AI agents in supply chain workflows'
+        ],
+      },
       {
         id: 'ab-900',
         examCode: 'AB-900',
@@ -1278,6 +1297,23 @@ export const certificationPaths = [
       { id: 'retired', name: 'Already Retired', isIndependent: true },
     ],
     certifications: [
+      {
+        id: 'pl-600',
+        examCode: 'PL-600',
+        name: 'Power Platform Solution Architect Expert',
+        level: CERT_LEVELS.EXPERT,
+        branch: 'retired',
+        description: 'Design and architect complex business solutions using the Power Platform.',
+        prerequisites: ['pl-200'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-600/',
+        retirementDate: '2026-06-30',
+        skillsMeasured: [
+        'Perform solution envisioning and requirement analysis (45–50%)',
+        'Architect a solution (35–40%)',
+        'Implement the solution (15–20%)'
+        ],
+        isIndependent: true,
+      },
       {
         id: 'az-800',
         examCode: 'AZ-800/801',

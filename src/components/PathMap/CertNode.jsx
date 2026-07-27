@@ -1,3 +1,4 @@
+import { Handle, Position } from '@xyflow/react';
 import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import { useToast } from '../../context/ToastContext';
@@ -13,14 +14,10 @@ import './CertNode.css';
  * Allows interacting to cycle status or open the detailed view.
  * 
  * @param {Object} props
- * @param {Object} props.cert - The certification data
- * @param {string} props.pathColor - The thematic color of the path
- * @param {Function} props.onSelect - Callback triggered when the cert-node is right-clicked or clicked for details
- * @param {number} props.index - Positional index for animation delay
- * @param {boolean} props.isUnlocked - Whether all prerequisites are met for this certification
- * @param {boolean} props.isPathIgnored - Whether the parent path is excluded from tracking
+ * @param {Object} props.data - The data injected by React Flow
  */
-const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
+const CertNode = ({ data }) => {
+  const { cert, pathColor, onSelect, index, isUnlocked } = data;
   const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
   const { addToast } = useToast();
   const status = getStatus(cert.id);
@@ -85,6 +82,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
       }}
       id={`cert-node-${cert.id}`}
     >
+      <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
       {/* CertNode Info Card */}
       <div 
         className="cert-node__info" 
@@ -218,6 +216,7 @@ const CertNode = ({ cert, pathColor, onSelect, index, isUnlocked }) => {
           </div>
         </div>
       </div>
+      <Handle type="source" position={Position.Bottom} style={{ opacity: 0 }} />
     </div>
   );
 };

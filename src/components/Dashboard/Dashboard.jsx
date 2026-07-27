@@ -157,7 +157,7 @@ const Dashboard = () => {
               rel="noopener noreferrer"
               className="dashboard__update-btn"
             >
-              <Icons.ExternalLink size={16} />
+              <Icons.Microsoft size={16} />
               Skills & Certifications Updates
             </a>
             <a

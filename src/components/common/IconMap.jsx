@@ -43,6 +43,10 @@ import {
   MapRegular,
   AddRegular,
   SubtractRegular,
+  ArrowUpRegular,
+  ArrowDownRegular,
+  ArrowLeftRegular,
+  LockClosedRegular,
 } from '@fluentui/react-icons';
 
 // Microsoft Product Icons (custom SVGs for certification paths)
@@ -134,6 +138,10 @@ export const IconMap = {
   Medal: withSize(MedalRegular),
   Plus: withSize(AddRegular),
   Minus: withSize(SubtractRegular),
+  ArrowUp: withSize(ArrowUpRegular),
+  ArrowDown: withSize(ArrowDownRegular),
+  ArrowLeft: withSize(ArrowLeftRegular),
+  Lock: withSize(LockClosedRegular),
   
   // New role icons
   Settings: withSize(SettingsRegular),

@@ -14,83 +14,67 @@ When looking for or updating information about changes to Microsoft certificatio
 
 ## UI Design Language & Component Standards
 
-### 🚨 Strict Deprecation of Legacy Classes
-To maintain a unified Fluent 2 design language, the following legacy UI patterns are **STRICTLY FORBIDDEN**:
-- **Hardcoded & Generic Colors**: Do not use raw hex colors (e.g., `bg-[#292929]`, `text-[#D4D4D4]`) or generic Tailwind colors (e.g., `bg-white`, `bg-blue-600`, `text-gray-300`). Always use the corresponding `fluent-*` semantic tokens defined below.
-- **Arbitrary Hover States**: Avoid ad-hoc hover background definitions like `hover:bg-black/5` or `dark:hover:bg-white/5`. Use the standardized `hover:bg-fluent-bg-hover` or `hover:bg-fluent-bg-subtle`.
-- **Legacy Shadows**: Do not use generic Tailwind shadows like `shadow-md` or `shadow-lg`. Use `shadow-soft`, `shadow-depth`, or `shadow-flyout`.
-- **Inconsistent Button/Input Padding**: Do not use ad-hoc padding/sizing like `px-4 py-2` or `px-3 py-2.5`. Use the standardized `px-3 h-[32px]` format.
+### 🚨 CSS Architecture & Methodology
+To maintain a unified Fluent 2 design language, the following rules are **STRICTLY FORBIDDEN**:
+- **Tailwind CSS**: Do not use Tailwind classes (e.g., `bg-white`, `flex`, `p-4`). The project uses Vanilla CSS with BEM (Block Element Modifier) methodology.
+- **Hardcoded & Generic Colors**: Do not use raw hex colors in component CSS. Always use the corresponding CSS variables defined in `src/index.css`.
+- **Inline Styles**: Avoid direct inline styles for theming (e.g., `style={{ color: '#fff' }}`). However, **passing dynamic CSS variables via inline styles** (e.g., `style={{ '--badge-color': dynamicColor }}`) is explicitly permitted and encouraged for components that require dynamic theming from props or data.
 
-When creating or modifying UI components, you **must** adhere to the following Tailwind CSS class conventions. This ensures a consistent "Fluent UI" design language across the application.
+When creating or modifying UI components, you **must** adhere to the following conventions:
 
-### 1. Form Inputs & Selects
-- **Text Inputs (`<input type="text">`)**: `flex-1 min-w-0 w-full px-3 h-[32px] border rounded outline-none text-[14px] transition-all duration-200 focus:border-fluent-brand-bg focus:ring-2 focus:ring-fluent-brand-bg/20 bg-fluent-bg-card text-fluent-fg-primary border-fluent-stroke-strong placeholder:text-fluent-fg-tertiary`
-- **Dropdowns (`<select>`)**: `px-2.5 h-[32px] min-w-0 w-full border rounded outline-none text-[13px] transition-all duration-200 bg-fluent-bg-card text-fluent-fg-primary border-fluent-stroke-strong hover:border-fluent-fg-primary focus:border-fluent-brand-bg focus:ring-2 focus:ring-fluent-brand-bg/20 cursor-pointer text-ellipsis`
+### 1. BEM Methodology
+- Structure component classes using BEM format: `.Block__Element--Modifier` (e.g., `.dashboard`, `.dashboard__hero`, `.dashboard__update-btn--active`).
+- Create dedicated `.css` files for each component (e.g., `Dashboard.css`) and import them directly into the `.jsx` file.
 
-### 2. Buttons
-- **Primary/Action Button**: `px-3 h-[32px] bg-fluent-brand-bg text-white rounded-[4px] text-[13px] font-medium hover:bg-fluent-brand-hover transition-colors shadow-sm inline-flex items-center justify-center gap-1.5`
-- **Secondary Button**: `px-3 h-[32px] rounded-[4px] border transition-colors inline-flex items-center justify-center gap-1.5 bg-fluent-bg-card border-fluent-stroke-strong text-fluent-fg-secondary hover:border-fluent-fg-primary text-[13px] font-medium`
-- **Ghost/Tertiary Button**: `px-3 h-[32px] rounded-[4px] text-[13px] font-medium text-fluent-fg-secondary hover:text-fluent-brand-fg hover:bg-fluent-brand-bg/10 border border-transparent hover:border-fluent-brand-bg/20 transition-all inline-flex items-center justify-center gap-1.5`
-- **Icon Button (Action/Copy)**: `shrink-0 h-[26px] px-2.5 rounded-[4px] text-[12px] font-medium transition-all inline-flex items-center justify-center gap-1.5 border bg-fluent-bg-card border-fluent-stroke-subtle text-fluent-fg-secondary hover:border-fluent-stroke-strong hover:text-fluent-fg-primary`
-- **Icon Button (Danger/Remove)**: `shrink-0 h-[26px] px-2.5 rounded-[4px] text-[12px] font-medium transition-all inline-flex items-center justify-center gap-1.5 border bg-fluent-bg-card border-fluent-stroke-subtle text-fluent-fg-secondary hover:border-fluent-stroke-strong hover:text-fluent-state-danger`
+### 2. Fluent 2 Design Tokens (CSS Variables)
+Always use the variables defined in `src/index.css` to ensure consistent theming across light and dark modes:
+- **Backgrounds/Surfaces**: Use `--colorNeutralBackground1` (cards), `--colorNeutralBackground2` (app background), or semantic aliases like `--bg-app`, `--bg-surface-1`, `--bg-surface-hover`.
+- **Text/Foreground**: Use `--colorNeutralForeground1` (primary text), `--colorNeutralForeground2` (secondary/subtitle text), `--colorNeutralForeground3` (tertiary text). Aliases available: `--text-primary`, `--text-secondary`.
+- **Borders**: Use `--colorNeutralStroke1` (strong), `--colorNeutralStroke2` (default), `--colorNeutralStroke3` (subtle).
+- **Brand Accents**: Use `--colorBrandBackground` and `--colorBrandForeground1` for primary actions.
+- **Shadows**: Use standard Fluent elevation: `--shadow-2` (soft), `--shadow-4` (medium), `--shadow-8` (flyout/modal).
 
-### 3. Cards & Containers
-- **Main Component Card**: `relative rounded-lg border shadow-soft bg-fluent-bg-card dark:bg-fluent-bg-subtle border-fluent-stroke-subtle w-full flex flex-col overflow-hidden`
-- **Inner List Item Card**: `bg-fluent-bg-card rounded-lg border border-fluent-stroke-subtle shadow-soft dark:shadow-none hover:shadow-md hover:border-fluent-stroke-strong transition-all duration-200 p-4`
+### 3. Spacing & Typography
+- **Spacing**: Use Fluent 2 base-4 spacing variables for padding, margins, and gaps: `--space-1` (4px), `--space-2` (8px), `--space-3` (12px), `--space-4` (16px), `--space-6` (24px), `--space-8` (32px).
+- **Corner Radii**: Use `--radius-sm` (2px), `--radius-md` (4px for buttons/inputs), `--radius-lg` (8px for cards), `--radius-xl` (12px).
+- **Typography**: Use standard font size variables: `--fs-body1` (14px), `--fs-body2` (16px), `--fs-subtitle2` (18px), `--fs-title3` (24px). Font weight variables: `--fw-regular`, `--fw-medium`, `--fw-semibold`.
 
-### 4. Colours & Theming
-- **Backgrounds**: Use `bg-fluent-bg-canvas` for the main application background, and `bg-fluent-bg-card` for components and panels. Use `bg-fluent-bg-subtle` or `bg-fluent-bg-hover` for active/hover states.
-- **Text/Foreground**: Use `text-fluent-fg-primary` for main text, `text-fluent-fg-secondary` for supporting text, and `text-fluent-fg-tertiary` for placeholders.
-- **Borders**: Use `border-fluent-stroke-subtle` for dividers and card borders, and `border-fluent-stroke-strong` for interactive elements like inputs.
-- **Brand Accents**: Use `bg-fluent-brand-bg` and `text-fluent-brand-fg` for primary actions or highlights.
-- **Category Colors**: When displaying categorized items (like Azure services), utilise the specific category colours from Tailwind config (e.g., `bg-fluent-cat-blue-bg text-fluent-cat-blue-fg`).
+### 4. Theming & Dark Mode Validation
+- **Automatic Theme Switching**: The CSS variables automatically adapt when the `[data-theme="dark"]` attribute is toggled on the root element.
+- **No Media Queries for Theme**: Do not use `@media (prefers-color-scheme: dark)` in component CSS. Rely purely on the CSS variables to handle the color switch.
+- **Opacity**: Use CSS `color-mix` or `rgba()` with variables carefully. Native CSS variables with hex values do not support opacity directly unless pre-defined. Use the dedicated hover/active variables (e.g., `--colorNeutralBackground1Hover`).
 
-### 5. Layout, Shadows & Microanimations
-- **Shadows**: Use `shadow-soft` for standard cards, `shadow-depth` for hover/active states, and `shadow-flyout` for panels/modals.
-- **Microanimations (Fluent 2)**: Add subtle feedback for interactions to make the UI feel alive. Use `transition-all duration-200 ease-in-out` for general state changes (hover, focus). For buttons and interactive cards, apply a "push" effect on click using `active:scale-[0.98]` or `active:scale-95`. Ensure enter animations are snappy and exit animations are graceful.
-- **Animations**: Use `animate-fade-in` and `animate-slide-up` for smooth component appearances. For lists or grid items, combine these with the stagger utilities (`stagger-1`, `stagger-2`, etc.) defined in `index.css`.
-- **Gradients**: Use `bg-primary-gradient` for premium branded areas and `bg-primary-gradient-hover` for interactive premium elements.
-- **Sizing**: Button and input heights should be standardized (e.g., `h-[32px]` for standard inputs and buttons, `h-[26px]` for compact icon buttons). Borders should be `rounded-[4px]` for buttons/inputs, and `rounded-lg` or `rounded-xl` for cards.
+### 5. Layout, Animations, Z-Index & Accessibility
+- **Transitions**: Use the standard snappy Fluent timing: `transition: all var(--duration-normal) var(--curve-easy-ease);`.
+- **Animations**: Use the pre-defined keyframes in `index.css` such as `fadeIn`, `fadeInUp`, `slideInFromRight`, or `pulse` for loading states.
+- **Z-Index Management**: Never use hardcoded arbitrary z-indexes (e.g., `z-index: 9999`). Always use the standardized z-index tokens defined in `index.css` (e.g., `--z-sidebar`, `--z-modal`, `--z-toast`).
+- **Focus Rings**: Ensure keyboard accessibility by leveraging the global `:focus-visible` styles, or manually applying `outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: var(--radius-md);`.
+- **Semantic HTML**: Always use appropriate semantic elements (`<button>`, `<nav>`, `<main>`).
 
-### 6. Navigation, Tabs & Accessibility
-- **Tabs/Active States**: For selectable horizontal tabs, use `bg-fluent-info-bg text-fluent-brand-fg font-semibold shadow-sm` for the active/selected state, and `bg-transparent text-fluent-fg-secondary hover:bg-fluent-bg-hover hover:text-fluent-fg-primary` for inactive states.
-- **Keyboard Navigation**: Ensure keyboard shortcuts are implemented where relevant (e.g., `Escape` to clear/close, `/` for search, `Ctrl+K` for global prompts). 
-- **Accessibility & Focus**: Always use appropriate semantic HTML or ARIA roles (`role="toolbar"`, `role="tablist"`, `role="tab"`) and indicate state (`aria-selected`, `aria-hidden`, `aria-label`). For interactive elements, ensure keyboard focus is visible using `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fluent-brand-bg/50 focus-visible:border-fluent-brand-bg`.
+### 6. Interactive Micro-animations (Push Effect)
+- **Buttons & Cards**: To make the UI feel alive, apply a "push" effect to interactive elements when clicked. In your CSS, use the `:active` pseudo-class with `transform: scale(0.96);`.
+- **Consistency**: Combine this with the standard Fluent transition so the push effect is smooth but snappy.
 
-### 7. Responsive Design & Structure
-- **Mobile Scaling**: Scale down component heights and font sizes on mobile using Tailwind's `sm:` prefix. (e.g., `h-[36px] sm:h-[30px]`, `text-[14px] sm:text-[12px]`).
-- **Sticky Elements**: For sticky toolbars or headers, use `sticky top-0 z-30 bg-fluent-bg-canvas border-b border-fluent-stroke-subtle`.
-- **Page Containers**: Use maximum width containers with responsive padding for main page content (e.g., `max-w-[1600px] w-full min-w-0 mx-auto px-3 sm:px-6`).
+### 7. Responsive Design & Breakpoints
+- **Media Queries**: Do not use Tailwind prefixes. Use standard CSS media queries for responsive layouts.
+- **Standard Breakpoints**: Use `@media (max-width: 768px)` for mobile/tablet adjustments and `@media (min-width: 1024px)` for desktop-specific layouts.
 
-### 8. Icons & Imagery
-- **Standardisation**: Consistently use the same standardized icons for buttons, actions, or other UI elements that share the same functionality across the application.
-- **Official Microsoft Icons**: Prioritise using official Microsoft icons (e.g., from Fluent UI System Icons or standard Microsoft design assets) where possible to maintain alignment with the Azure portal experience and Fluent UI design language.
-- **Icon Backgrounds**: When using official, full-color product or service icons (e.g., Azure service icons), the container background must be set to transparent (`bg-transparent`) so the icon stands on its own. Solid category backgrounds should only be used for monochrome, generic, or structural icons.
+### 8. Standard Component Sizing & Geometry
+- **Heights**: Maintain consistent heights for standard interactive elements. Buttons, text inputs, and selects should generally have a height of `32px`. Compact icon buttons can be `26px`.
+- **Corner Radii Constraints**: Badges, status tags, toggles, and segmented controls must use standard rounded corners (e.g., `var(--radius-md)` or `var(--radius-sm)`). **Strictly avoid fully rounded pill shapes** (`var(--radius-full)`) unless they are small indicator dots.
 
-### 9. Code Snippets & Terminal Blocks
-- **Terminal/Code Container**: Use `bg-[#1E1E1E] w-full flex flex-col flex-1 h-full min-h-0` for the dark container background housing the code block.
-- **Terminal/Code Content (`<pre>`)**: Use `flex-1 text-[13px] leading-relaxed font-mono overflow-auto p-5 text-[#D4D4D4] m-0` for the actual code text and scrollable area.
-- **Terminal Header/Toolbar**: Use `px-5 py-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-fluent-stroke-subtle bg-fluent-bg-subtle shrink-0` for the action bar situated above the terminal window.
+### 9. Common States (Disabled, Success, Error, Warning)
+- **Disabled State**: Apply `opacity: 0.5`, `cursor: not-allowed`, and `pointer-events: none` for inactive interactive elements.
+- **Semantic Colors**: Use the specific state variables from `index.css`:
+  - **Success**: `--status-completed` or `--badge-completed-fg`.
+  - **Warning/In-Progress**: `--status-in-progress` or `--badge-inprogress-fg`.
+  - **Danger/Error**: `--line-security` or `--badge-retiring-fg` depending on context.
 
-### 10. Common States (Disabled, Error, Success)
-- **Disabled State**: Apply `disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-fluent-bg-subtle disabled:border-fluent-stroke-subtle disabled:text-fluent-fg-tertiary` to inputs and buttons when inactive to clearly indicate they cannot be interacted with.
-- **Error/Invalid State**: Use `border-fluent-state-danger` for borders and `text-fluent-state-danger` for error text or icons to provide clear validation feedback.
-- **Success/Valid State**: Use `text-fluent-state-success` and `border-fluent-state-success` for positive feedback, such as successful form submissions or active integrations.
-- **Loading State**: Use a subtle pulse animation (`animate-pulse`) on containers or a spinner with `text-fluent-brand-bg` for loading states to maintain user context without aggressive visual changes.
+### 10. Icons & Imagery
+- **Standardisation & IconMap**: Prioritize official Microsoft icons or Fluent UI System Icons where possible to maintain alignment with the Azure portal experience. Do not import `@fluentui/react-icons` directly into random components. Instead, always use the central abstraction `src/components/common/IconMap.jsx`. If a new icon is needed, add it to `IconMap.jsx` first.
+- **Icon Backgrounds**: When displaying full-color product or service icons (e.g., Azure services), set the container background to `transparent` so the icon stands on its own. Solid category backgrounds are reserved for monochrome structural icons.
 
-### 11. Segmented Controls, Toggles & Sliders
-- **Shape & Geometry**: Always use standard Fluent 2 geometry (e.g., `rounded-md` for outer containers, `rounded-sm` for inner selected items). **Do not use Apple-style or Material-style fully rounded pill shapes (`rounded-full`)** for toggles or segmented controls.
-- **Animation Timings**: Use the standard snappy Fluent timing (`transition-all duration-200 ease-in-out`). Do not use slower animations (`duration-300`, `duration-500`) or bouncy spring curves.
-- **Micro-interactions**: Interactive toggle buttons must use the standard `active:scale-95` push effect.
-- **Focus Rings**: Ensure strong keyboard accessibility using standard focus rings tailored to the background (e.g., `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fluent-brand-bg/50` on light backgrounds, or `focus-visible:ring-white/50` on dark backgrounds).
-
-### 12. Badges, Tags & Chips
-- **Shape & Geometry**: Consistent with other Fluent 2 elements, badges, status tags, and chips must use standard rounded corners (e.g., `rounded-[4px]`). **Do not use fully rounded pill shapes (`rounded-full`)**.
-- **Sizing & Padding**: Use compact padding and standardized text sizes. For example: `px-2 py-0.5 text-[11px] font-medium` or `px-2 min-h-[20px] inline-flex items-center text-[12px] font-medium`.
-- **Colors**: Use appropriate semantic colours from the Fluent palette (e.g., `bg-fluent-bg-subtle text-fluent-fg-secondary` for neutral tags, or `bg-fluent-brand-bg/10 text-fluent-brand-fg` for branded tags).
-- **Indicator Dots**: Small circular indicator dots (e.g., `w-1.5 h-1.5 rounded-full`) used for status or list bullets are an exception and may remain fully rounded.
-
-### 13. Theme & Dark Mode Validation
-Before completing any UI task or component redesign, you **must** actively look for and validate the following to prevent common theming errors:
-- **Opacity Modifiers on Hex Variables**: Do not apply Tailwind opacity modifiers (e.g., `bg-fluent-brand-bg/10`) to custom `fluent-*` colors that are backed by raw hex CSS variables in `index.css`. Tailwind cannot process opacity on hex values, which results in broken, transparent rendering. Always rely on the defined semantic palette (like `bg-fluent-cat-blue-bg`) which handles contrast automatically.
-- **Dark Mode Graceful Degradation**: Always verify that elements using bright, highly saturated backgrounds (such as `bg-primary-gradient` or large white blocks) have appropriate `dark:` fallbacks. Use classes like `dark:bg-none`, `dark:bg-fluent-bg-card`, and adjust text colors (`dark:text-fluent-fg-primary`) to ensure the UI remains sleek, accessible, and doesn't present jarring, bright blocks in dark mode.
+### 11. Microsoft Certification Badges & Links
+- **Official Assets**: Always use official Microsoft certification badge images when representing certifications (e.g., Azure Fundamentals, Azure Administrator Associate).
+- **Badge Verification Step**: Before adding or updating a certification badge, you **must** verify that it is the most current, accurate representation of the badge as provided by Microsoft. Check the official Microsoft Learn documentation or training portal to ensure the badge design, title, and visual status are completely up-to-date and accurate.
+- **Link Verification Step**: When adding Microsoft Learn links to exam or certification pages, you **must** perform a verification step to ensure the link is correct, active, and successfully resolves to the intended Microsoft page without broken redirects.

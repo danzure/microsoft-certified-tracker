@@ -5,7 +5,7 @@ export const careerRoles = [
     description: 'Build, manage, and deploy AI solutions that leverage cognitive services, machine learning, and knowledge mining.',
     icon: 'Brain',
     color: 'var(--line-ai)',
-    certs: ['ai-103', 'ai-200', 'ab-250']
+    certs: ['ai-103', 'ai-200', 'ab-250', 'ai-500']
   },
   {
     id: 'administrator',
@@ -37,7 +37,7 @@ export const careerRoles = [
     description: 'Advise stakeholders and translate business requirements into secure, scalable, and reliable cloud solutions.',
     icon: 'Cloud',
     color: 'var(--line-azure)',
-    certs: ['az-305', 'pl-600', 'sc-100', 'mb-700']
+    certs: ['az-305', 'sc-100', 'ai-500']
   },
   {
     id: 'data-analyst',
@@ -85,7 +85,7 @@ export const careerRoles = [
     description: 'Leverage Microsoft Dynamics 365 and Power Platform to anticipate and plan for customer needs and implement solutions.',
     icon: 'Briefcase',
     color: 'var(--line-power)',
-    certs: ['pl-200']
+    certs: ['ab-410']
   },
   {
     id: 'identity-access-admin',
@@ -109,7 +109,7 @@ export const careerRoles = [
     description: 'Implement security controls and threat protection, manage identity and access, and protect data, applications, and networks.',
     icon: 'Shield',
     color: 'var(--line-security)',
-    certs: ['az-500', 'sc-500']
+    certs: ['sc-500']
   },
   {
     id: 'security-operations-analyst',

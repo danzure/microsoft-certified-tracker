@@ -2,47 +2,87 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getPathById, CERT_LEVELS, CERT_STATUS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import CertNode from './CertNode';
-
 import CertDetail from '../CertDetail/CertDetail';
 import ProgressRing from '../common/ProgressRing';
 import { IconMap as Icons } from '../common/IconMap';
-import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { ReactFlow, ReactFlowProvider, useNodesState, useEdgesState, Background, Controls, ControlButton, useReactFlow } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import dagre from 'dagre';
 import './PathMap.css';
 
 const LEVELS = [CERT_LEVELS.FUNDAMENTALS, CERT_LEVELS.ASSOCIATE, CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY];
-const RAIL_WIDTH = 6;
-const CURVE_RADIUS = 24;
+const nodeTypes = { certNode: CertNode };
 
-/**
- * Core visualization component that renders a certification path as a connected map.
- * Dynamically constructs the visual tree layout, SVG connecting tracks, and cert-nodes
- * based on the certifications and prerequisites defined in the path data.
- * 
- * @component
- * @returns {JSX.Element} The visual map of certifications.
- */
-const PathMap = () => {
-  const { pathId } = useParams();
-  const navigate = useNavigate();
-  const path = getPathById(pathId);
-  const { getStatus, getPathProgress, isPathIgnored } = useProgressContext();
-  const [selectedCert, setSelectedCert] = useState(null);
+const getLayoutedElements = (nodes, edges, direction = 'TB') => {
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+  
+  const isHorizontal = direction === 'LR';
+  dagreGraph.setGraph({ rankdir: direction, nodesep: 40, ranksep: 80 });
 
-  const treeContainerRef = useRef(null);
-  const gridRef = useRef(null);
-  const forkSpacerRef = useRef(null);
-  const [linePaths, setLinePaths] = useState([]);
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: 320, height: 210 });
+  });
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(dagreGraph);
+
+  const layoutedNodes = nodes.map((node) => {
+    const nodeWithPosition = dagreGraph.node(node.id);
+    const newNode = {
+      ...node,
+      targetPosition: isHorizontal ? 'left' : 'top',
+      sourcePosition: isHorizontal ? 'right' : 'bottom',
+      position: {
+        x: nodeWithPosition.x - 320 / 2,
+        y: nodeWithPosition.y - 210 / 2,
+      },
+    };
+    return newNode;
+  });
+
+  return { nodes: layoutedNodes, edges };
+};
+
+const CustomControls = () => {
+  const { setViewport, getViewport } = useReactFlow();
+
+  const handlePan = (dx, dy) => {
+    const { x, y, zoom } = getViewport();
+    setViewport({ x: x + dx, y: y + dy, zoom }, { duration: 300 });
+  };
+
+  return (
+    <Controls showInteractive={false}>
+      <ControlButton onClick={() => handlePan(0, 100)} title="Pan Up" aria-label="Pan Up">
+        <Icons.ArrowUp size={16} />
+      </ControlButton>
+      <ControlButton onClick={() => handlePan(0, -100)} title="Pan Down" aria-label="Pan Down">
+        <Icons.ArrowDown size={16} />
+      </ControlButton>
+      <ControlButton onClick={() => handlePan(100, 0)} title="Pan Left" aria-label="Pan Left">
+        <Icons.ArrowLeft size={16} />
+      </ControlButton>
+      <ControlButton onClick={() => handlePan(-100, 0)} title="Pan Right" aria-label="Pan Right">
+        <Icons.ArrowRight size={16} />
+      </ControlButton>
+    </Controls>
+  );
+};
+
+const PathMapFlow = ({ path, setSelectedCert }) => {
+  const { getStatus, isPathIgnored } = useProgressContext();
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { fitView } = useReactFlow();
 
   const branches = useMemo(() => path?.branches || [], [path?.branches]);
   const hasBranches = branches.length > 0 && path?.certifications.some(c => c.branch);
 
-  // ─── Path progress for the header ───
-  const pathProgress = useMemo(() => {
-    if (!path) return { total: 0, completed: 0, inProgress: 0, percent: 0 };
-    return getPathProgress(path.id);
-  }, [path, getPathProgress]);
-
-  // ─── Computed data for tree layout ───
   const { trunkFundamentals, trunkBottom, branchColumns } = useMemo(() => {
     if (!path || !hasBranches) return { trunkFundamentals: [], trunkBottom: [], branchColumns: [] };
 
@@ -52,16 +92,12 @@ const PathMap = () => {
 
     const branchColumns = branches.map(branchDef => {
       const certs = path.certifications.filter(c => c.branch === branchDef.id);
-      const grouped = LEVELS
-        .map(level => ({ level, certs: certs.filter(c => c.level === level) }))
-        .filter(g => g.certs.length > 0);
-      return { ...branchDef, groups: grouped, allCerts: certs };
+      return { ...branchDef, allCerts: certs };
     }).filter(b => b.allCerts.length > 0);
 
     return { trunkFundamentals, trunkBottom, branchColumns };
   }, [path, hasBranches, branches]);
 
-  // ─── Computed data for linear layout ───
   const linearGroups = useMemo(() => {
     if (!path || hasBranches) return [];
     return LEVELS
@@ -69,261 +105,186 @@ const PathMap = () => {
       .filter(g => g.certs.length > 0);
   }, [path, hasBranches]);
 
-  // ─── Build the visual connection list (edges between cert-nodes) ───
-  const connectionList = useMemo(() => {
-    if (!path) return [];
-    const connections = [];
+  useEffect(() => {
+    if (!path) return;
+
+    // Build initial nodes
+    const initialNodes = path.certifications.map((cert, idx) => {
+      const certStatus = getStatus(cert.id);
+      const flatPrereqs = cert.prerequisites ? cert.prerequisites.flat() : [];
+      const isPrereqCompleted = flatPrereqs.some(id => getStatus(id) === CERT_STATUS.COMPLETED);
+      const isUnlocked = (flatPrereqs.length === 0 || isPrereqCompleted) && certStatus === CERT_STATUS.NOT_STARTED;
+
+      return {
+        id: cert.id,
+        type: 'certNode',
+        data: {
+          cert,
+          pathColor: path.color,
+          onSelect: setSelectedCert,
+          index: idx,
+          isUnlocked,
+          isPathIgnored: isPathIgnored(path.id),
+        },
+        position: { x: 0, y: 0 },
+      };
+    });
+
+    // Build initial edges based on the legacy connection logic
+    const initialEdges = [];
 
     if (hasBranches) {
-      // 1. Trunk fundamentals: chain them vertically
       const chainedFundamentals = trunkFundamentals.filter(c => !c.isIndependent);
       for (let i = 1; i < chainedFundamentals.length; i++) {
-        connections.push({
-          from: chainedFundamentals[i - 1].id,
-          to: chainedFundamentals[i].id,
-          type: 'trunk',
+        initialEdges.push({
+          id: `e-${chainedFundamentals[i - 1].id}-${chainedFundamentals[i].id}`,
+          source: chainedFundamentals[i - 1].id,
+          target: chainedFundamentals[i].id,
+          type: 'smoothstep',
         });
       }
 
-      // 2. Fork: trunk fundamentals -> first cert in each branch
       const lastTrunkFund = chainedFundamentals[chainedFundamentals.length - 1];
       if (lastTrunkFund) {
         branchColumns.forEach(branch => {
           const firstBranchCert = branch.allCerts[0];
           if (firstBranchCert && !firstBranchCert.isIndependent) {
-            connections.push({
-              from: lastTrunkFund.id,
-              to: firstBranchCert.id,
-              type: 'fork',
-              branchId: branch.id,
+            initialEdges.push({
+              id: `e-${lastTrunkFund.id}-${firstBranchCert.id}`,
+              source: lastTrunkFund.id,
+              target: firstBranchCert.id,
+              type: 'smoothstep',
             });
           }
         });
       }
 
-      // 3. Within each branch: chain certs vertically
       branchColumns.forEach(branch => {
         const chainedBranchCerts = branch.allCerts.filter(c => !c.isIndependent);
         for (let i = 1; i < chainedBranchCerts.length; i++) {
-          connections.push({
-            from: chainedBranchCerts[i - 1].id,
-            to: chainedBranchCerts[i].id,
-            type: 'branch',
-            branchId: branch.id,
+          initialEdges.push({
+            id: `e-${chainedBranchCerts[i - 1].id}-${chainedBranchCerts[i].id}`,
+            source: chainedBranchCerts[i - 1].id,
+            target: chainedBranchCerts[i].id,
+            type: 'smoothstep',
           });
         }
       });
 
-      // 4. Merge: last cert of each branch that has Expert/Specialty trunk-bottom -> first trunk-bottom cert
       const chainedBottom = trunkBottom.filter(c => !c.isIndependent);
       if (chainedBottom.length > 0) {
         const firstBottom = chainedBottom[0];
-        
-        // Flatten prerequisites to handle nested arrays representing "OR" groups (e.g., [['sc-200', 'sc-300']])
         const prereqs = firstBottom.prerequisites ? firstBottom.prerequisites.flat() : [];
 
         branchColumns.forEach(branch => {
           const chainedBranchCerts = branch.allCerts.filter(c => !c.isIndependent);
           const lastBranchCert = chainedBranchCerts[chainedBranchCerts.length - 1];
           if (lastBranchCert) {
-            // Only connect if the trunk bottom has no specific prereqs, or if this branch contains a prereq
             let shouldConnect = true;
             if (prereqs.length > 0) {
               shouldConnect = chainedBranchCerts.some(c => prereqs.includes(c.id));
             }
-
             if (shouldConnect) {
-              connections.push({
-                from: lastBranchCert.id,
-                to: firstBottom.id,
-                type: 'merge',
-                branchId: branch.id,
+              initialEdges.push({
+                id: `e-${lastBranchCert.id}-${firstBottom.id}`,
+                source: lastBranchCert.id,
+                target: firstBottom.id,
+                type: 'smoothstep',
               });
             }
           }
         });
       }
 
-      // 5. Trunk bottom: chain the expert/specialty certs
       for (let i = 1; i < chainedBottom.length; i++) {
-        connections.push({
-          from: chainedBottom[i - 1].id,
-          to: chainedBottom[i].id,
-          type: 'trunk',
+        initialEdges.push({
+          id: `e-${chainedBottom[i - 1].id}-${chainedBottom[i].id}`,
+          source: chainedBottom[i - 1].id,
+          target: chainedBottom[i].id,
+          type: 'smoothstep',
         });
       }
     } else {
-      // Linear layout: chain all certs in order of level groups
       const orderedCerts = linearGroups.flatMap(g => g.certs).filter(c => !c.isIndependent);
       for (let i = 1; i < orderedCerts.length; i++) {
-        connections.push({
-          from: orderedCerts[i - 1].id,
-          to: orderedCerts[i].id,
-          type: 'linear',
+        initialEdges.push({
+          id: `e-${orderedCerts[i - 1].id}-${orderedCerts[i].id}`,
+          source: orderedCerts[i - 1].id,
+          target: orderedCerts[i].id,
+          type: 'smoothstep',
         });
       }
     }
 
-    return connections;
-  }, [path, hasBranches, trunkFundamentals, trunkBottom, branchColumns, linearGroups]);
-
-  // ─── Measure all cert-node node positions and draw SVG paths ───
-  const measureAndDrawLines = useCallback(() => {
-    const container = treeContainerRef.current;
-    if (!container || !path) return;
-
-    const containerRect = container.getBoundingClientRect();
-    const computedStyle = getComputedStyle(container);
-    const borderTop = parseFloat(computedStyle.borderTopWidth) || 0;
-    const borderLeft = parseFloat(computedStyle.borderLeftWidth) || 0;
-    const offsetTop = containerRect.top + borderTop;
-    const offsetLeft = containerRect.left + borderLeft;
-
-    // Measure the center of every cert-node node
-    const getNodeCenter = (certId) => {
-      const nodeEl = container.querySelector(`#cert-node-${certId} .cert-node__info`);
-      if (!nodeEl) return null;
-      const r = nodeEl.getBoundingClientRect();
-      return {
-        x: r.left + r.width / 2 - offsetLeft,
-        y: r.top + r.height / 2 - offsetTop,
-        topY: r.top - offsetTop,
-        bottomY: r.bottom - offsetTop,
-      };
-    };
-
-    // Find the absolute bottom of the grid so merge lines always draw BELOW all branch nodes
-    let gridBottomY = null;
-    if (gridRef.current) {
-      const gridRect = gridRef.current.getBoundingClientRect();
-      gridBottomY = gridRect.bottom - offsetTop;
-    }
-
-    // Find the middle of the fork spacer so fork lines draw cleanly inside the gap
-    let forkMidY = null;
-    if (forkSpacerRef.current) {
-      const forkRect = forkSpacerRef.current.getBoundingClientRect();
-      forkMidY = forkRect.top - offsetTop + forkRect.height / 2;
-    }
-
-    const paths = [];
-
-    // Pre-calculate consistent midY for merges so they form a single horizontal bus
-    const mergeMidYs = {};
-    connectionList.forEach(conn => {
-      if (conn.type === 'merge') {
-        const fromPt = getNodeCenter(conn.from);
-        const toPt = getNodeCenter(conn.to);
-        if (!fromPt || !toPt) return;
-        
-        fromPt.y = fromPt.bottomY;
-        toPt.y = toPt.topY;
-
-        if (!mergeMidYs[conn.to]) {
-          mergeMidYs[conn.to] = { maxFromY: fromPt.y, toY: toPt.y };
-        } else if (fromPt.y > mergeMidYs[conn.to].maxFromY) {
-          mergeMidYs[conn.to].maxFromY = fromPt.y;
-        }
-      }
-    });
-
-    connectionList.forEach(conn => {
-      const fromPt = getNodeCenter(conn.from);
-      const toPt = getNodeCenter(conn.to);
-      if (!fromPt || !toPt) return;
-      
-      fromPt.y = fromPt.bottomY;
-      toPt.y = toPt.topY;
-
-      let d;
-      const dx = Math.abs(toPt.x - fromPt.x);
-      const dy = Math.abs(toPt.y - fromPt.y);
-
-      if (dx < 2) {
-        // Straight vertical line
-        d = `M ${fromPt.x} ${fromPt.y} L ${toPt.x} ${toPt.y}`;
-      } else {
-        // Curved connection (fork or merge)
-        const r = Math.min(CURVE_RADIUS, dx / 2, dy / 2);
-        const dirX = toPt.x > fromPt.x ? 1 : -1;
-        const dirY = toPt.y > fromPt.y ? 1 : -1;
-
-        // midY = halfway between them vertically, but use consistent midY for merges
-        let midY = fromPt.y + (toPt.y - fromPt.y) / 2;
-        if (conn.type === 'merge' && mergeMidYs[conn.to]) {
-          if (gridBottomY !== null && toPt.y > gridBottomY) {
-            // Draw horizontal line exactly halfway between the bottom of the grid and the target trunk node
-            // This guarantees it will safely pass underneath all branch cards, regardless of varying column heights
-            midY = gridBottomY + (toPt.y - gridBottomY) / 2;
-          } else {
-            const { maxFromY, toY } = mergeMidYs[conn.to];
-            midY = maxFromY + (toY - maxFromY) / 2;
-          }
-        } else if (conn.type === 'fork' && forkMidY !== null) {
-          midY = forkMidY;
-        }
-
-        // Path: go vertical from start to midY, then curve horizontal, then curve vertical down to end
-        const t1Y = midY - dirY * r;
-        const sweep1 = (dirX === 1 && dirY === 1) ? 0 :
-                        (dirX === -1 && dirY === 1) ? 1 :
-                        (dirX === 1 && dirY === -1) ? 1 : 0;
-        const corner1X = fromPt.x + dirX * r;
-
-        const t2X = toPt.x - dirX * r;
-        const sweep2 = (dirX === 1 && dirY === 1) ? 1 :
-                        (dirX === -1 && dirY === 1) ? 0 :
-                        (dirX === 1 && dirY === -1) ? 0 : 1;
-        const corner2Y = midY + dirY * r;
-
-        d = [
-          `M ${fromPt.x} ${fromPt.y}`,
-          `L ${fromPt.x} ${t1Y}`,
-          `A ${r} ${r} 0 0 ${sweep1} ${corner1X} ${midY}`,
-          `L ${t2X} ${midY}`,
-          `A ${r} ${r} 0 0 ${sweep2} ${toPt.x} ${corner2Y}`,
-          `L ${toPt.x} ${toPt.y}`,
-        ].join(' ');
-      }
-
-      // Determine visual state based on progress
-      const fromStatus = getStatus(conn.from);
-      const toStatus = getStatus(conn.to);
+    // Apply color and state to edges
+    const styledEdges = initialEdges.map(edge => {
+      const fromStatus = getStatus(edge.source);
+      const toStatus = getStatus(edge.target);
       const fromCompleted = fromStatus === CERT_STATUS.COMPLETED;
       const toActive = toStatus === CERT_STATUS.COMPLETED || toStatus === CERT_STATUS.IN_PROGRESS;
 
-      let state = 'default'; // faint background track
-      if (fromCompleted && toActive) {
-        state = 'active';
-      } else if (fromCompleted) {
-        state = 'unlocked';
-      }
+      let strokeColor;
+      if (fromCompleted && toActive) strokeColor = path.color;
+      else if (fromCompleted) strokeColor = `color-mix(in srgb, ${path.color} 40%, var(--bg-app))`;
+      else strokeColor = `color-mix(in srgb, ${path.color} 12%, var(--bg-app))`;
 
-      paths.push({ id: `${conn.from}-${conn.to}`, d, state, type: conn.type });
+      return {
+        ...edge,
+        style: {
+          stroke: strokeColor,
+          strokeWidth: 6,
+        },
+        animated: false,
+      };
     });
 
-    setLinePaths(paths);
-  }, [connectionList, path, getStatus, setLinePaths]);
+    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(initialNodes, styledEdges);
 
-  useEffect(() => {
-    const container = treeContainerRef.current;
-    if (!container) return;
+    setNodes(layoutedNodes);
+    setEdges(layoutedEdges);
 
-    // Delay initial measurement to let cert-node animations (400ms) settle
-    const timer = setTimeout(() => {
-      measureAndDrawLines();
-    }, 500);
+    setTimeout(() => {
+      fitView({ duration: 600, padding: 0.1 });
+    }, 50);
+  }, [path, hasBranches, trunkFundamentals, trunkBottom, branchColumns, linearGroups, getStatus, isPathIgnored, path?.color, setSelectedCert, setNodes, setEdges, fitView]);
 
-    const observer = new ResizeObserver(() => {
-      requestAnimationFrame(measureAndDrawLines);
-    });
-    observer.observe(container);
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, minHeight: '800px', width: '100%' }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={nodeTypes}
+          fitView
+          fitViewOptions={{ padding: 0.1 }}
+          minZoom={0.1}
+          maxZoom={1.5}
+          proOptions={{ hideAttribution: true }}
+          nodesDraggable={false}
+          nodesConnectable={false}
+          elementsSelectable={true}
+        >
+          <Background color="var(--border-subtle)" gap={16} />
+          <CustomControls />
+        </ReactFlow>
+      </div>
+    </div>
+  );
+};
 
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, [measureAndDrawLines]);
+const PathMap = () => {
+  const { pathId } = useParams();
+  const navigate = useNavigate();
+  const path = getPathById(pathId);
+  const { getPathProgress } = useProgressContext();
+  const [selectedCert, setSelectedCert] = useState(null);
+
+  const pathProgress = useMemo(() => {
+    if (!path) return { total: 0, completed: 0, inProgress: 0, percent: 0 };
+    return getPathProgress(path.id);
+  }, [path, getPathProgress]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -335,7 +296,6 @@ const PathMap = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedCert, navigate]);
 
-  // ─── Error state ───
   if (!path) {
     return (
       <div className="path-map__not-found">
@@ -346,105 +306,10 @@ const PathMap = () => {
     );
   }
 
-  // ─── Helpers ───
-  const renderCertNode = (cert, idx) => {
-    const certStatus = getStatus(cert.id);
-    const flatPrereqs = cert.prerequisites ? cert.prerequisites.flat() : [];
-    const isPrereqCompleted = flatPrereqs.some(id => getStatus(id) === CERT_STATUS.COMPLETED);
-    const isUnlocked = (flatPrereqs.length === 0 || isPrereqCompleted) && certStatus === CERT_STATUS.NOT_STARTED;
-    return (
-      <CertNode
-        key={cert.id}
-        cert={cert}
-        pathColor={path.color}
-        onSelect={setSelectedCert}
-        index={idx}
-        isTrunk={!cert.branch}
-        isUnlocked={isUnlocked}
-        isPathIgnored={isPathIgnored(path.id)}
-        hideNode={path.id === 'retired-exams'}
-      />
-    );
-  };
-
-  const trunkBottomGroups = [CERT_LEVELS.EXPERT, CERT_LEVELS.SPECIALTY]
-    .map(level => ({ level, certs: trunkBottom.filter(c => c.level === level) }))
-    .filter(g => g.certs.length > 0);
-
-  // ─── Track SVG Overlay ───
-  const renderLineSVG = () => {
-    if (linePaths.length === 0) return null;
-
-    return (
-      <svg
-        className="path-map__line-svg"
-        width="100%"
-        height="100%"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          pointerEvents: 'none',
-          overflow: 'visible',
-          zIndex: 1,
-        }}
-      >
-        {/* Background (default) tracks first */}
-        <g opacity={0.12}>
-          {linePaths.map(tp => (
-            <path
-              key={`bg-${tp.id}`}
-              d={tp.d}
-              fill="none"
-              stroke={path.color}
-              strokeWidth={RAIL_WIDTH}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          ))}
-        </g>
-        {/* Unlocked overlay tracks */}
-        <g opacity={0.4}>
-          {linePaths
-            .filter(tp => tp.state === 'unlocked')
-            .map(tp => (
-              <path
-                key={`fg-${tp.id}-unlocked`}
-                d={tp.d}
-                fill="none"
-                stroke={path.color}
-                strokeWidth={RAIL_WIDTH}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            ))}
-        </g>
-        {/* Active overlay tracks */}
-        <g opacity={1}>
-          {linePaths
-            .filter(tp => tp.state === 'active')
-            .map(tp => (
-              <path
-                key={`fg-${tp.id}-active`}
-                d={tp.d}
-                fill="none"
-                stroke={path.color}
-                strokeWidth={RAIL_WIDTH}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            ))}
-        </g>
-      </svg>
-    );
-  };
-
   const PathIcon = Icons[path.icon] || Icons.Circle;
 
   return (
     <div className="path-map" style={{ '--path-color': path.color, '--path-glow': path.glowColor }}>
-
-      {/* ─── Path Header ─── */}
       <div className="path-map__header">
         <div className="path-map__header-icon">
           <PathIcon size={28} />
@@ -474,164 +339,15 @@ const PathMap = () => {
         </div>
       </div>
 
-      {/* ─── Map Viewport ─── */}
-      <div className="path-map__viewport">
-        {/* ─── Tree Container ─── */}
-        <div 
-          className="path-map__tree-container" 
-          ref={treeContainerRef}
-          style={hasBranches ? { '--branch-count': branchColumns.length || 1 } : undefined}
-        >
-          {/* Single SVG overlay for ALL track lines */}
-          {renderLineSVG()}
-
-          {hasBranches ? (
-            <>
-              {/* ── Trunk Top: Fundamentals ── */}
-              {trunkFundamentals.length > 0 && (() => {
-                const chainedFunds = trunkFundamentals.filter(c => !c.isIndependent);
-                const independentFunds = trunkFundamentals.filter(c => c.isIndependent);
-                const hasIndependent = independentFunds.length > 0;
-
-                return (
-                  <div className={`path-map__trunk-top${hasIndependent ? ' path-map__trunk-top--row' : ''}`}>
-                    <div className="path-map__trunk-nodes">
-                      {chainedFunds.map((cert, idx) => (
-                        <div key={cert.id} className="path-map__trunk-node-wrap">
-                          {renderCertNode(cert, idx)}
-                        </div>
-                      ))}
-                    </div>
-                    {hasIndependent && (
-                      <div className="path-map__trunk-independent-nodes">
-                        {independentFunds.map((cert, idx) => (
-                          <div key={cert.id} className="path-map__trunk-node-wrap path-map__trunk-node-wrap--independent">
-                            {renderCertNode(cert, chainedFunds.length + idx)}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-
-              {/* ── Spacer for fork zone ── */}
-              {trunkFundamentals.length > 0 && (
-                <div className="path-map__fork-spacer" ref={forkSpacerRef} />
-              )}
-
-              {/* ── Branch Columns ── */}
-              <div className="path-map__branches-scroll">
-                {path.id === 'retired-exams' ? (
-                  <div
-                    className="path-map__branches-grid"
-                    ref={gridRef}
-                    style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}
-                  >
-                    {branchColumns.map(branch => (
-                      <div key={branch.id} className="path-map__branch-column" id={`branch-col-${branch.id}`} style={{ width: '100%' }}>
-                        <div className="path-map__branch-column-header">
-                          <div className="path-map__branch-column-header-title">
-                            <span>{branch.name}</span>
-                          </div>
-                          {branch.description && (
-                            <div className="path-map__branch-column-header-desc">
-                              {branch.description}
-                            </div>
-                          )}
-                        </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 320px)', gap: 'var(--space-8)', width: '100%', alignContent: 'start', justifyContent: 'center' }}>
-                          {branch.allCerts.map((cert, idx) => (
-                            <div key={cert.id} className="path-map__branch-node">
-                              {renderCertNode(cert, idx)}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div
-                    className="path-map__branches-grid"
-                    ref={gridRef}
-                    style={{ gridTemplateColumns: `repeat(${branchColumns.length}, 320px)` }}
-                  >
-                    {/* Headers mapped to the first row */}
-                    {branchColumns.map((branch, colIdx) => (
-                      <div 
-                        key={`header-${branch.id}`} 
-                        className="path-map__branch-column-header"
-                        style={{ gridColumn: colIdx + 1, gridRow: 1 }}
-                      >
-                        <div className="path-map__branch-column-header-title">
-                          <Icons.GitBranch size={14} />
-                          <span>{branch.name}</span>
-                        </div>
-                        {branch.description && (
-                          <div className="path-map__branch-column-header-desc">
-                            {branch.description}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                    {/* Nodes mapped to subsequent rows */}
-                    {branchColumns.flatMap((branch, colIdx) => 
-                      branch.allCerts.map((cert, rowIdx) => (
-                        <div 
-                          key={cert.id} 
-                          className="path-map__branch-node"
-                          style={{ gridColumn: colIdx + 1, gridRow: rowIdx + 2 }}
-                        >
-                          {renderCertNode(cert, rowIdx)}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* ── Spacer for merge zone ── */}
-              {trunkBottom.length > 0 && (
-                <div className="path-map__merge-spacer" />
-              )}
-
-              {/* ── Trunk Bottom (Expert/Specialty) ── */}
-              {trunkBottom.length > 0 && (
-                <div className="path-map__trunk-bottom">
-                  {trunkBottomGroups.map(group => (
-                    <div key={group.level} className="path-map__trunk-level-group">
-                      <div className="path-map__trunk-nodes">
-                        {group.certs.map((cert, idx) => (
-                          <div key={cert.id} className="path-map__trunk-node-wrap">
-                            {renderCertNode(cert, idx)}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </>
-          ) : (
-            /* ─── Linear Layout (no branches, e.g. DevOps) ─── */
-            <div className="path-map__cert-nodes">
-              {linearGroups.map(group => (
-                <div key={group.level} className="path-map__level-group">
-                  <div className="path-map__level-nodes">
-                    {group.certs.map((cert, idx) => (
-                      <div key={cert.id} className="path-map__node-wrapper path-map__node-wrapper--trunk">
-                        {renderCertNode(cert, idx)}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+      <div className="path-map__viewport" style={{ flex: 1, minHeight: 0 }}>
+        <ReactFlowProvider>
+          <PathMapFlow 
+            path={path} 
+            setSelectedCert={setSelectedCert}
+          />
+        </ReactFlowProvider>
       </div>
 
-      {/* ─── Detail Panel ─── */}
       {selectedCert && (
         <CertDetail cert={selectedCert} path={path} onClose={() => setSelectedCert(null)} />
       )}
