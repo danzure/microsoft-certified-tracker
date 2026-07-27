@@ -5,7 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import { IconMap } from '../common/IconMap';
-const { AlertTriangle, Link, ArchiveX, Plus, Minus, Microsoft } = IconMap;
+const { AlertTriangle, Link, ArchiveX, Plus, Minus } = IconMap;
 import './CertNode.css';
 
 /**

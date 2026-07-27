@@ -75,6 +75,7 @@ Always use the variables defined in `src/index.css` to ensure consistent theming
 
 ### 10. Icons & Imagery
 - **Standardisation & IconMap**: Prioritize official Microsoft icons or Fluent UI System Icons where possible to maintain alignment with the Azure portal experience. Do not import `@fluentui/react-icons` directly into random components. Instead, always use the central abstraction `src/components/common/IconMap.jsx`. If a new icon is needed, add it to `IconMap.jsx` first.
+- **Consistent Usage**: Ensure that the same icon is used consistently for the same function or meaning across the entire application (e.g., always use `AlertTriangle` for warnings or retiring elements, `CheckCircle2` for completions).
 - **Icon Backgrounds**: When displaying full-color product or service icons (e.g., Azure services), set the container background to `transparent` so the icon stands on its own. Solid category backgrounds are reserved for monochrome structural icons.
 
 ### 11. Microsoft Certification Badges & Links
