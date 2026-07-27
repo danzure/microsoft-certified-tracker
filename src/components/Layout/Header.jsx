@@ -41,14 +41,6 @@ const Header = ({ onToggleSidebar }) => {
 
       <div className="header__right">
         <div className="header__theme-group" role="group" aria-label="Theme preference">
-          {/* Sliding Indicator */}
-          <div 
-            className="header__theme-indicator"
-            style={{ 
-              left: themePref === 'light' ? '3px' : themePref === 'system' ? '35px' : '67px'
-            }} 
-          />
-
           <button
             onClick={() => setTheme('light')}
             className={`header__theme-btn ${themePref === 'light' ? 'header__theme-btn--active' : ''}`}
@@ -71,7 +63,7 @@ const Header = ({ onToggleSidebar }) => {
             aria-label="Dark mode"
             title="Dark mode"
           >
-            <Moon size={16} className="header__theme-icon" />
+            <Moon size={16} className="header__theme-icon" style={{ transform: 'scaleX(-1)' }} />
           </button>
         </div>
       </div>
