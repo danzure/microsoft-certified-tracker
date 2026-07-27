@@ -1,5 +1,5 @@
 import { Handle, Position } from '@xyflow/react';
-import { CERT_STATUS, CERT_LEVELS, getCertById } from '../../data/certificationPaths';
+import { CERT_STATUS, CERT_LEVELS, getCertById, getCertificationsRequiring } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import { useToast } from '../../context/ToastContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
@@ -18,7 +18,7 @@ import './CertNode.css';
  */
 const CertNode = ({ data }) => {
   const { cert, pathColor, onSelect, index, isUnlocked } = data;
-  const { getStatus, cycleStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
+  const { getStatus, cycleStatus, setStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
   const { addToast } = useToast();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
@@ -45,32 +45,35 @@ const CertNode = ({ data }) => {
     onSelect?.(cert);
   };
 
-  const handleCycleStatus = (e) => {
+  const handleSetStatus = (newStatus, e) => {
     e.preventDefault();
     e.stopPropagation();
-    cycleStatus(cert.id);
+    setStatus(cert.id, newStatus);
+    
+    if (newStatus === CERT_STATUS.COMPLETED) {
+      const prerequisiteFor = getCertificationsRequiring(cert.id);
+      if (prerequisiteFor?.length > 0) {
+        const nextCert = prerequisiteFor.find(c => getStatus(c.id) === CERT_STATUS.NOT_STARTED);
+        if (nextCert) {
+          addToast(`🎉 You've unlocked ${nextCert.examCode}!`, 'success', {
+            action: {
+              label: 'Start it',
+              onClick: () => {
+                setStatus(nextCert.id, CERT_STATUS.IN_PROGRESS);
+                addToast(`${nextCert.examCode} marked as In Progress`);
+              }
+            }
+          });
+          return;
+        }
+      }
+      addToast(`${cert.examCode} marked as Passed`);
+    } else if (newStatus === CERT_STATUS.IN_PROGRESS) {
+      addToast(`${cert.examCode} marked as In Progress`);
+    } else if (newStatus === CERT_STATUS.NOT_STARTED) {
+      addToast(`${cert.examCode} marked as Not Started`);
+    }
   };
-
-  const statusLabel = {
-    [CERT_STATUS.NOT_STARTED]: 'Not Started',
-    [CERT_STATUS.IN_PROGRESS]: 'In Progress',
-    [CERT_STATUS.COMPLETED]: 'Completed',
-    [CERT_STATUS.NEEDS_RENEWAL]: 'Needs Renewal',
-  }[status];
-
-  const nextStatusLabel = {
-    [CERT_STATUS.NOT_STARTED]: 'Start',
-    [CERT_STATUS.IN_PROGRESS]: 'In Progress',
-    [CERT_STATUS.COMPLETED]: 'Passed',
-    [CERT_STATUS.NEEDS_RENEWAL]: 'Renew',
-  }[status];
-
-  const StatusIcon = {
-    [CERT_STATUS.NOT_STARTED]: IconMap.Circle,
-    [CERT_STATUS.IN_PROGRESS]: IconMap.Clock,
-    [CERT_STATUS.COMPLETED]: IconMap.CheckCircle2,
-    [CERT_STATUS.NEEDS_RENEWAL]: IconMap.RefreshCw,
-  }[status];
 
   return (
     <div
@@ -194,15 +197,32 @@ const CertNode = ({ data }) => {
                 })
               )}
             </div>
-            <button
-              className={`cert-node__cycle-btn cert-node__cycle-btn--${status.replace('_', '-')}`}
-              onClick={handleCycleStatus}
-              title={`${statusLabel} — Click to toggle status`}
-              aria-label={`Change status: ${statusLabel}`}
-            >
-              <StatusIcon size={12} />
-              {nextStatusLabel}
-            </button>
+            <div className="cert-node__status-toggle" onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
+              <button
+                className={`cert-node__toggle-btn ${status === CERT_STATUS.NOT_STARTED ? 'cert-node__toggle-btn--active' : ''}`}
+                onClick={(e) => handleSetStatus(CERT_STATUS.NOT_STARTED, e)}
+                title="Not Started"
+                aria-label="Set status: Not Started"
+              >
+                <IconMap.Circle size={12} />
+              </button>
+              <button
+                className={`cert-node__toggle-btn ${status === CERT_STATUS.IN_PROGRESS ? 'cert-node__toggle-btn--active' : ''}`}
+                onClick={(e) => handleSetStatus(CERT_STATUS.IN_PROGRESS, e)}
+                title="In Progress"
+                aria-label="Set status: In Progress"
+              >
+                <IconMap.Clock size={12} />
+              </button>
+              <button
+                className={`cert-node__toggle-btn ${(status === CERT_STATUS.COMPLETED || status === CERT_STATUS.NEEDS_RENEWAL) ? 'cert-node__toggle-btn--active' : ''}`}
+                onClick={(e) => handleSetStatus(CERT_STATUS.COMPLETED, e)}
+                title={status === CERT_STATUS.NEEDS_RENEWAL ? "Needs Renewal" : "Passed"}
+                aria-label="Set status: Passed"
+              >
+                {status === CERT_STATUS.NEEDS_RENEWAL ? <IconMap.RefreshCw size={12} /> : <IconMap.CheckCircle2 size={12} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>

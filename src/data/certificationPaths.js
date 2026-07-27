@@ -64,25 +64,6 @@ export const certificationPaths = [
         ],
       },
       {
-        id: 'az-104',
-        examCode: 'AZ-104',
-        name: 'Azure Administrator Associate',
-        level: CERT_LEVELS.ASSOCIATE,
-        branch: 'admin',
-        description: 'Demonstrate key skills to configure, manage, secure, and administer key professional functions in Microsoft Azure.',
-        prerequisites: [],
-        recommendedPrereqs: ['az-900'],
-        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-104/',
-        retirementDate: null,
-        skillsMeasured: [
-        'Manage Azure identities and governance (20–25%)',
-        'Implement and manage storage (15–20%)',
-        'Deploy and manage Azure compute resources (20–25%)',
-        'Implement and manage virtual networking (15–20%)',
-        'Monitor and maintain Azure resources (10–15%)'
-        ],
-      },
-      {
         id: 'az-802',
         examCode: 'AZ-802',
         name: 'Windows Server Administrator Associate',
@@ -121,6 +102,25 @@ export const certificationPaths = [
         'Design and implement application delivery services (15–20%)',
         'Design and implement private access to Azure services (10–15%)',
         'Design and implement Azure network security services (15–20%)'
+        ],
+      },
+      {
+        id: 'az-104',
+        examCode: 'AZ-104',
+        name: 'Azure Administrator Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'admin',
+        description: 'Demonstrate key skills to configure, manage, secure, and administer key professional functions in Microsoft Azure.',
+        prerequisites: [],
+        recommendedPrereqs: ['az-900'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/az-104/',
+        retirementDate: null,
+        skillsMeasured: [
+        'Manage Azure identities and governance (20–25%)',
+        'Implement and manage storage (15–20%)',
+        'Deploy and manage Azure compute resources (20–25%)',
+        'Implement and manage virtual networking (15–20%)',
+        'Monitor and maintain Azure resources (10–15%)'
         ],
       },
       {

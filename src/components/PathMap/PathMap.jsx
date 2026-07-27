@@ -5,7 +5,7 @@ import CertNode from './CertNode';
 import CertDetail from '../CertDetail/CertDetail';
 import ProgressRing from '../common/ProgressRing';
 import { IconMap as Icons } from '../common/IconMap';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { ReactFlow, ReactFlowProvider, useNodesState, useEdgesState, Background, Controls, ControlButton, useReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import dagre from 'dagre';
@@ -73,6 +73,8 @@ const CustomControls = () => {
     </Controls>
   );
 };
+
+let lastFittedPath = null;
 
 const PathMapFlow = ({ path, setSelectedCert }) => {
   const { getStatus, isPathIgnored } = useProgressContext();
@@ -222,19 +224,37 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
       const toStatus = getStatus(edge.target);
       const fromCompleted = fromStatus === CERT_STATUS.COMPLETED;
       const toActive = toStatus === CERT_STATUS.COMPLETED || toStatus === CERT_STATUS.IN_PROGRESS;
+      
+      const targetNode = initialNodes.find(n => n.id === edge.target);
+      const toUnlocked = targetNode?.data?.isUnlocked;
 
       let strokeColor;
-      if (fromCompleted && toActive) strokeColor = path.color;
-      else if (fromCompleted) strokeColor = `color-mix(in srgb, ${path.color} 40%, var(--bg-app))`;
-      else strokeColor = `color-mix(in srgb, ${path.color} 12%, var(--bg-app))`;
+      let zIndex = 0;
+      let isAnimated = false;
+
+      if (fromCompleted && toActive) {
+        strokeColor = path.color;
+        zIndex = 2;
+      } else if (fromCompleted && toUnlocked) {
+        strokeColor = `color-mix(in srgb, ${path.color} 70%, var(--bg-app))`;
+        zIndex = 1;
+        isAnimated = true;
+      } else if (fromCompleted) {
+        strokeColor = `color-mix(in srgb, ${path.color} 40%, var(--bg-app))`;
+        zIndex = 1;
+      } else {
+        strokeColor = `color-mix(in srgb, ${path.color} 12%, var(--bg-app))`;
+        zIndex = 0;
+      }
 
       return {
         ...edge,
+        zIndex,
         style: {
           stroke: strokeColor,
           strokeWidth: 6,
         },
-        animated: false,
+        animated: isAnimated,
       };
     });
 
@@ -243,9 +263,12 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
     setNodes(layoutedNodes);
     setEdges(layoutedEdges);
 
-    setTimeout(() => {
-      fitView({ duration: 600, padding: 0.1 });
-    }, 50);
+    if (lastFittedPath !== path.id) {
+      lastFittedPath = path.id;
+      setTimeout(() => {
+        fitView({ duration: 600, padding: 0.1 });
+      }, 50);
+    }
   }, [path, hasBranches, trunkFundamentals, trunkBottom, branchColumns, linearGroups, getStatus, isPathIgnored, path?.color, setSelectedCert, setNodes, setEdges, fitView]);
 
   return (
@@ -257,8 +280,8 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
-          fitView
-          fitViewOptions={{ padding: 0.1 }}
+          fitView={false}
+          zoomOnDoubleClick={false}
           minZoom={0.1}
           maxZoom={1.5}
           proOptions={{ hideAttribution: true }}

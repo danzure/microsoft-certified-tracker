@@ -7,114 +7,29 @@
   height: 210px;
 }
 
-/* CertNode Node */
-.cert-node__node {
-  position: relative;
-  z-index: 10;
-  flex-shrink: 0;
-  width: 28px;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Not Started (Locked) */
+.cert-node--not-started:not(.cert-node--unlocked) .cert-node__info {
+  opacity: 0.6;
+  filter: grayscale(0.6);
 }
 
-.cert-node__node-outer {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid var(--cert-node-color);
-  background: var(--bg-surface-1);
-  transition: transform var(--duration-fast) var(--curve-decelerate),
-              box-shadow var(--duration-fast) var(--curve-decelerate);
-  position: relative;
+.cert-node--not-started:not(.cert-node--unlocked) .cert-node__info:hover {
+  opacity: 0.9;
+  filter: grayscale(0.2);
 }
 
-.cert-node__node:hover .cert-node__node-outer {
-  transform: scale(1.12);
-  box-shadow: var(--shadow-lg);
-}
-
-.cert-node__node-inner {
-  width: 16px;
-  height: 16px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-inverse);
-  transition: background var(--duration-fast) var(--curve-decelerate);
-}
-
-/* Not Started */
-.cert-node--not-started .cert-node__node-inner {
-  background: transparent;
-  color: var(--text-tertiary);
-}
-
-.cert-node--not-started .cert-node__node-outer {
-  border-style: dashed;
-  opacity: 0.5;
-}
-
-.cert-node--not-started:hover .cert-node__node-outer {
-  opacity: 0.8;
-}
-
-/* Unlocked — prereq completed, cert available to start */
-.cert-node--unlocked.cert-node--not-started .cert-node__node-outer {
-  border-style: solid;
-  opacity: 0.75;
-}
-
-.cert-node--unlocked.cert-node--not-started:hover .cert-node__node-outer {
+/* Unlocked (Available to Start) */
+.cert-node--unlocked.cert-node--not-started .cert-node__info {
   opacity: 1;
+  border-color: color-mix(in srgb, var(--cert-node-color) 80%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--cert-node-color) 20%, transparent);
 }
 
-/* In Progress */
-.cert-node--in-progress .cert-node__node-inner {
-  background: transparent;
-  overflow: hidden;
-  position: relative;
-}
-
-.cert-node__node-half {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: var(--cert-node-color);
-  border-radius: 0 0 8px 8px;
-}
-
-.cert-node--in-progress .cert-node__node-outer {
-  border-color: var(--warning-color, #f59e0b);
-}
-
-.cert-node--needs-renewal .cert-node__node-outer {
-  border-color: #ff6b6b;
-}
-
-.cert-node--needs-renewal .cert-node__node-inner {
-  color: #ff6b6b;
-}
-
-/* Completed */
-.cert-node--completed .cert-node__node-inner {
-  background: var(--cert-node-color);
-  color: white;
-}
-
-.cert-node--completed .cert-node__node-outer {
+.cert-node--unlocked.cert-node--not-started .cert-node__info:hover {
   border-color: var(--cert-node-color);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--cert-node-color) 30%, transparent);
 }
+
 
 .cert-node--completed .cert-node__info {
   border-color: color-mix(in srgb, var(--cert-node-color) 60%, transparent);
@@ -289,57 +204,66 @@
   color: var(--text-primary);
 }
 
-/* Status Cycle Button */
-.cert-node__cycle-btn {
+/* Segmented Status Toggle */
+.cert-node__status-toggle {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  font-size: var(--fs-caption2);
-  font-weight: var(--fw-semibold);
-  padding: 3px 8px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
   background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  gap: 2px;
+}
+
+.cert-node__toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  border-radius: calc(var(--radius-md) - 2px);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
-  white-space: nowrap;
 }
 
-.cert-node__cycle-btn:hover {
+.cert-node__toggle-btn:hover {
   background: var(--bg-surface-hover);
-  border-color: var(--border-default);
   color: var(--text-primary);
 }
 
-.cert-node__cycle-btn--in-progress {
-  border-color: var(--badge-inprogress-border);
+.cert-node__toggle-btn:active {
+  transform: scale(0.92);
+}
+
+.cert-node__toggle-btn--active {
+  box-shadow: var(--shadow-2);
+}
+
+.cert-node__toggle-btn--active[title="Not Started"] {
+  background: var(--colorNeutralBackground1);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.cert-node__toggle-btn--active[title="In Progress"] {
   background: var(--badge-inprogress-bg);
   color: var(--badge-inprogress-fg);
+  border: 1px solid var(--badge-inprogress-border);
 }
 
-.cert-node__cycle-btn--in-progress:hover {
-  background: color-mix(in srgb, var(--badge-inprogress-fg) 16%, transparent);
-}
-
-.cert-node__cycle-btn--completed {
-  border-color: var(--badge-completed-border);
+.cert-node__toggle-btn--active[title="Passed"] {
   background: var(--badge-completed-bg);
   color: var(--badge-completed-fg);
+  border: 1px solid var(--badge-completed-border);
 }
 
-.cert-node__cycle-btn--completed:hover {
-  background: color-mix(in srgb, var(--badge-completed-fg) 16%, transparent);
-}
-
-.cert-node__cycle-btn--needs-renewal {
-  border-color: rgba(255, 107, 107, 0.4);
+.cert-node__toggle-btn--active[title="Needs Renewal"] {
   background: rgba(255, 107, 107, 0.1);
   color: #ff6b6b;
-}
-
-.cert-node__cycle-btn--needs-renewal:hover {
-  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.4);
 }
 
 .cert-node__fast-untrack-btn {

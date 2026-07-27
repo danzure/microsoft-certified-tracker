@@ -329,6 +329,21 @@ const CertDetail = ({ cert, path, onClose }) => {
                   className={`cert-detail__status-btn ${opt.className} ${(status === opt.value || (status === CERT_STATUS.NEEDS_RENEWAL && opt.value === CERT_STATUS.COMPLETED)) ? 'cert-detail__status-btn--active' : ''}`}
                   onClick={() => {
                     setStatus(cert.id, opt.value);
+                    if (opt.value === CERT_STATUS.COMPLETED && prerequisiteFor?.length > 0) {
+                      const nextCert = prerequisiteFor.find(c => getStatus(c.id) === CERT_STATUS.NOT_STARTED);
+                      if (nextCert) {
+                        addToast(`🎉 You've unlocked ${nextCert.examCode}!`, 'success', {
+                          action: {
+                            label: 'Start it',
+                            onClick: () => {
+                              setStatus(nextCert.id, CERT_STATUS.IN_PROGRESS);
+                              addToast(`${nextCert.examCode} marked as In Progress`);
+                            }
+                          }
+                        });
+                        return;
+                      }
+                    }
                     addToast(`${cert.examCode} marked as ${opt.label}`);
                   }}
                 >
