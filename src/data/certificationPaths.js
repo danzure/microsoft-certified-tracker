@@ -614,24 +614,6 @@ export const certificationPaths = [
         ],
       },
       {
-        id: 'ab-650',
-        examCode: 'AB-650',
-        name: 'AI Services Administrator Associate',
-        level: CERT_LEVELS.ASSOCIATE,
-        branch: 'admin',
-        description: 'Manage and secure AI services within Microsoft 365, including Copilot and related data sources.',
-        prerequisites: [],
-        recommendedPrereqs: ['ab-900'],
-        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/ab-650/',
-        retirementDate: null,
-        isBeta: 'Beta from July 2026',
-        skillsMeasured: [
-        'Implement and manage Copilot in Microsoft 365',
-        'Secure AI data and services',
-        'Monitor and troubleshoot AI adoption and performance'
-        ],
-      },
-      {
         id: 'md-102',
         examCode: 'MD-102',
         name: 'Endpoint Administrator Associate',
@@ -774,12 +756,31 @@ export const certificationPaths = [
     icon: 'Bot',
     description: 'Build and architect AI-powered business solutions with Copilot and autonomous agents.',
     branches: [
+      { id: 'admin', name: 'Admin', description: 'AI services administration' },
       { id: 'sales', name: 'Sales', description: 'AI solutions for sales processes' },
       { id: 'contact-center', name: 'Contact Center', description: 'AI-powered contact centers' },
       { id: 'builder', name: 'Agent Builder', description: 'Custom AI agent development' },
       { id: 'supply-chain', name: 'Supply Chain', description: 'AI solutions for supply chain' },
     ],
     certifications: [
+      {
+        id: 'ab-650',
+        examCode: 'AB-650',
+        name: 'AI Services Administrator Associate',
+        level: CERT_LEVELS.ASSOCIATE,
+        branch: 'admin',
+        description: 'Manage and secure AI services within Microsoft 365, including Copilot and related data sources.',
+        prerequisites: [],
+        recommendedPrereqs: ['ab-900'],
+        learnUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/ai-services-administrator-associate/',
+        retirementDate: null,
+        isBeta: 'Beta from July 2026',
+        skillsMeasured: [
+        'Implement and manage Copilot in Microsoft 365',
+        'Secure AI data and services',
+        'Monitor and troubleshoot AI adoption and performance'
+        ],
+      },
       {
         id: 'ab-620',
         examCode: 'AB-620',
