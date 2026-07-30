@@ -109,6 +109,9 @@ const CertDetail = ({ cert, path, onClose }) => {
             </div>
             <div className="cert-detail__badges">
               <Badge variant={levelVariant} outline>{cert.level}</Badge>
+              {cert.role && (
+                <Badge variant="default" outline>{cert.role}</Badge>
+              )}
               <Badge color={path.color} outline>{path.shortName}</Badge>
               {retiring && (
                 <Badge variant="retiring" outline>

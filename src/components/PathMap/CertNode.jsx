@@ -175,6 +175,9 @@ const CertNode = ({ data }) => {
           <div className="cert-node__actions" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
               <Badge variant={levelVariant} small>{cert.level}</Badge>
+              {cert.role && (
+                <Badge variant="default" small outline>{cert.role}</Badge>
+              )}
               {/* Prerequisite Tags */}
               {cert.prerequisites?.length > 0 && (
                 cert.prerequisites.map((prereqItem, index) => {

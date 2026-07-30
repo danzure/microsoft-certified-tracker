@@ -91,6 +91,9 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
             <div className="cert-node__badge-stats">
               <span className="cert-node__exam-code">{certInfo.examCode}</span>
               <Badge variant={levelVariant} small>{certInfo.level}</Badge>
+              {certInfo.role && (
+                <Badge variant="default" small outline>{certInfo.role}</Badge>
+              )}
             </div>
             <h3 className="cert-node__name">
               {certInfo.name.startsWith('Microsoft') ? certInfo.name : `Microsoft Certified: ${certInfo.name}`}

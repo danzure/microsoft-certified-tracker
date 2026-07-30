@@ -30,8 +30,8 @@ export const PILLARS = {
 export const certificationPaths = [
   {
     id: 'azure-infrastructure',
-    name: 'Microsoft Azure Infrastructure',
-    shortName: 'Azure Infrastructure',
+    name: 'Cloud & AI Platforms - Azure Apps & Infrastructure',
+    shortName: 'Cloud & AI - Azure Infra',
     code: 'AZ',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-azure)',
@@ -180,8 +180,8 @@ export const certificationPaths = [
   },
   {
     id: 'ai-machine-learning',
-    name: 'Microsoft Azure AI & Machine Learning',
-    shortName: 'Azure AI & ML',
+    name: 'Cloud & AI Platforms - Azure AI',
+    shortName: 'Cloud & AI - AI',
     code: 'AI',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-ai)',
@@ -290,8 +290,8 @@ export const certificationPaths = [
   },
   {
     id: 'data-engineering',
-    name: 'Microsoft Data & Analytics',
-    shortName: 'Data & Analytics',
+    name: 'Cloud & AI Platforms - Azure Data',
+    shortName: 'Cloud & AI - Data',
     code: 'DP',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-data)',
@@ -433,8 +433,8 @@ export const certificationPaths = [
   },
   {
     id: 'security',
-    name: 'Microsoft Security, Compliance & Identity',
-    shortName: 'Security & Identity',
+    name: 'Security, Compliance, and Identity',
+    shortName: 'Security',
     code: 'SC',
     pillar: PILLARS.SECURITY,
     color: 'var(--line-security)',
@@ -579,8 +579,8 @@ export const certificationPaths = [
   },
   {
     id: 'microsoft-365',
-    name: 'Microsoft 365',
-    shortName: 'Microsoft 365',
+    name: 'AI Business Solutions - Modern Work',
+    shortName: 'AI Business - Modern Work',
     code: 'MS',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-m365)',
@@ -689,8 +689,8 @@ export const certificationPaths = [
   },
   {
     id: 'power-platform',
-    name: 'Microsoft Power Platform',
-    shortName: 'Power Platform',
+    name: 'AI Business Solutions - Business Applications',
+    shortName: 'AI Business - Business Apps',
     code: 'PL',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-power)',
@@ -764,8 +764,8 @@ export const certificationPaths = [
   },
   {
     id: 'agentic-ai',
-    name: 'Microsoft Copilot & AI Agents',
-    shortName: 'Copilot & AI',
+    name: 'AI Business Solutions - Copilot & AI Agents',
+    shortName: 'AI Business - Copilot',
     code: 'AB',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-agentic)',

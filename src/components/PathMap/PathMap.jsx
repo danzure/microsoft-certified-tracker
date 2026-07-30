@@ -258,7 +258,37 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
       };
     });
 
-    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(initialNodes, styledEdges);
+    let layoutedNodes = initialNodes;
+    let layoutedEdges = styledEdges;
+
+    if (path.id === 'retired-exams') {
+      const colWidth = 360; // 320 node width + 40 gap
+      const rowHeight = 250; // 210 node height + 40 gap
+      const cols = 3;
+      const placedNodes = [];
+      
+      const allCerts = branchColumns.flatMap(branch => branch.allCerts);
+      
+      allCerts.forEach((cert, idx) => {
+        const col = idx % cols;
+        const row = Math.floor(idx / cols);
+        const node = initialNodes.find(n => n.id === cert.id);
+        if (node) {
+          placedNodes.push({
+            ...node,
+            position: { x: col * colWidth, y: row * rowHeight },
+            sourcePosition: 'bottom',
+            targetPosition: 'top'
+          });
+        }
+      });
+      
+      layoutedNodes = placedNodes;
+    } else {
+      const res = getLayoutedElements(initialNodes, styledEdges);
+      layoutedNodes = res.nodes;
+      layoutedEdges = res.edges;
+    }
 
     setNodes(layoutedNodes);
     setEdges(layoutedEdges);
