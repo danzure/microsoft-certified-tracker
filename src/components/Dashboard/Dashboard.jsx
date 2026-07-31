@@ -15,7 +15,7 @@ import './Dashboard.css';
  */
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored, isCertIgnored } = useProgressContext();
+  const { getOverallProgress, getPathProgress, getStatus, togglePathIgnored, isPathIgnored, isCertIgnored, customPlaylist } = useProgressContext();
   const overall = useMemo(() => getOverallProgress(), [getOverallProgress]);
 
   const inProgressCerts = useMemo(() => {
@@ -280,21 +280,46 @@ const Dashboard = () => {
           <h2 className="dashboard__section-title">My Tracked Learning</h2>
         </div>
         
-        {trackedPaths.length === 0 && individuallyTrackedCerts.length === 0 ? (
+        {trackedPaths.length === 0 && individuallyTrackedCerts.length === 0 && (!customPlaylist || customPlaylist.length === 0) ? (
           <div className="dashboard__empty-state">
             <Icons.TrendingUp size={24} />
             <p>You aren't tracking any paths or individual exams yet. Explore the catalog below to start your journey.</p>
           </div>
         ) : (
           <>
-            {trackedPaths.length > 0 && (
+            {(trackedPaths.length > 0 || (customPlaylist && customPlaylist.length > 0)) && (
               <div className="dashboard__paths-grid">
+                {customPlaylist && customPlaylist.length > 0 && (
+                  <div
+                    className="dashboard__path-card"
+                    onClick={() => navigate('/career-paths?role=custom')}
+                    style={{ '--card-color': 'var(--colorBrandForeground1)' }}
+                  >
+                    <div className="dashboard__path-card-header">
+                      <div className="dashboard__path-icon-title">
+                        <div className="dashboard__path-icon">
+                          <Icons.SettingsColor size={20} />
+                        </div>
+                        <div className="dashboard__path-title-group">
+                          <div className="dashboard__path-badge-stats">
+                            <Badge color="var(--colorBrandForeground1)" small>Custom Track</Badge>
+                          </div>
+                          <h2 className="dashboard__path-name">Your Custom Career</h2>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="dashboard__path-card-body">
+                      <p className="dashboard__path-desc">A personalized playlist of {customPlaylist.length} certifications tailored to your unique goals.</p>
+                    </div>
+                  </div>
+                )}
                 {trackedPaths.map((path, idx) => renderPathCard(path, false, idx))}
               </div>
             )}
             
             {individuallyTrackedCerts.length > 0 && (
-              <div style={{ marginTop: trackedPaths.length > 0 ? '24px' : '0' }}>
+              <div style={{ marginTop: (trackedPaths.length > 0 || (customPlaylist && customPlaylist.length > 0)) ? '24px' : '0' }}>
                 <h3 className="dashboard__pillar-title" style={{ fontSize: '16px', marginBottom: '16px' }}>Individually Tracked Exams</h3>
                 <div className="dashboard__activity-list">
                   {individuallyTrackedCerts.map((cert) => (

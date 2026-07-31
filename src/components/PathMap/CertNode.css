@@ -3,8 +3,8 @@
   align-items: flex-start;
   gap: var(--space-3);
   position: relative;
-  width: 320px;
-  height: 210px;
+  width: 400px;
+  height: 230px;
 }
 
 /* Not Started (Locked) */
@@ -74,6 +74,10 @@
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 24px color-mix(in srgb, var(--cert-node-color) 20%, transparent);
   border-color: color-mix(in srgb, var(--cert-node-color) 50%, var(--border-subtle, var(--colorNeutralStroke1)));
+}
+
+.cert-node__info:active {
+  transform: scale(0.96);
 }
 
 .cert-node__info:hover::after {

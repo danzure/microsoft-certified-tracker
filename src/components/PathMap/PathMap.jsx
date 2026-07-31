@@ -22,7 +22,7 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
   dagreGraph.setGraph({ rankdir: direction, nodesep: 40, ranksep: 80 });
 
   nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: 320, height: 210 });
+    dagreGraph.setNode(node.id, { width: 400, height: 230 });
   });
 
   edges.forEach((edge) => {
@@ -38,8 +38,8 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
       targetPosition: isHorizontal ? 'left' : 'top',
       sourcePosition: isHorizontal ? 'right' : 'bottom',
       position: {
-        x: nodeWithPosition.x - 320 / 2,
-        y: nodeWithPosition.y - 210 / 2,
+        x: nodeWithPosition.x - 400 / 2,
+        y: nodeWithPosition.y - 230 / 2,
       },
     };
     return newNode;
@@ -262,8 +262,8 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
     let layoutedEdges = styledEdges;
 
     if (path.id === 'retired-exams') {
-      const colWidth = 360; // 320 node width + 40 gap
-      const rowHeight = 250; // 210 node height + 40 gap
+      const colWidth = 440; // 400 node width + 40 gap
+      const rowHeight = 270; // 230 node height + 40 gap
       const cols = 3;
       const placedNodes = [];
       

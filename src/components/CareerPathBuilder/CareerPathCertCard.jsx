@@ -23,7 +23,7 @@ import '../PathMap/CertNode.css';
  */
 export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }) => {
   const navigate = useNavigate();
-  const { getStatus, cycleStatus } = useProgressContext();
+  const { getStatus, setStatus } = useProgressContext();
   
   const status = getStatus(certInfo.id);
   const isAdded = customPlaylist.includes(certInfo.id);
@@ -35,31 +35,10 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
     Specialty: 'default',
   }[certInfo.level];
 
-  const statusLabel = {
-    [CERT_STATUS.NOT_STARTED]: 'Not Started',
-    [CERT_STATUS.IN_PROGRESS]: 'In Progress',
-    [CERT_STATUS.COMPLETED]: 'Completed',
-    [CERT_STATUS.NEEDS_RENEWAL]: 'Needs Renewal',
-  }[status];
-
-  const nextStatusLabel = {
-    [CERT_STATUS.NOT_STARTED]: 'Start',
-    [CERT_STATUS.IN_PROGRESS]: 'In Progress',
-    [CERT_STATUS.COMPLETED]: 'Passed',
-    [CERT_STATUS.NEEDS_RENEWAL]: 'Renew',
-  }[status];
-
-  const StatusIcon = {
-    [CERT_STATUS.NOT_STARTED]: Icons.Circle,
-    [CERT_STATUS.IN_PROGRESS]: Icons.Clock,
-    [CERT_STATUS.COMPLETED]: Icons.CheckCircle2,
-    [CERT_STATUS.NEEDS_RENEWAL]: Icons.RefreshCw,
-  }[status];
-
-  const handleCycleStatus = (e) => {
+  const handleSetStatus = (newStatus, e) => {
     e.preventDefault();
     e.stopPropagation();
-    cycleStatus(certInfo.id);
+    setStatus(certInfo.id, newStatus);
   };
 
   return (
@@ -90,10 +69,7 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
           <div className="cert-node__title-group">
             <div className="cert-node__badge-stats">
               <span className="cert-node__exam-code">{certInfo.examCode}</span>
-              <Badge variant={levelVariant} small>{certInfo.level}</Badge>
-              {certInfo.role && (
-                <Badge variant="default" small outline>{certInfo.role}</Badge>
-              )}
+              {/* Note: State tags like Retiring/Beta could go here if added to certInfo */}
             </div>
             <h3 className="cert-node__name">
               {certInfo.name.startsWith('Microsoft') ? certInfo.name : `Microsoft Certified: ${certInfo.name}`}
@@ -108,44 +84,100 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
         </p>
       </div>
 
-      <div className="cert-node__actions">
-        <a
-          href={certInfo.learnUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="cert-node__learn-link"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Icons.Microsoft size={12} />
-          Microsoft Learn
-        </a>
-        <button
-          className={`cert-node__cycle-btn cert-node__cycle-btn--${status.replace('_', '-')}`}
-          onClick={handleCycleStatus}
-          title={`${statusLabel} — Click to toggle status`}
-          aria-label={`Change status: ${statusLabel}`}
-        >
-          <StatusIcon size={12} />
-          {nextStatusLabel}
-        </button>
-        
-        <div style={{ flex: 1 }} />
-        
-        <button
-          className={`cert-node__cycle-btn`}
-          style={{ 
-            borderColor: isAdded ? 'var(--success-color, #10b981)' : '', 
-            color: isAdded ? 'var(--success-color, #10b981)' : '',
-            background: isAdded ? 'color-mix(in srgb, var(--success-color, #10b981) 10%, transparent)' : ''
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            isAdded ? onRemove(certInfo.id) : onAdd(certInfo.id);
-          }}
-        >
-          {isAdded ? <Icons.Check size={12} /> : <Icons.PlusCircle size={12} />}
-          {isAdded ? 'Added' : 'Add'}
-        </button>
+      <div className="cert-node__info-footer" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <Badge variant={levelVariant} small>{certInfo.level}</Badge>
+          {certInfo.roleData ? certInfo.roleData.map((r, i) => {
+            const RoleIcon = r.icon ? Icons[r.icon] : null;
+            return (
+              <Badge key={`role-${i}`} color={r.color} small outline>
+                {RoleIcon && <RoleIcon size={10} />}
+                Job role: {r.title}
+              </Badge>
+            );
+          }) : certInfo.role && (
+            <Badge variant="default" small outline>Job role: {certInfo.role}</Badge>
+          )}
+          {certInfo.prerequisites?.length > 0 && (
+            certInfo.prerequisites.map((prereqGroup, idx) => {
+              const prereqTexts = prereqGroup.map(id => {
+                // Shorten some names
+                if (id === 'az-104') return 'AZ-104';
+                return id.toUpperCase();
+              });
+              return (
+                <Badge key={`prereq-${idx}`} variant="default" small style={{ 
+                  color: 'var(--colorBrandForeground2)', 
+                  borderColor: 'var(--colorBrandStroke2)',
+                  background: 'var(--colorBrandBackground2)'
+                }}>
+                  <Icons.Link size={10} />
+                  Prereq: {prereqTexts.join(' OR ')}
+                </Badge>
+              );
+            })
+          )}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <a
+              href={certInfo.learnUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cert-node__learn-link"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Icons.Microsoft size={12} />
+              Microsoft Learn
+            </a>
+            <button
+              className={`cert-node__learn-link`}
+              style={{ 
+                border: '1px solid',
+                borderColor: isAdded ? 'var(--success-color, #10b981)' : 'var(--border-subtle)', 
+                color: isAdded ? 'var(--success-color, #10b981)' : 'var(--text-secondary)',
+                background: isAdded ? 'color-mix(in srgb, var(--success-color, #10b981) 10%, transparent)' : 'var(--bg-surface-2)',
+                cursor: 'pointer'
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                isAdded ? onRemove(certInfo.id) : onAdd(certInfo.id);
+              }}
+            >
+              {isAdded ? <Icons.Check size={12} /> : <Icons.Plus size={12} />}
+              {isAdded ? 'Added to Custom' : 'Add to Custom'}
+            </button>
+          </div>
+          
+          <div className="cert-node__status-toggle" style={{ flexShrink: 0 }} onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
+            <button
+              className={`cert-node__toggle-btn ${status === CERT_STATUS.NOT_STARTED ? 'cert-node__toggle-btn--active' : ''}`}
+              onClick={(e) => handleSetStatus(CERT_STATUS.NOT_STARTED, e)}
+              title="Not Started"
+              aria-label="Mark as Not Started"
+            >
+              <Icons.Circle size={14} />
+            </button>
+            <button
+              className={`cert-node__toggle-btn ${status === CERT_STATUS.IN_PROGRESS ? 'cert-node__toggle-btn--active' : ''}`}
+              onClick={(e) => handleSetStatus(CERT_STATUS.IN_PROGRESS, e)}
+              title="In Progress"
+              aria-label="Mark as In Progress"
+            >
+              <Icons.Clock size={14} />
+            </button>
+            <button
+              className={`cert-node__toggle-btn ${status === CERT_STATUS.COMPLETED ? 'cert-node__toggle-btn--active' : ''}`}
+              onClick={(e) => handleSetStatus(CERT_STATUS.COMPLETED, e)}
+              title="Passed"
+              aria-label="Mark as Passed"
+            >
+              <Icons.CheckCircle2 size={14} />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

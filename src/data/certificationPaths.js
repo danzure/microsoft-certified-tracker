@@ -1503,6 +1503,23 @@ export const certificationPaths = [
   }
 ];
 
+import { careerRoles } from './careerRoles';
+
+// Dynamically attach job roles to certifications based on careerRoles mapping
+certificationPaths.forEach(path => {
+  path.certifications.forEach(cert => {
+    const matchedRoles = careerRoles
+      .filter(role => role.certs.includes(cert.id))
+      .map(role => ({ title: role.title, color: role.color, icon: role.icon }));
+    
+    if (matchedRoles.length > 0) {
+      cert.role = matchedRoles[0].title; // Primary role string
+      cert.roles = matchedRoles.map(r => r.title); // All matched role strings
+      cert.roleData = matchedRoles; // Rich data including colors and icons
+    }
+  });
+});
+
 // Helper to get a path by ID
 export const getPathById = (pathId) => certificationPaths.find((p) => p.id === pathId);
 

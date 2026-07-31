@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { careerRoles } from '../../data/careerRoles';
 import { certificationPaths, CERT_STATUS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
@@ -22,6 +22,7 @@ import './CareerPathBuilder.css';
  */
 const CareerPathBuilder = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { getStatus, customPlaylist, setCustomPlaylist } = useProgressContext();
   const [selectedRole, setSelectedRole] = useState(null);
   const [certToAdd, setCertToAdd] = useState('');
@@ -59,6 +60,16 @@ const CareerPathBuilder = () => {
     };
     return [customRole, ...[...careerRoles].sort((a, b) => a.title.localeCompare(b.title))];
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('role') === 'custom') {
+      const customRole = sortedRoles.find(r => r.id === 'custom-playlist');
+      if (customRole) {
+        setSelectedRole(customRole);
+      }
+    }
+  }, [location.search, sortedRoles]);
 
   const handleDragEnd = (event) => {
     const { active, over } = event;

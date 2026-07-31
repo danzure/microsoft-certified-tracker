@@ -172,11 +172,19 @@ const CertNode = ({ data }) => {
         </div>
         
         <div className="cert-node__info-footer">
-          <div className="cert-node__actions" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="cert-node__actions" style={{ justifyContent: 'space-between', alignItems: 'flex-end', gap: '12px' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap', flex: 1 }}>
               <Badge variant={levelVariant} small>{cert.level}</Badge>
-              {cert.role && (
-                <Badge variant="default" small outline>{cert.role}</Badge>
+              {cert.roleData ? cert.roleData.map((r, i) => {
+                const RoleIcon = r.icon ? IconMap[r.icon] : null;
+                return (
+                  <Badge key={`role-${i}`} color={r.color} small outline>
+                    {RoleIcon && <RoleIcon size={10} />}
+                    Job role: {r.title}
+                  </Badge>
+                );
+              }) : cert.role && (
+                <Badge variant="default" small outline>Job role: {cert.role}</Badge>
               )}
               {/* Prerequisite Tags */}
               {cert.prerequisites?.length > 0 && (
@@ -200,7 +208,7 @@ const CertNode = ({ data }) => {
                 })
               )}
             </div>
-            <div className="cert-node__status-toggle" onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
+            <div className="cert-node__status-toggle" style={{ flexShrink: 0 }} onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
               <button
                 className={`cert-node__toggle-btn ${status === CERT_STATUS.NOT_STARTED ? 'cert-node__toggle-btn--active' : ''}`}
                 onClick={(e) => handleSetStatus(CERT_STATUS.NOT_STARTED, e)}

@@ -109,8 +109,16 @@ const CertDetail = ({ cert, path, onClose }) => {
             </div>
             <div className="cert-detail__badges">
               <Badge variant={levelVariant} outline>{cert.level}</Badge>
-              {cert.role && (
-                <Badge variant="default" outline>{cert.role}</Badge>
+              {cert.roleData ? cert.roleData.map((r, i) => {
+                const RoleIcon = r.icon ? IconMap[r.icon] : null;
+                return (
+                  <Badge key={`role-${i}`} color={r.color} outline>
+                    {RoleIcon && <RoleIcon size={12} />}
+                    Job role: {r.title}
+                  </Badge>
+                );
+              }) : cert.role && (
+                <Badge variant="default" outline>Job role: {cert.role}</Badge>
               )}
               <Badge color={path.color} outline>{path.shortName}</Badge>
               {retiring && (

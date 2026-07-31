@@ -1,6 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { IconMap as Icons } from '../common/IconMap';
+import Badge from '../common/Badge';
 
 /**
  * SortableCertItem Component
@@ -58,6 +59,20 @@ export const SortableCertItem = ({ id, index, certInfo, status, statusText, node
           <div>
             <div className="cpb-timeline-cert-code">{certInfo.examCode}</div>
             <div className="cpb-timeline-cert-name">{certInfo.name}</div>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+              <Badge variant={certInfo.level === 'Fundamentals' ? 'fundamentals' : certInfo.level === 'Associate' ? 'associate' : certInfo.level === 'Expert' ? 'expert' : 'default'} small>
+                {certInfo.level}
+              </Badge>
+              {certInfo.roleData && certInfo.roleData.map((r, i) => {
+                const RoleIcon = r.icon ? Icons[r.icon] : null;
+                return (
+                  <Badge key={`role-${i}`} color={r.color} small outline>
+                    {RoleIcon && <RoleIcon size={10} />}
+                    Job role: {r.title}
+                  </Badge>
+                );
+              })}
+            </div>
           </div>
           <div className="cpb-timeline-card-actions">
             <div className={`cpb-timeline-badge ${badgeClass}`}>
