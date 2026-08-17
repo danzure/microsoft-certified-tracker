@@ -1,19 +1,51 @@
 # Agent Rules
 
-## Git Workflows
+## Git Workflows & Quality Verification
 
 Whenever you are asked to commit and sync changes, you **must** automatically bump the version in `package.json` before creating the commit. **Exception:** Do not bump the version in `package.json` if you are only updating non-application files (e.g., `README.md`, documentation, `.agents/AGENTS.md`).
 
-1. Evaluate the significance of your changes and increment the version accordingly:
-   - **Patch**: For small bug fixes, minor tweaks, or routine data updates.
-   - **Minor**: For significant new features, substantial UI changes, or logic updates.
-   - **Major**: For complete architectural overhauls or major breaking changes.
-2. Stage `package.json` along with the other modified files.
-3. Proceed with the commit and push/sync process.
+1. **Pre-Commit Quality Gate**:
+   - Run `npm run lint` and resolve any ESLint errors or warnings.
+   - Run `npm run build` to verify that Vite bundles successfully without JSX, import, or type resolution issues.
+2. **Version Bump**:
+   - Evaluate the significance of your changes and increment the version in `package.json` accordingly:
+     - **Patch**: For small bug fixes, minor tweaks, or routine data updates.
+     - **Minor**: For significant new features, substantial UI changes, or logic updates.
+     - **Major**: For complete architectural overhauls or major breaking changes.
+3. **Commit Messages**:
+   - Use Conventional Commit format (e.g., `feat: add custom playlist export`, `fix: correct prerequisite id in az-305`, `data: update dp-700 retirement date`, `chore: bump version to 1.9.1`).
+4. **Staging & Sync**:
+   - Stage `package.json` along with the other modified files.
+   - Proceed with the commit and push/sync process.
 
-## Certification Information Sources
+## Certification Information Sources & Lifecycle Management
 
-When looking for or updating information about changes to Microsoft certifications, always use the following as the primary information source: https://techcommunity.microsoft.com/category/skills-hub/blog/skills-hub-blog. This is the official Microsoft certification news channel.
+- **Primary News Source**: When looking for or updating information about changes to Microsoft certifications, always use the following as the primary information source: https://techcommunity.microsoft.com/category/skills-hub/blog/skills-hub-blog. This is the official Microsoft certification news channel.
+- **Retirement Lifecycle Workflow**:
+  - **Retiring Exams**: When an exam is announced as retiring, add `retirementDate: 'YYYY-MM-DD'` and set its state badge to `"Retiring"`.
+  - **Retired Exams**: When an exam reaches its retirement date, move the certification entry to `PILLARS.RETIRED` under the retired track in `src/data/certificationPaths.js`, set its status to `"Retired"`, and clean up or update any corresponding references in `src/data/careerRoles.js`.
+
+## Data Model & Schema Integrity
+
+When modifying `src/data/certificationPaths.js` or `src/data/careerRoles.js`:
+- **ID & Exam Code Conventions**:
+  - Certification `id` must be lowercase kebab-case (e.g., `'az-104'`, `'ai-102'`, `'sc-900'`).
+  - `examCode` must be uppercase (e.g., `'AZ-104'`, `'AI-102'`, `'SC-900'`).
+- **Career Roles Synchronization**:
+  - Whenever a certification ID is added, renamed, or retired in `certificationPaths.js`, you **must** review and update `src/data/careerRoles.js` to ensure the `certs: [...]` array in each role has no dangling or broken IDs.
+- **Prerequisites Consistency**:
+  - All items in `prerequisites: [...]` arrays must reference valid, existing cert `id` strings in lowercase kebab-case.
+- **Pillars & Tracks**:
+  - Paths must use the standard `PILLARS` enum (`CLOUD_AI`, `BIZ_SOLUTIONS`, `SECURITY`, `RETIRED`) and assign appropriate branch IDs.
+
+## State Persistence & Backup Integrity
+
+- **Safe Parsing**: Always wrap `localStorage` access and JSON parsing in `try/catch` blocks with safe default fallbacks in `src/hooks/useProgress.js`.
+- **Export, Import & Reset Parity**:
+  - Any new persistent state or user preference (e.g., custom playlists, tracked certs, target dates, currency preferences) **must** be wired into:
+    1. `exportProgressJSON()` — included in the backup JSON payload.
+    2. `importProgressJSON()` — safely parsed, validated, and merged on restoration.
+    3. `resetAll()` — completely cleared from state and `localStorage` upon reset.
 
 ## UI Design Language & Component Standards
 
@@ -73,10 +105,11 @@ Always use the variables defined in `src/index.css` to ensure consistent theming
   - **Warning/In-Progress**: `--status-in-progress` or `--badge-inprogress-fg`.
   - **Danger/Error**: `--line-security` or `--badge-retiring-fg` depending on context.
 
-### 10. Icons & Imagery
-- **Standardisation & IconMap**: Prioritize official Microsoft icons or Fluent UI System Icons where possible to maintain alignment with the Azure portal experience. Do not import `@fluentui/react-icons` directly into random components. Instead, always use the central abstraction `src/components/common/IconMap.jsx`. If a new icon is needed, add it to `IconMap.jsx` first.
+### 10. Icons & Imagery (IconMap vs ProductIcons)
+- **Standardisation & IconMap**: Prioritize official Microsoft icons or Fluent UI System Icons where possible to maintain alignment with the Azure portal experience. Do not import `@fluentui/react-icons` directly into random components. Instead, always use the central abstraction `src/components/common/IconMap.jsx`. If a new icon is needed, add it to `IconMap.jsx` first wrapped with `withSize(...)`.
+- **Microsoft Product Icons (`ProductIcons.jsx`)**: Full-color product or service icons (e.g., Azure services, Copilot, GitHub, Power Platform) must be defined as SVG components in `src/components/common/ProductIcons.jsx` and mapped in `IconMap.jsx`.
+- **Icon Backgrounds**: When displaying full-color product or service icons, set the container background to `transparent` so the icon stands on its own. Solid category backgrounds are reserved for monochrome structural icons.
 - **Consistent Usage**: Ensure that the same icon is used consistently for the same function or meaning across the entire application (e.g., always use `AlertTriangle` for warnings or retiring elements, `CheckCircle2` for completions).
-- **Icon Backgrounds**: When displaying full-color product or service icons (e.g., Azure services), set the container background to `transparent` so the icon stands on its own. Solid category backgrounds are reserved for monochrome structural icons.
 
 ### 11. Microsoft Certification Badges & Links
 - **Official Assets**: Always use official Microsoft certification badge images when representing certifications (e.g., Azure Fundamentals, Azure Administrator Associate).
@@ -90,3 +123,16 @@ Always use the variables defined in `src/index.css` to ensure consistent theming
 ### 12. Fixed-Height Node Overflow Prevention
 - **Line Clamping & Dynamic Text**: When building or modifying UI components that sit inside strict, fixed-dimension layout nodes (such as React Flow nodes sized by Dagre), you must ensure that variable-length text (like long certification titles or descriptions) does not push footer content out of bounds or cause clipping.
 - **Validation Constraints**: If you increase line limits (e.g., via `-webkit-line-clamp`), always mathematically or visually validate that the worst-case scenario (e.g., a 3-line title combined with maximum description lines) will comfortably fit within the fixed height (e.g., `210px`) without overflowing. Keep clamps conservative if the parent height cannot scale automatically.
+
+### 13. Modals, Drawers & Overlays UX
+- **Escape Key Dismissal**: Modals and slide-over drawers (e.g., `DataModal.jsx`, `CertDetail.jsx`) must listen for the `Escape` key and invoke `onClose()`.
+- **Backdrop Click**: Clicking the overlay/backdrop outside the modal container must dismiss the view.
+- **Scroll Locking**: Modals and full drawers should prevent background body scrolling while active.
+
+### 14. Toast Notifications & User Feedback
+- **Feedback on Actions**: Use the central `useToast()` hook (`addToast(message, type)`) to provide clear visual feedback whenever a user performs explicit actions:
+  - Successful or failed progress backup export (`exportProgressJSON`).
+  - Successful or failed backup restoration (`importProgressJSON`).
+  - Progress reset confirmation (`resetAll`).
+  - Copying shareable links or path URLs to clipboard.
+- **Toast Types**: Use `'success'`, `'error'`, `'info'`, or `'warning'` appropriately.
