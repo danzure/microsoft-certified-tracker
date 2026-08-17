@@ -5,7 +5,7 @@ export const careerRoles = [
     description: 'Build, manage, and deploy AI solutions that leverage cognitive services, machine learning, and knowledge mining.',
     icon: 'Brain',
     color: 'var(--line-ai)',
-    certs: ['ai-900', 'ai-102', 'ai-200', 'ab-250', 'ai-500', 'ai-300', 'ai-901']
+    certs: ['ai-901', 'ai-103', 'ai-200', 'ai-300', 'ai-500', 'ab-250', 'gh-600']
   },
   {
     id: 'administrator',
@@ -21,7 +21,7 @@ export const careerRoles = [
     description: 'Design, build, test, and maintain cloud applications and services to solve technical and business challenges.',
     icon: 'Cloud',
     color: 'var(--line-azure)',
-    certs: ['az-204', 'pl-400', 'dp-420', 'gh-foundations', 'gh-actions', 'gh-security', 'gh-copilot', 'pl-500']
+    certs: ['az-204', 'ai-103', 'ai-200', 'pl-400', 'dp-420', 'gh-foundations', 'gh-actions', 'gh-security', 'gh-copilot', 'gh-600', 'pl-500']
   },
   {
     id: 'devops-engineer',
@@ -29,7 +29,7 @@ export const careerRoles = [
     description: 'Combine people, process, and technologies to continuously deliver valuable products and services that meet end user needs.',
     icon: 'AzureDevOps',
     color: 'var(--line-azure)',
-    certs: ['az-400', 'gh-actions', 'gh-admin', 'gh-security']
+    certs: ['az-400', 'gh-actions', 'gh-admin', 'gh-security', 'gh-600']
   },
   {
     id: 'solutions-architect',

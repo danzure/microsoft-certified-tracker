@@ -265,9 +265,9 @@
 }
 
 .cert-node__toggle-btn--active[title="Needs Renewal"] {
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
-  border: 1px solid rgba(255, 107, 107, 0.4);
+  background: color-mix(in srgb, var(--line-security) 10%, transparent);
+  color: var(--line-security);
+  border: 1px solid color-mix(in srgb, var(--line-security) 40%, transparent);
 }
 
 .cert-node__fast-untrack-btn {

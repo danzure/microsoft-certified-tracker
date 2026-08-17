@@ -162,12 +162,12 @@
 }
 
 .cp-cert-card__add-btn--added {
-  color: var(--success-color, #10b981);
-  border-color: var(--success-color, #10b981);
-  background: color-mix(in srgb, var(--success-color) 10%, transparent);
+  color: var(--status-completed);
+  border-color: var(--status-completed);
+  background: color-mix(in srgb, var(--status-completed) 10%, transparent);
 }
 
 .cp-cert-card__add-btn--added:hover {
-  background-color: var(--success-color, #10b981);
+  background-color: var(--status-completed);
   color: white;
 }

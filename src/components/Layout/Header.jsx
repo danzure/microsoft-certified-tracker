@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IconMap as Icons } from '../common/IconMap';
 const { Menu, Sun, Moon, Desktop } = Icons;
 import SearchBar from '../common/SearchBar';
+import DataModal from '../common/DataModal';
 import { useTheme } from '../../context/ThemeContext';
 import './Header.css';
 
@@ -16,6 +18,7 @@ import './Header.css';
  */
 const Header = ({ onToggleSidebar }) => {
   const { themePref, setTheme } = useTheme();
+  const [dataModalOpen, setDataModalOpen] = useState(false);
 
   return (
     <header className="header" id="app-header">
@@ -29,9 +32,9 @@ const Header = ({ onToggleSidebar }) => {
           <Menu size={20} />
         </button>
         <div className="header__brand" id="brand-link">
-          <a href="https://atozazure.com" className="header__brand-prefix hover-opacity" style={{ textDecoration: 'none' }}>atozazure</a>
-          <span className="header__brand-divider hidden sm:inline">|</span>
-          <Link to="/" className="header__brand-title hidden sm:inline hover-opacity" style={{ textDecoration: 'none' }}>Certification Tracker</Link>
+          <a href="https://atozazure.com" className="header__brand-prefix">atozazure</a>
+          <span className="header__brand-divider">|</span>
+          <Link to="/" className="header__brand-title">Certification Tracker</Link>
         </div>
       </div>
 
@@ -40,6 +43,14 @@ const Header = ({ onToggleSidebar }) => {
       </div>
 
       <div className="header__right">
+        <button
+          className="header__data-btn"
+          onClick={() => setDataModalOpen(true)}
+          aria-label="Data & preferences"
+          title="Data backup, restore & settings"
+        >
+          <Icons.DatabaseIcon size={18} />
+        </button>
         <div className="header__theme-group" role="group" aria-label="Theme preference">
           <button
             onClick={() => setTheme('light')}
@@ -67,6 +78,8 @@ const Header = ({ onToggleSidebar }) => {
           </button>
         </div>
       </div>
+
+      <DataModal isOpen={dataModalOpen} onClose={() => setDataModalOpen(false)} />
     </header>
   );
 };

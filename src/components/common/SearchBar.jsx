@@ -31,13 +31,27 @@ const SearchBar = ({ onClose }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsSearching(true);
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query.trim() ? query : '');
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setQuery(val);
+    const hasText = val.trim().length > 0;
+    setIsOpen(hasText);
+    if (hasText) {
+      setIsSearching(true);
+    } else {
       setIsSearching(false);
-    }, query.trim() ? 300 : 0);
+      setDebouncedQuery('');
+    }
+  };
+
+  useEffect(() => {
+    if (!query.trim()) {
+      return;
+    }
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query.trim());
+      setIsSearching(false);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, [query]);
@@ -56,7 +70,7 @@ const SearchBar = ({ onClose }) => {
     : [];
 
   const handleSelect = (cert) => {
-    navigate(`/path/${cert.pathId}`);
+    navigate(`/path/${cert.pathId}?cert=${cert.id}`);
     setQuery('');
     setDebouncedQuery('');
     setIsOpen(false);
@@ -73,10 +87,7 @@ const SearchBar = ({ onClose }) => {
           className="search-bar__input"
           placeholder="Search certifications..."
           value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setIsOpen(e.target.value.trim().length > 0);
-          }}
+          onChange={handleInputChange}
           onFocus={() => query && setIsOpen(true)}
           id="search-certifications"
         />
@@ -96,7 +107,7 @@ const SearchBar = ({ onClose }) => {
         <div className="search-bar__dropdown">
           {results.map((cert) => (
             <button
-              key={cert.id}
+              key={`${cert.pathId}-${cert.id}`}
               className="search-bar__result"
               onClick={() => handleSelect(cert)}
             >

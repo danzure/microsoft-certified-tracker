@@ -47,6 +47,10 @@ import {
   ArrowDownRegular,
   ArrowLeftRegular,
   LockClosedRegular,
+  InfoRegular,
+  DocumentArrowDownRegular,
+  DocumentArrowUpRegular,
+  DatabaseRegular,
 } from '@fluentui/react-icons';
 
 // Microsoft Product Icons (custom SVGs for certification paths)
@@ -142,6 +146,10 @@ export const IconMap = {
   ArrowDown: withSize(ArrowDownRegular),
   ArrowLeft: withSize(ArrowLeftRegular),
   Lock: withSize(LockClosedRegular),
+  Info: withSize(InfoRegular),
+  Download: withSize(DocumentArrowDownRegular),
+  Upload: withSize(DocumentArrowUpRegular),
+  DatabaseIcon: withSize(DatabaseRegular),
   
   // New role icons
   Settings: withSize(SettingsRegular),

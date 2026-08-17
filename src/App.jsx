@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProgressProvider } from './context/ProgressContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { CurrencyProvider } from './context/CurrencyContext';
@@ -60,6 +60,7 @@ function App() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/career-paths" element={<CareerPathBuilder />} />
                     <Route path="/path/:pathId" element={<PathMap />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Suspense>
               </main>

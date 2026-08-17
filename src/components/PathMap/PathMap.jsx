@@ -1,11 +1,11 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { getPathById, CERT_LEVELS, CERT_STATUS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
 import CertNode from './CertNode';
 import CertDetail from '../CertDetail/CertDetail';
 import ProgressRing from '../common/ProgressRing';
 import { IconMap as Icons } from '../common/IconMap';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { ReactFlow, ReactFlowProvider, useNodesState, useEdgesState, Background, Controls, ControlButton, useReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import dagre from 'dagre';
@@ -229,7 +229,7 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
       const toUnlocked = targetNode?.data?.isUnlocked;
 
       let strokeColor;
-      let zIndex = 0;
+      let zIndex;
       let isAnimated = false;
 
       if (fromCompleted && toActive) {
@@ -258,8 +258,8 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
       };
     });
 
-    let layoutedNodes = initialNodes;
-    let layoutedEdges = styledEdges;
+    let layoutedNodes;
+    let layoutedEdges;
 
     if (path.id === 'retired-exams') {
       const colWidth = 440; // 400 node width + 40 gap
@@ -329,10 +329,21 @@ const PathMapFlow = ({ path, setSelectedCert }) => {
 
 const PathMap = () => {
   const { pathId } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const path = getPathById(pathId);
   const { getPathProgress } = useProgressContext();
-  const [selectedCert, setSelectedCert] = useState(null);
+  
+  const [selectedCertId, setSelectedCertId] = useState(() => searchParams.get('cert') || null);
+
+  const selectedCert = useMemo(() => {
+    if (!path || !selectedCertId) return null;
+    return path.certifications.find((c) => c.id === selectedCertId) || null;
+  }, [path, selectedCertId]);
+
+  const handleSelectCert = useCallback((cert) => {
+    setSelectedCertId(cert ? cert.id : null);
+  }, []);
 
   const pathProgress = useMemo(() => {
     if (!path) return { total: 0, completed: 0, inProgress: 0, percent: 0 };
@@ -396,13 +407,13 @@ const PathMap = () => {
         <ReactFlowProvider>
           <PathMapFlow 
             path={path} 
-            setSelectedCert={setSelectedCert}
+            setSelectedCert={handleSelectCert}
           />
         </ReactFlowProvider>
       </div>
 
       {selectedCert && (
-        <CertDetail cert={selectedCert} path={path} onClose={() => setSelectedCert(null)} />
+        <CertDetail cert={selectedCert} path={path} onClose={() => handleSelectCert(null)} />
       )}
     </div>
   );

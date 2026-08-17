@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useProgressContext } from '../../context/ProgressContext';
-import { CERT_STATUS } from '../../data/certificationPaths';
+import { CERT_STATUS, getCertById } from '../../data/certificationPaths';
 import { IconMap as Icons } from '../common/IconMap';
 import Badge from '../common/Badge';
 import { getBadgeUrl } from '../../utils/helpers';
@@ -69,7 +69,6 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
           <div className="cert-node__title-group">
             <div className="cert-node__badge-stats">
               <span className="cert-node__exam-code">{certInfo.examCode}</span>
-              {/* Note: State tags like Retiring/Beta could go here if added to certInfo */}
             </div>
             <h3 className="cert-node__name">
               {certInfo.name.startsWith('Microsoft') ? certInfo.name : `Microsoft Certified: ${certInfo.name}`}
@@ -87,30 +86,15 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
       <div className="cert-node__info-footer" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
           <Badge variant={levelVariant} small>{certInfo.level}</Badge>
-          {certInfo.roleData ? certInfo.roleData.map((r, i) => {
-            const RoleIcon = r.icon ? Icons[r.icon] : null;
-            return (
-              <Badge key={`role-${i}`} color={r.color} small outline>
-                {RoleIcon && <RoleIcon size={10} />}
-                Job role: {r.title}
-              </Badge>
-            );
-          }) : certInfo.role && (
-            <Badge variant="default" small outline>Job role: {certInfo.role}</Badge>
-          )}
           {certInfo.prerequisites?.length > 0 && (
             certInfo.prerequisites.map((prereqGroup, idx) => {
-              const prereqTexts = prereqGroup.map(id => {
-                // Shorten some names
-                if (id === 'az-104') return 'AZ-104';
-                return id.toUpperCase();
+              const prereqList = Array.isArray(prereqGroup) ? prereqGroup : [prereqGroup];
+              const prereqTexts = prereqList.map(id => {
+                const targetCert = getCertById(id)?.cert;
+                return targetCert ? targetCert.examCode : id.toUpperCase();
               });
               return (
-                <Badge key={`prereq-${idx}`} variant="default" small style={{ 
-                  color: 'var(--colorBrandForeground2)', 
-                  borderColor: 'var(--colorBrandStroke2)',
-                  background: 'var(--colorBrandBackground2)'
-                }}>
+                <Badge key={`prereq-${idx}`} variant="default" small outline>
                   <Icons.Link size={10} />
                   Prereq: {prereqTexts.join(' OR ')}
                 </Badge>
@@ -132,12 +116,12 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
               Microsoft Learn
             </a>
             <button
-              className={`cert-node__learn-link`}
+              className={`cert-node__learn-link ${isAdded ? 'cert-node__learn-link--added' : ''}`}
               style={{ 
                 border: '1px solid',
-                borderColor: isAdded ? 'var(--success-color, #10b981)' : 'var(--border-subtle)', 
-                color: isAdded ? 'var(--success-color, #10b981)' : 'var(--text-secondary)',
-                background: isAdded ? 'color-mix(in srgb, var(--success-color, #10b981) 10%, transparent)' : 'var(--bg-surface-2)',
+                borderColor: isAdded ? 'var(--status-completed)' : 'var(--border-subtle)', 
+                color: isAdded ? 'var(--status-completed)' : 'var(--text-secondary)',
+                background: isAdded ? 'color-mix(in srgb, var(--status-completed) 10%, transparent)' : 'var(--bg-surface-2)',
                 cursor: 'pointer'
               }}
               onClick={(e) => {
@@ -169,7 +153,7 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
               <Icons.Clock size={14} />
             </button>
             <button
-              className={`cert-node__toggle-btn ${status === CERT_STATUS.COMPLETED ? 'cert-node__toggle-btn--active' : ''}`}
+              className={`cert-node__toggle-btn ${(status === CERT_STATUS.COMPLETED || status === CERT_STATUS.NEEDS_RENEWAL) ? 'cert-node__toggle-btn--active' : ''}`}
               onClick={(e) => handleSetStatus(CERT_STATUS.COMPLETED, e)}
               title="Passed"
               aria-label="Mark as Passed"

@@ -192,24 +192,24 @@
 }
 
 .cpb-timeline-node--completed {
-  background: var(--success-color, #10b981);
-  border-color: var(--success-color, #10b981);
+  background: var(--status-completed);
+  border-color: var(--status-completed);
   color: white;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--status-completed) 40%, transparent);
 }
 
 .cpb-timeline-node--in-progress {
   background: var(--bg-card);
-  border-color: var(--warning-color, #f59e0b);
-  color: var(--warning-color, #f59e0b);
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+  border-color: var(--status-in-progress);
+  color: var(--status-in-progress);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--status-in-progress) 40%, transparent);
 }
 
 .cpb-timeline-node--needs-renewal {
   background: var(--bg-card);
-  border-color: #ff6b6b;
-  color: #ff6b6b;
-  box-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
+  border-color: var(--line-security);
+  color: var(--line-security);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--line-security) 40%, transparent);
 }
 
 .cpb-timeline-card {
@@ -218,7 +218,7 @@
   backdrop-filter: blur(16px) saturate(1.2);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid color-mix(in srgb, var(--card-color) 30%, var(--border-subtle, var(--colorNeutralStroke1)));
-  border-radius: 16px;
+  border-radius: var(--radius-2xl);
   padding: 1.5rem;
   cursor: pointer;
   transition: all var(--duration-normal) var(--curve-easy-ease);
@@ -284,20 +284,20 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.25rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   font-size: 0.75rem;
   font-weight: 600;
   background: var(--bg-card);
 }
 
 .cpb-timeline-badge--completed {
-  color: var(--success-color, #10b981);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: var(--status-completed);
+  border: 1px solid color-mix(in srgb, var(--status-completed) 30%, transparent);
 }
 
 .cpb-timeline-badge--in-progress {
-  color: var(--warning-color, #f59e0b);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: var(--status-in-progress);
+  border: 1px solid color-mix(in srgb, var(--status-in-progress) 30%, transparent);
 }
 
 .cpb-timeline-badge--not-started {
@@ -306,8 +306,8 @@
 }
 
 .cpb-timeline-badge--needs-renewal {
-  color: #ff6b6b;
-  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: var(--line-security);
+  border: 1px solid color-mix(in srgb, var(--line-security) 30%, transparent);
 }
 
 /* Custom Career Styles */
@@ -453,8 +453,8 @@
 }
 
 .cpb-timeline-remove-btn:hover {
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
+  background: color-mix(in srgb, var(--line-security) 10%, transparent);
+  color: var(--line-security);
 }
 
 .cpb-timeline-remove-btn:active {

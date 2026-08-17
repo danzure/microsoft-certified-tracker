@@ -11,7 +11,7 @@
   z-index: var(--z-header);
   background-color: var(--colorBrandBackground);
   border-bottom: 1px solid transparent;
-  color: #ffffff;
+  color: var(--text-inverse);
   box-shadow: var(--shadow-4);
   transition: background-color var(--duration-normal) var(--curve-easy-ease), border-bottom-color var(--duration-normal) var(--curve-easy-ease);
 }
@@ -19,7 +19,7 @@
 [data-theme="dark"] .header {
   background-color: var(--colorNeutralBackground5);
   border-bottom: 1px solid var(--border-default);
-  color: #ffffff;
+  color: var(--text-inverse);
   box-shadow: none;
 }
 
@@ -82,21 +82,76 @@
   letter-spacing: -0.25px;
   color: inherit;
   flex-shrink: 0;
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--curve-easy-ease);
+}
+
+.header__brand-prefix:hover {
+  opacity: 0.8;
 }
 
 .header__brand-divider {
+  display: none;
   font-size: var(--fs-body1, 14px);
   opacity: 0.4;
   margin: 0 8px;
 }
 
 .header__brand-title {
+  display: none;
   font-size: var(--fs-body1, 14px);
   opacity: 0.8;
   letter-spacing: 0.25px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity var(--duration-fast) var(--curve-easy-ease);
+}
+
+.header__brand-title:hover {
+  opacity: 1;
+}
+
+@media (min-width: 640px) {
+  .header__brand-divider,
+  .header__brand-title {
+    display: inline;
+  }
+}
+
+.header__data-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--curve-easy-ease), transform var(--duration-fast) var(--curve-easy-ease);
+  margin-right: var(--space-2);
+  flex-shrink: 0;
+}
+
+.header__data-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .header__data-btn:hover {
+  background: var(--colorSubtleBackgroundHover);
+}
+
+.header__data-btn:active {
+  transform: scale(0.95);
+}
+
+.header__data-btn:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
 }
 
 .header__theme-group {
@@ -208,17 +263,6 @@
 }
 
 
-/* Utilities */
-.hidden {
-  display: none;
-}
-
-@media (min-width: 640px) {
-  .sm\:inline {
-    display: inline;
-  }
-}
-
 @media (min-width: 769px) {
   .header {
     padding: 0 20px;
@@ -242,11 +286,4 @@
   .header__menu-btn {
     display: flex;
   }
-}
-
-.hover-opacity {
-  transition: opacity 0.2s ease-in-out;
-}
-.hover-opacity:hover {
-  opacity: 0.8;
 }

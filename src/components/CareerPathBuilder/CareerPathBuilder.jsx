@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { careerRoles } from '../../data/careerRoles';
 import { certificationPaths, CERT_STATUS } from '../../data/certificationPaths';
@@ -24,7 +24,11 @@ const CareerPathBuilder = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { getStatus, customPlaylist, setCustomPlaylist } = useProgressContext();
-  const [selectedRole, setSelectedRole] = useState(null);
+  const [selectedRoleId, setSelectedRoleId] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('role') === 'custom' ? 'custom-playlist' : null;
+  });
+
   const [certToAdd, setCertToAdd] = useState('');
 
   const sensors = useSensors(
@@ -61,15 +65,9 @@ const CareerPathBuilder = () => {
     return [customRole, ...[...careerRoles].sort((a, b) => a.title.localeCompare(b.title))];
   }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get('role') === 'custom') {
-      const customRole = sortedRoles.find(r => r.id === 'custom-playlist');
-      if (customRole) {
-        setSelectedRole(customRole);
-      }
-    }
-  }, [location.search, sortedRoles]);
+  const selectedRole = useMemo(() => {
+    return sortedRoles.find(r => r.id === selectedRoleId) || null;
+  }, [sortedRoles, selectedRoleId]);
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -136,7 +134,7 @@ const CareerPathBuilder = () => {
               key={role.id}
               className={`cpb-role-card ${isActive ? 'cpb-role-card--active' : ''}`}
               style={{ '--card-color': role.color }}
-              onClick={() => setSelectedRole(isActive ? null : role)}
+              onClick={() => setSelectedRoleId(isActive ? null : role.id)}
             >
               <div className="cpb-role-card-header">
                 <div className="cpb-role-icon">
@@ -181,9 +179,9 @@ const CareerPathBuilder = () => {
                 className="cpb-custom-export-btn"
                 onClick={handleExportPlaylist}
                 disabled={customPlaylist.length === 0}
-                title="Export Career"
+                title="Export Custom Career as Markdown"
               >
-                <Icons.ArchiveX size={18} />
+                <Icons.Download size={18} />
                 Export
               </button>
             </div>

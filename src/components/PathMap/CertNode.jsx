@@ -18,7 +18,7 @@ import './CertNode.css';
  */
 const CertNode = ({ data }) => {
   const { cert, pathColor, onSelect, index, isUnlocked } = data;
-  const { getStatus, cycleStatus, setStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
+  const { getStatus, setStatus, isCertIgnored, toggleCertIgnored } = useProgressContext();
   const { addToast } = useToast();
   const status = getStatus(cert.id);
   const retiring = isRetiring(cert);
@@ -131,6 +131,11 @@ const CertNode = ({ data }) => {
                   </Badge>
 
                 )}
+                {cert.isNew && (
+                  <Badge variant="new" small>
+                    New
+                  </Badge>
+                )}
                 {cert.isBeta && (
                   <Badge variant="beta" small>
                     Beta
@@ -175,17 +180,6 @@ const CertNode = ({ data }) => {
           <div className="cert-node__actions" style={{ justifyContent: 'space-between', alignItems: 'flex-end', gap: '12px' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap', flex: 1 }}>
               <Badge variant={levelVariant} small>{cert.level}</Badge>
-              {cert.roleData ? cert.roleData.map((r, i) => {
-                const RoleIcon = r.icon ? IconMap[r.icon] : null;
-                return (
-                  <Badge key={`role-${i}`} color={r.color} small outline>
-                    {RoleIcon && <RoleIcon size={10} />}
-                    Job role: {r.title}
-                  </Badge>
-                );
-              }) : cert.role && (
-                <Badge variant="default" small outline>Job role: {cert.role}</Badge>
-              )}
               {/* Prerequisite Tags */}
               {cert.prerequisites?.length > 0 && (
                 cert.prerequisites.map((prereqItem, index) => {

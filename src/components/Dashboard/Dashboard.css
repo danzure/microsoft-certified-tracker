@@ -197,17 +197,17 @@
 }
 
 .dashboard__activity-panel--warning {
-  border-color: color-mix(in srgb, #ff6b6b 30%, transparent);
-  background: color-mix(in srgb, #ff6b6b 2%, var(--colorNeutralBackground1));
+  border-color: color-mix(in srgb, var(--badge-retiring-fg) 30%, transparent);
+  background: color-mix(in srgb, var(--badge-retiring-fg) 2%, var(--colorNeutralBackground1));
 }
 
 .dashboard__activity-panel--warning .dashboard__activity-title {
-  color: #ff6b6b;
+  color: var(--badge-retiring-fg);
 }
 
 .dashboard__activity-panel--warning .dashboard__activity-count {
-  background: color-mix(in srgb, #ff6b6b 15%, transparent);
-  color: #ff6b6b;
+  background: color-mix(in srgb, var(--badge-retiring-fg) 15%, transparent);
+  color: var(--badge-retiring-fg);
 }
 
 .dashboard__activity-title {
@@ -502,8 +502,8 @@
 }
 
 .dashboard__path-toggle-btn--remove:hover {
-  color: #d13438;
-  background: color-mix(in srgb, #d13438 10%, transparent);
+  color: var(--line-security);
+  background: color-mix(in srgb, var(--line-security) 10%, transparent);
 }
 
 .dashboard__path-card-body {

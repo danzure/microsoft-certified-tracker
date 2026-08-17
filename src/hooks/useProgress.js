@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { CERT_STATUS, certificationPaths, doesCertExpire } from '../data/certificationPaths';
+import { CERT_STATUS, PILLARS, certificationPaths, doesCertExpire } from '../data/certificationPaths';
 import { isRetiring, isRetired } from '../utils/helpers';
 
 const STORAGE_KEY = 'ms-cert-tracker-progress';
@@ -8,6 +8,14 @@ const TRACKED_CERTS_STORAGE_KEY = 'ms-cert-tracker-tracked-certs';
 const DISMISSED_CERTS_KEY = 'ms-cert-tracker-dismissed-certs';
 const DATES_KEY = 'ms-cert-tracker-dates';
 const CUSTOM_PLAYLIST_KEY = 'ms-cert-tracker-custom-playlist';
+
+const getDefaultTrackedPaths = () => 
+  certificationPaths.filter(p => p.pillar !== PILLARS.RETIRED).map(p => p.id);
+
+const getDefaultTrackedCerts = () => {
+  const activePaths = certificationPaths.filter(p => p.pillar !== PILLARS.RETIRED);
+  return [...new Set(activePaths.flatMap(p => p.certifications.map(c => c.id)))];
+};
 
 const loadData = (key, defaultValue) => {
   try {
@@ -36,16 +44,26 @@ export const useProgress = () => {
   const [progress, setProgress] = useState(() => loadData(STORAGE_KEY, {}));
   const [trackedPaths, setTrackedPaths] = useState(() => {
     const storedTracked = localStorage.getItem('ms-cert-tracker-tracked-paths');
-    if (storedTracked) return JSON.parse(storedTracked);
+    if (storedTracked) {
+      try { return JSON.parse(storedTracked); } catch { /* ignore */ }
+    }
     
     const storedIgnored = localStorage.getItem(IGNORED_STORAGE_KEY);
     if (storedIgnored) {
-      const ignored = JSON.parse(storedIgnored);
-      return certificationPaths.filter(p => !ignored.includes(p.id)).map(p => p.id);
+      try {
+        const ignored = JSON.parse(storedIgnored);
+        return certificationPaths.filter(p => !ignored.includes(p.id)).map(p => p.id);
+      } catch { /* ignore */ }
     }
-    return [];
+    return getDefaultTrackedPaths();
   });
-  const [trackedCerts, setTrackedCerts] = useState(() => loadData(TRACKED_CERTS_STORAGE_KEY, []));
+  const [trackedCerts, setTrackedCerts] = useState(() => {
+    const stored = localStorage.getItem(TRACKED_CERTS_STORAGE_KEY);
+    if (stored) {
+      try { return JSON.parse(stored); } catch { /* ignore */ }
+    }
+    return getDefaultTrackedCerts();
+  });
   const [dismissedCerts, setDismissedCerts] = useState(() => loadData(DISMISSED_CERTS_KEY, []));
   const [completionDates, setCompletionDates] = useState(() => loadData(DATES_KEY, {}));
   const [customPlaylist, setCustomPlaylist] = useState(() => loadData(CUSTOM_PLAYLIST_KEY, []));
@@ -280,6 +298,64 @@ export const useProgress = () => {
 
   const resetAll = useCallback(() => {
     setProgress({});
+    setCompletionDates({});
+    setCustomPlaylist([]);
+  }, []);
+
+  const exportProgressJSON = useCallback(() => {
+    const data = {
+      app: 'ms-cert-tracker',
+      version: '1.8.2',
+      exportedAt: new Date().toISOString(),
+      progress,
+      trackedPaths,
+      trackedCerts,
+      dismissedCerts,
+      completionDates,
+      customPlaylist,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ms-certification-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [progress, trackedPaths, trackedCerts, dismissedCerts, completionDates, customPlaylist]);
+
+  const importProgressJSON = useCallback((jsonData) => {
+    try {
+      const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid backup file format');
+      }
+
+      if (data.progress && typeof data.progress === 'object') {
+        setProgress(data.progress);
+      }
+      if (Array.isArray(data.trackedPaths)) {
+        setTrackedPaths(data.trackedPaths);
+      }
+      if (Array.isArray(data.trackedCerts)) {
+        setTrackedCerts(data.trackedCerts);
+      }
+      if (Array.isArray(data.dismissedCerts)) {
+        setDismissedCerts(data.dismissedCerts);
+      }
+      if (data.completionDates && typeof data.completionDates === 'object') {
+        setCompletionDates(data.completionDates);
+      }
+      if (Array.isArray(data.customPlaylist)) {
+        setCustomPlaylist(data.customPlaylist);
+      }
+
+      return { success: true };
+    } catch (err) {
+      console.error('Failed to import backup:', err);
+      return { success: false, error: err.message };
+    }
   }, []);
 
   return {
@@ -299,6 +375,8 @@ export const useProgress = () => {
     toggleCertDismissed,
     isCertDismissed,
     resetAll,
+    exportProgressJSON,
+    importProgressJSON,
     completionDates,
     setCompletionDate,
     customPlaylist,

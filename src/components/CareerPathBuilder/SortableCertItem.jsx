@@ -1,5 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { CERT_STATUS } from '../../data/certificationPaths';
 import { IconMap as Icons } from '../common/IconMap';
 import Badge from '../common/Badge';
 
@@ -38,7 +39,7 @@ export const SortableCertItem = ({ id, index, certInfo, status, statusText, node
     <div ref={setNodeRef} style={style} className="cpb-timeline-step cpb-timeline-step--sortable">
       <div className="cpb-timeline-indicator">
         <div className={`cpb-timeline-node ${nodeClass}`}>
-          {status === 'COMPLETED' ? (
+          {(status === CERT_STATUS.COMPLETED || status === CERT_STATUS.NEEDS_RENEWAL) ? (
             <Icons.Check size={20} />
           ) : (
             <span>{index + 1}</span>
@@ -63,15 +64,6 @@ export const SortableCertItem = ({ id, index, certInfo, status, statusText, node
               <Badge variant={certInfo.level === 'Fundamentals' ? 'fundamentals' : certInfo.level === 'Associate' ? 'associate' : certInfo.level === 'Expert' ? 'expert' : 'default'} small>
                 {certInfo.level}
               </Badge>
-              {certInfo.roleData && certInfo.roleData.map((r, i) => {
-                const RoleIcon = r.icon ? Icons[r.icon] : null;
-                return (
-                  <Badge key={`role-${i}`} color={r.color} small outline>
-                    {RoleIcon && <RoleIcon size={10} />}
-                    Job role: {r.title}
-                  </Badge>
-                );
-              })}
             </div>
           </div>
           <div className="cpb-timeline-card-actions">

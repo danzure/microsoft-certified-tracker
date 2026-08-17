@@ -2,6 +2,8 @@
 // Each path represents a track with stations (certifications)
 // Certifications can be grouped into named branches (tracks) within each path
 
+import { careerRoles } from './careerRoles.js';
+
 export const CERT_LEVELS = {
   FUNDAMENTALS: 'Fundamentals',
   ASSOCIATE: 'Associate',
@@ -1502,8 +1504,6 @@ export const certificationPaths = [
     ]
   }
 ];
-
-import { careerRoles } from './careerRoles';
 
 // Dynamically attach job roles to certifications based on careerRoles mapping
 certificationPaths.forEach(path => {
