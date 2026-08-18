@@ -19,7 +19,7 @@
 [data-theme="dark"] .header {
   background-color: var(--colorNeutralBackground5);
   border-bottom: 1px solid var(--border-default);
-  color: var(--text-inverse);
+  color: var(--colorNeutralForeground1);
   box-shadow: none;
 }
 

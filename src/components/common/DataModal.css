@@ -167,7 +167,7 @@
 
 .data-modal__btn--danger {
   background-color: var(--line-security);
-  color: var(--text-inverse);
+  color: #ffffff;
 }
 
 .data-modal__btn--danger:hover {

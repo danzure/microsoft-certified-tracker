@@ -212,7 +212,7 @@
 
 .cert-detail__renew-btn {
   background: var(--line-security);
-  color: var(--text-inverse);
+  color: #ffffff;
   border: none;
   border-radius: var(--radius-md);
   padding: 6px 12px;
