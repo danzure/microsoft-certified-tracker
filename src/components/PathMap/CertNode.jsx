@@ -5,7 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import { isRetiring, isRetired, formatDate, getBadgeUrl } from '../../utils/helpers';
 import Badge from '../common/Badge';
 import { IconMap } from '../common/IconMap';
-const { AlertTriangle, Link, ArchiveX, Plus, Minus } = IconMap;
+const { AlertTriangle, Link, ArchiveX, Eye, EyeOff } = IconMap;
 import './CertNode.css';
 
 /**
@@ -153,7 +153,7 @@ const CertNode = ({ data }) => {
           
           {!isRetiredExam && (
             <button
-              className={`cert-node__fast-untrack-btn ${certIgnored ? 'cert-node__fast-untrack-btn--active' : ''}`}
+              className={`cert-node__track-btn ${certIgnored ? 'cert-node__track-btn--untracked' : 'cert-node__track-btn--tracked'}`}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -164,10 +164,10 @@ const CertNode = ({ data }) => {
                   addToast(`${cert.examCode} removed from tracked learning`);
                 }
               }}
-              title={certIgnored ? "Include in tracking" : "Exclude from tracking"}
-              aria-label={certIgnored ? "Include in tracking" : "Exclude from tracking"}
+              title={certIgnored ? "Excluded from learning • Click to track" : "Tracked in learning • Click to exclude"}
+              aria-label={certIgnored ? "Include in tracked learning" : "Exclude from tracked learning"}
             >
-              {certIgnored ? <Plus size={16} /> : <Minus size={16} />}
+              {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           )}
         </div>

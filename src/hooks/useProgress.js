@@ -298,8 +298,16 @@ export const useProgress = () => {
 
   const resetAll = useCallback(() => {
     setProgress({});
+    setTrackedPaths(getDefaultTrackedPaths());
+    setTrackedCerts(getDefaultTrackedCerts());
+    setDismissedCerts([]);
     setCompletionDates({});
     setCustomPlaylist([]);
+    try {
+      localStorage.removeItem(IGNORED_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   const exportProgressJSON = useCallback(() => {

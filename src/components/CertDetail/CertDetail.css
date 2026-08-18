@@ -82,10 +82,11 @@
 }
 
 .cert-detail__badge-icon {
-  width: 72px;
-  height: 72px;
+  width: 76px;
+  height: 76px;
   object-fit: contain;
   flex-shrink: 0;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
 }
 
 .cert-detail__exam-code {
@@ -433,60 +434,54 @@
   background: var(--colorBrandBackgroundHover);
 }
 
-/* Ignore/Exclude Toggle */
-.cert-detail__ignore-btn {
+/* Tracking Toggle Button */
+.cert-detail__track-btn {
   display: flex;
   align-items: center;
   gap: 12px;
   width: 100%;
   padding: 12px 16px;
   border-radius: var(--radius-md);
-  border: none;
-  background: var(--bg-surface-2);
-  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
-.cert-detail__ignore-btn:hover {
+.cert-detail__track-btn--tracked {
+  background: color-mix(in srgb, var(--detail-color, var(--colorBrandBackground)) 10%, var(--bg-surface-2));
+  border-color: color-mix(in srgb, var(--detail-color, var(--colorBrandBackground)) 30%, transparent);
+  color: var(--text-primary);
+}
+
+.cert-detail__track-btn--tracked svg {
+  color: var(--detail-color, var(--colorBrandForeground1));
+}
+
+.cert-detail__track-btn--tracked:hover {
+  background: color-mix(in srgb, var(--detail-color, var(--colorBrandBackground)) 18%, var(--bg-surface-2));
+  border-color: color-mix(in srgb, var(--detail-color, var(--colorBrandBackground)) 50%, transparent);
+}
+
+.cert-detail__track-btn--untracked {
+  background: var(--bg-surface-2);
+  border-color: var(--border-subtle);
+  color: var(--text-tertiary);
+}
+
+.cert-detail__track-btn--untracked svg {
+  color: var(--text-tertiary);
+}
+
+.cert-detail__track-btn--untracked:hover {
   background: var(--bg-surface-hover);
+  border-color: var(--border-default);
+  color: var(--text-primary);
 }
 
-.cert-detail__ignore-toggle {
-  width: 40px;
-  height: 20px;
-  border-radius: 10px;
-  background: var(--colorBrandBackground);
-  position: relative;
-  margin-left: auto;
-  flex-shrink: 0;
-  transition: background var(--transition-fast);
-}
-
-.cert-detail__ignore-toggle--off {
-  background: var(--text-tertiary);
-}
-
-.cert-detail__ignore-toggle-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: white;
-  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.cert-detail__ignore-toggle--off .cert-detail__ignore-toggle-thumb {
-  transform: translateX(0);
-}
-
-.cert-detail__ignore-toggle:not(.cert-detail__ignore-toggle--off) .cert-detail__ignore-toggle-thumb {
-  transform: translateX(20px);
+.cert-detail__track-btn:active {
+  transform: scale(0.98);
 }
 
 .cert-detail__ignore-hint {

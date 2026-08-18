@@ -32,8 +32,8 @@ export const PILLARS = {
 export const certificationPaths = [
   {
     id: 'azure-infrastructure',
-    name: 'Cloud & AI Platforms - Azure Apps & Infrastructure',
-    shortName: 'Cloud & AI - Azure Infra',
+    name: 'Azure Apps & Infrastructure',
+    shortName: 'Azure Infrastructure',
     code: 'AZ',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-azure)',
@@ -182,8 +182,8 @@ export const certificationPaths = [
   },
   {
     id: 'ai-machine-learning',
-    name: 'Cloud & AI Platforms - Azure AI',
-    shortName: 'Cloud & AI - AI',
+    name: 'Artificial Intelligence',
+    shortName: 'Artificial Intelligence',
     code: 'AI',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-ai)',
@@ -292,8 +292,8 @@ export const certificationPaths = [
   },
   {
     id: 'data-engineering',
-    name: 'Cloud & AI Platforms - Azure Data',
-    shortName: 'Cloud & AI - Data',
+    name: 'Data Platform',
+    shortName: 'Data Platform',
     code: 'DP',
     pillar: PILLARS.CLOUD_AI,
     color: 'var(--line-data)',
@@ -581,8 +581,8 @@ export const certificationPaths = [
   },
   {
     id: 'microsoft-365',
-    name: 'AI Business Solutions - Modern Work',
-    shortName: 'AI Business - Modern Work',
+    name: 'Modern Workplace',
+    shortName: 'Modern Workplace',
     code: 'MS',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-m365)',
@@ -673,8 +673,8 @@ export const certificationPaths = [
   },
   {
     id: 'power-platform',
-    name: 'AI Business Solutions - Business Applications',
-    shortName: 'AI Business - Business Apps',
+    name: 'Business Applications',
+    shortName: 'Business Apps',
     code: 'PL',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-power)',
@@ -748,8 +748,8 @@ export const certificationPaths = [
   },
   {
     id: 'agentic-ai',
-    name: 'AI Business Solutions - Copilot & AI Agents',
-    shortName: 'AI Business - Copilot',
+    name: 'AI Business Solutions',
+    shortName: 'AI Business',
     code: 'AB',
     pillar: PILLARS.BIZ_SOLUTIONS,
     color: 'var(--line-agentic)',

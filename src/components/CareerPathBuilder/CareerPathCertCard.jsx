@@ -54,7 +54,7 @@ export const CareerPathCertCard = ({ certInfo, customPlaylist, onAdd, onRemove }
     >
       <div className="cert-node__info-header">
         <div className="cert-node__icon-title">
-          <div className="cert-node__icon">
+          <div className={`cert-node__icon ${getBadgeUrl(certInfo.level, certInfo.id) ? 'cert-node__icon--image' : ''}`}>
             {getBadgeUrl(certInfo.level, certInfo.id) ? (
               <img 
                 src={getBadgeUrl(certInfo.level, certInfo.id)} 

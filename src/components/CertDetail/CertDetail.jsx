@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { IconMap } from '../common/IconMap';
-const { X, AlertTriangle, Calendar, Award, Plus, Minus, Microsoft } = IconMap;
+const { X, AlertTriangle, Calendar, Award, Eye, EyeOff, Microsoft } = IconMap;
 import { useProgressContext } from '../../context/ProgressContext';
 import { useCurrency } from '../../context/CurrencyContext';
 import { useToast } from '../../context/ToastContext';
@@ -311,19 +311,19 @@ const CertDetail = ({ cert, path, onClose }) => {
                 Tracking <span style={{fontSize: '10px', fontWeight: 'normal', opacity: 0.6, marginLeft: '6px'}}>(Press E)</span>
               </h3>
               <button
-              className={`cert-detail__ignore-btn ${certIgnored ? 'cert-detail__ignore-btn--active' : ''}`}
-              onClick={() => {
-                toggleCertIgnored(cert.id);
-                if (certIgnored) {
-                  addToast(`${cert.examCode} added to tracked learning`);
-                } else {
-                  addToast(`${cert.examCode} removed from tracked learning`);
-                }
-              }}
-            >
-              {certIgnored ? <Plus size={16} /> : <Minus size={16} />}
-              <span>{certIgnored ? 'Not tracked' : 'Tracked'}</span>
-            </button>
+                className={`cert-detail__track-btn ${certIgnored ? 'cert-detail__track-btn--untracked' : 'cert-detail__track-btn--tracked'}`}
+                onClick={() => {
+                  toggleCertIgnored(cert.id);
+                  if (certIgnored) {
+                    addToast(`${cert.examCode} added to tracked learning`);
+                  } else {
+                    addToast(`${cert.examCode} removed from tracked learning`);
+                  }
+                }}
+              >
+                {certIgnored ? <EyeOff size={16} /> : <Eye size={16} />}
+                <span>{certIgnored ? 'Excluded from learning' : 'Tracked in learning'}</span>
+              </button>
             {certIgnored && (
               <p className="cert-detail__ignore-hint">
                 {isPathExcluded 

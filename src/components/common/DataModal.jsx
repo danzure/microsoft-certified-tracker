@@ -66,7 +66,7 @@ const DataModal = ({ isOpen, onClose }) => {
     }
     resetAll();
     setConfirmReset(false);
-    addToast('All progress and custom tracks have been reset', 'info');
+    addToast('All progress, tracked exams, and custom tracks have been reset', 'info');
     onClose();
   };
 
@@ -151,7 +151,7 @@ const DataModal = ({ isOpen, onClose }) => {
           <div className="data-modal__section data-modal__section--danger">
             <h3 className="data-modal__section-title">Reset Progress</h3>
             <p className="data-modal__section-desc">
-              Clear all certification completion statuses, dates, and your custom career track.
+              Clear all certification completion statuses, dates, tracked exams, and your custom career track.
             </p>
             <div className="data-modal__actions-row">
               <button 

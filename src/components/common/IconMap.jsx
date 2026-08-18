@@ -51,6 +51,9 @@ import {
   DocumentArrowDownRegular,
   DocumentArrowUpRegular,
   DatabaseRegular,
+  BookmarkRegular,
+  BookmarkFilled,
+  BookmarkOffRegular,
 } from '@fluentui/react-icons';
 
 // Microsoft Product Icons (custom SVGs for certification paths)
@@ -150,6 +153,9 @@ export const IconMap = {
   Download: withSize(DocumentArrowDownRegular),
   Upload: withSize(DocumentArrowUpRegular),
   DatabaseIcon: withSize(DatabaseRegular),
+  Bookmark: withSize(BookmarkRegular),
+  BookmarkFilled: withSize(BookmarkFilled),
+  BookmarkOff: withSize(BookmarkOffRegular),
   
   // New role icons
   Settings: withSize(SettingsRegular),

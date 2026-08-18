@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { certificationPaths, PILLARS } from '../../data/certificationPaths';
 import { useProgressContext } from '../../context/ProgressContext';
@@ -19,6 +20,56 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
   const getIcon = (iconName) => {
     const Icon = Icons[iconName];
     return Icon ? <Icon size={20} /> : <Icons.Circle size={20} />;
+  };
+
+  const sortedPaths = useMemo(() => {
+    const active = certificationPaths
+      .filter((p) => p.pillar !== PILLARS.RETIRED)
+      .slice()
+      .sort((a, b) => a.shortName.localeCompare(b.shortName));
+    const retired = certificationPaths
+      .filter((p) => p.pillar === PILLARS.RETIRED)
+      .slice()
+      .sort((a, b) => a.shortName.localeCompare(b.shortName));
+    return { active, retired };
+  }, []);
+
+  const renderNavLink = (path) => {
+    const prog = getPathProgress(path.id);
+    return (
+      <NavLink
+        key={path.id}
+        to={`/path/${path.id}`}
+        className={({ isActive }) =>
+          `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
+        }
+        onClick={() => {
+          if (window.innerWidth <= 768) {
+            onClose();
+          }
+        }}
+        id={`sidebar-${path.id}`}
+        style={{ '--line-color': path.color, '--line-glow': path.glowColor }}
+        title={path.shortName}
+      >
+        <div className="sidebar__link-indicator" />
+        <div className="sidebar__link-icon" title={path.shortName}>
+          {getIcon(path.icon)}
+        </div>
+        <div className="sidebar__link-content">
+          <span className="sidebar__link-name">{path.shortName}</span>
+          <div className="sidebar__link-progress-bar">
+            <div
+              className="sidebar__link-progress-fill"
+              style={{ width: `${prog.percent}%` }}
+            />
+          </div>
+        </div>
+        <span className="sidebar__link-count">
+          {prog.completed}/{prog.total}
+        </span>
+      </NavLink>
+    );
   };
 
   return (
@@ -76,57 +127,19 @@ const Sidebar = ({ isOpen, onClose, onToggle }) => {
                 <span className="sidebar__link-name">Career Paths</span>
               </div>
             </NavLink>
-
           </div>
-          {Object.values(PILLARS).map((pillarName) => {
-            const pillarPaths = certificationPaths.filter((p) => p.pillar === pillarName);
-            if (pillarPaths.length === 0) return null;
 
-            return (
-              <div key={pillarName} className="sidebar__pillar-group">
-                <div className="sidebar__pillar-title">
-                  {pillarName}
-                </div>
-                {pillarPaths.map((path) => {
-                  const prog = getPathProgress(path.id);
-                  return (
-                    <NavLink
-                      key={path.id}
-                      to={`/path/${path.id}`}
-                      className={({ isActive }) =>
-                        `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-                      }
-                      onClick={() => {
-                        if (window.innerWidth <= 768) {
-                          onClose();
-                        }
-                      }}
-                      id={`sidebar-${path.id}`}
-                      style={{ '--line-color': path.color, '--line-glow': path.glowColor }}
-                      title={path.shortName}
-                    >
-                      <div className="sidebar__link-indicator" />
-                      <div className="sidebar__link-icon" title={path.shortName}>
-                        {getIcon(path.icon)}
-                      </div>
-                      <div className="sidebar__link-content">
-                        <span className="sidebar__link-name">{path.shortName}</span>
-                        <div className="sidebar__link-progress-bar">
-                          <div
-                            className="sidebar__link-progress-fill"
-                            style={{ width: `${prog.percent}%` }}
-                          />
-                        </div>
-                      </div>
-                      <span className="sidebar__link-count">
-                        {prog.completed}/{prog.total}
-                      </span>
-                    </NavLink>
-                  );
-                })}
-              </div>
-            );
-          })}
+          <div className="sidebar__pillar-group">
+            <div className="sidebar__pillar-title">Certification Paths</div>
+            {sortedPaths.active.map(renderNavLink)}
+          </div>
+
+          {sortedPaths.retired.length > 0 && (
+            <div className="sidebar__pillar-group">
+              <div className="sidebar__pillar-title">{PILLARS.RETIRED}</div>
+              {sortedPaths.retired.map(renderNavLink)}
+            </div>
+          )}
         </nav>
       </aside>
     </>
